@@ -92,7 +92,7 @@ class Fchk_File():
         else: new_list[1].append("Not_present")
         return new_list
 
-def get_list_of_propreties_for_fchk_in_a_folder(folder_path, direction):
+def get_list_of_propreties_for_fchk_in_a_folder(folder_path, direction, return_list_of_objects = False):
     files = [f for f in os.listdir(folder_path) if os.path.isfile(os.path.join(folder_path, f)) and f.lower().endswith(".fchk")]                #Getting list of files in the folder. 
     map_directiosn_1 = {"x" : 0, "y" : 1, "z" : 2}                                                                                              #Mapping the direction to the corresponding integer 
     direction_int = map_directiosn_1[direction.lower()]                                                                                         #Getting the index for the corresponding direction
@@ -102,12 +102,13 @@ def get_list_of_propreties_for_fchk_in_a_folder(folder_path, direction):
         obj = extract_data_from_fchk_file_for_numerical_derivation(os.path.join(folder_path, i))
         list_with_data_from_files.append(copy.deepcopy(obj))                                                                                    #Saving it to a list later to work
 
+    if return_list_of_objects:                                                                                                                #If the user wants to get the list of objects, return it
+        return list_with_data_from_files
+
     list_with_data_from_files = sorted(list_with_data_from_files, key = lambda elem: elem.e_field[direction_int])                               #Sorting the data according to the values of electric field. 
     names = obj.list_propreties(direction)[0]                                                                                                   #Getting names for the atributes of the attribute of the object
     list_with_data_from_files = [obj.list_propreties(direction)[1] for obj in list_with_data_from_files]                                        #Getting the list of propreties 
     
-    np.savetxt("data.csv", list_with_data_from_files, delimiter=",", fmt='%s', header=",".join(str(v) for v in names))
-    np.savetxt("data.tab", list_with_data_from_files, delimiter="\t", fmt='%s') 
     return [names, list_with_data_from_files]
 
 
@@ -131,43 +132,54 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
 
 def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     def three_points(i, step, h):
-        return (1*f[i-1]-2*f[i+0]+1*f[i+1])/(1*1.0*(h*step)**2)
+        return (1*f[i-step]-2*f[i+0]+1*f[i+step])/(1*1.0*(h*step)**2)
     def five_points(i, step, h):
-        return (-1*f[i-2]+16*f[i-1]-30*f[i+0]+16*f[i+1]-1*f[i+2])/(12*1.0*(h*step)**2)
+        return (-1*f[i-2*step]+16*f[i-step]-30*f[i+0]+16*f[i+step]-1*f[i+2*step])/(12*1.0*(h*step)**2)
     map_functions = {"3" : three_points, "5" : five_points}
-    f_x = map_functions[str(n_points)]
+    f_xx = map_functions[str(n_points)]
     start = int(step*np.floor(n_points/2))
     finish = int(len(f) - step*np.floor(n_points/2))
     derivative_vector = []
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
-        derivative_vector.append(f_x(i, step, h))
-        print(f"i is {i}, value of the deriv is {derivative_vector[-1]}")
+        derivative_vector.append(f_xx(i, step, h))
     return derivative_vector
 
-#def calc_third_derivative(vector_x, f, n_points = 3, step =1):
+def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
+    def five_points(i, step, h):
+        return (-1*f[i-2]+2*f[i-1]+0*f[i+0]-2*f[i+1]+1*f[i+2])/(2*1.0*(h*step)**3)
+    map_functions = {"5" : five_points}
+    f_xxx = map_functions[str(n_points)]
+    start = int(step*np.floor(n_points/2))
+    finish = int(len(f) - step*np.floor(n_points/2))
+    derivative_vector = []
+    for i in range(start, finish):
+        h = vector_x[i+1] - vector_x[i]
+        derivative_vector.append(f_xxx(i, step, h))
+    return derivative_vector
 
 
-def print_derivatives(names, list_propreties, index_energy, order = 1, n_points = 3, step = 1):
-    map_derivative = {"1" : calc_first_derivative, "2": calc_second_derivative}
+def print_derivatives(names, list_propreties, derivative_y_vector_index, order = 1, n_points = 3, step = 1):
+    map_derivative = {"1" : calc_first_derivative, "2": calc_second_derivative, "3" : calc_third_derivative}
     derivative = map_derivative[str(order)]
  
     #Printing energy derivatives
-
-    list_propreties = np.array((list_propreties))     
-    eng_arr = derivative(np.float128(list_propreties[:, 1]), np.float128(list_propreties[:, index_energy]), n_points=n_points, step=step)
+    if not isinstance(list_propreties, np.ndarray):
+        list_propreties = np.array((list_propreties))     
+    eng_arr = derivative(np.float128(list_propreties[:, 1]), np.float128(list_propreties[:, derivative_y_vector_index]), n_points=n_points, step=step)
 
     while (len(list_propreties[:,2]) - len(eng_arr)) % 2 == 0 and (len(list_propreties[:,2]) - len(eng_arr)) > 0:
         eng_arr = np.insert(eng_arr, 0, -1)
         eng_arr = np.append(eng_arr, -1)
-    names.append("Energy_derivative_order_" + str(order) + "_" + str(n_points))
+    names.append("Energy_derivative_order_" + str(order) + "_number_points_" + str(n_points) + "_from_" +str(names[derivative_y_vector_index]))
     list_propreties = np.vstack((list_propreties.T, eng_arr)).T
     return [names, list_propreties]
 
-
-A = get_list_of_propreties_for_fchk_in_a_folder("/Users/petrumilev/Documents/projects_python/project_girona_donostia/fes_fchk", "Z")
+#names, list_propreties, index_energy, order = 1, n_points = 3, step = 1
+A = get_list_of_propreties_for_fchk_in_a_folder("/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/fes_fchk", "Z")
 A = print_derivatives(A[0], A[1], 2, 1, n_points = 3, step = 1)
 A = print_derivatives(A[0], A[1], 2, 2, n_points = 3, step = 1)
+A = print_derivatives(A[0], A[1], 2, 3, n_points = 5, step = 1)
 
-np.savetxt("data_2.csv", A[1], delimiter=",", fmt='%s', header=",".join(str(v) for v in A[0]))
-np.savetxt("data_2.tab", A[1], delimiter="\t", fmt='%s', header=",".join(str(v) for v in A[0]))
+np.savetxt("data.csv", A[1], delimiter=",", fmt='%s', header=",".join(str(v) for v in A[0]))
+np.savetxt("data.tab", A[1], delimiter="\t", fmt='%s', header=",".join(str(v) for v in A[0]))

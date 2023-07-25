@@ -193,6 +193,85 @@ def generate_gaussian_field_calculation(matrix, file_name, keywords, nproc=False
                          charge_multiplicity=charge_multiplicity, geom=geom, basis_set=basis_set, wfx=wfx, Field=Field)
     return 
 
+#------------------------------------------------------------------------------
+
+def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = "cartesian", type_space = "linear"):
+    """
+    Function to vary the electric field in a certain direction.
+    c1, c2, c3 - coordinates of the point in the space, where the electric field is to be varied. 
+    format of the coordinates is (x, y, z) for catesian, (r, theta, phi) for spherical, (r, phi, h) for cylindrical
+    Physics convetion is used. Values are to be given in degrees
+    The use of (r, theta, phi) denotes radial distance, inclination (or elevation), and azimuth, respectively.
+    var_range - range of the variation.
+    type_coordinates - "cartesian", "spherical", "cylindrical". Default is cartesian.
+    type_space - "linear", "log", "step". Default is linear.
+
+    The function will convert the coordinates in the sphericall coordinates. 
+    Then it will vary the radial distance which represents the intensity of the electric field.
+    """
+    def convert_spherical_to_cartesian_coordinates(r, theta, phi):
+        """
+        Convert spherical coordinates to cartesian coordinates.
+        The use of (r, theta, phi) denotes radial distance, inclination (or elevation), and azimuth, respectively.
+        θ the angle measured away from the +Z axis 
+        As φ has a range of 360° 
+        θ has a range of 180°, running from 0° to 180°
+        """
+        x = r * np.sin(theta) * np.cos(phi)
+        y = r * np.sin(theta) * np.sin(phi)
+        z = r * np.cos(theta)
+        return x, y, z
+    
+    
+    def convert_cartesian_to_spherical_coordinates(x, y, z):
+        """
+        Convert cartesian coordinates to spherical coordinates.
+        The use of (x, y, z) denotes the cartesian coordinates.
+        """
+        r = np.sqrt(x**2 + y**2 + z**2)
+        theta = np.arccos(z / r)
+        if int(x) == 0:
+            phi = np.arctan(np.inf)
+        else: phi = np.arctan(y / x)
+        return r, theta, phi
+    
+    def convert_cylindrical_to_spherical_coordinates(r, phi, h):
+        """
+        Convert cylindrical coordinates to spherical coordinates.
+        The use of (r, phi, z) denotes radial distance, azimuth angle, and height, respectively.
+        """
+        ro = np.sqrt(r**2 + h**2)   
+        if int(h) == 0:
+            theta = np.arctan(np.inf)
+        else: theta = np.arctan(r / h)   
+        return ro, theta, phi
+
+    def return_x_y_z(x, y, z):                                               #Function to return the same coordinates
+        return x, y, z
+
+    if type_space == "linear":                                               #Creating the space for the variation
+        space = np.linspace(var_range[0], var_range[1], var_range[2])
+    elif type_space == "step":
+        space = np.arange(var_range[0], var_range[1] + var_range[2], var_range[2])
+    elif type_space == "log":
+        space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2])
+    else: space = np.linspace(var_range[0], var_range[1], var_range[2])
+
+    #Mapping the function to the corresponding conversion of coordinates
+    map_function = {"cartesian" : convert_cartesian_to_spherical_coordinates, "spherical" : return_x_y_z, "cylindrical" : convert_cylindrical_to_spherical_coordinates}
+    f = map_function[type_coordinates]
+    return_vector = []
+    if type_coordinates != "cartesian":
+        c2 = np.radians(c2)                               #Converting from degrees to radians
+        c3 = np.radians(c3)
+    r, theta, phi = f(c1, c2, c3)                         #Converting the coordinates to spherical
+    for i in space:                                       #Obtaining the new values for electric field
+        r = i                                             #Length of vector is changed
+        x, y, z = convert_spherical_to_cartesian_coordinates(r, theta, phi)        #Obtaining the new cartesian coordinates to be used in the Gaussian input file.
+        x, y, z = np.round((x, y, z), 10)                                          #Rounding the values to 10 decimal places
+        return_vector.append((x, y, z))                                            #Appending the new values to the list
+    return return_vector
+
 
 #-------------------------------------------------------------------------------------------------------------------------
 
@@ -300,23 +379,45 @@ def start():
     File_Info.wfx = wfx
     print(separator)
     Energy = input("\n12. Do you want/have to specify a electric field for this calculation? Y/N\n")
-    type_energy = int(input("\nHow do you want your energy to vary? \nPossible choices: \n\n1. Linearly (i.e., a given number of points equally spaced on the given interval), \n2. Step (i.e., an unknown number of points, separated by a specified step on a given interval), \n3. Logarithmicaly. (i.e., A specified number of points, separated logarithmically (base 10), on a given interval)\n\nIntroduce the corresponding integer: "))
-    if type_energy == 1:
-        type_energy = "linear"
-    elif type_energy == 2:
-        type_energy = "step"
-    elif type_energy == 3:
-        type_energy == "log"
-    else: type_energy = "linear"
-    print(separator)
-    if Energy.lower() == "y":
-        ndim = int(input("\nIntroduce number of dimension for the energy calculation. \n\nn = 1 corresponds to only X, Y, and Z. n = 2 corresponds to XX, YY, etc.\n\nIntroduce number of dimension: "))
-        print(separator)
-        dict_direct = ast.literal_eval("{" + input("\nIntroduce the directions for which you would like to perform the calculations.\nFormat for this is:\
-                        \n\n'XX':[start, finish, step/number of points], 'XZ' : [start, finish, number of points], etc\n\nRespecting the format above is crucial. The direction should correspond with number of dimensions. 'X' for dimension 1, 'XX' for dimension 2, etc. \
-                        \n\nIntroduce the points: ") + "}")
-        field_matrix = generate_input_energy_field_calculation(ndim, type_energy, **dict_direct)
-        generate_gaussian_field_calculation(field_matrix, File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx)
+    if Energy.lower()[0] == "y":
+        type_energy_variation = input("What type of energy calculation do you want to specify?\n1.Indicate a single value for the field. \n2.Indicate a direction in which you want to vary the field. \n3 Create a grid/mesh of values for the field. \n\nIntroduce the corresponding integer: ")
+        if type_energy_variation == "1":
+            #The case when only one value of electric field is to be used.
+            field = input("\nIntroduce the value of the electric field. \nExample: 0.0001, 0, 0\n\nValue of the electric field is: ")
+            File_Info.Field = field
+            create_gaussian_file(File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx, Field = File_Info.Field)
+        elif type_energy_variation == "2":
+            #The case when the electric field is to be varied in a certain direction.
+            print("Provide the following information separated by commas (,)\n")
+            print("c1, c2, c3, start, finish, step, type_coordinates, type_space")
+            print("c_i are coordinates in the desired type of coordinates.\nx, y, z for cartesian\nr, theta, phi for spherical\nr, phi, h for cylindrical\n start - starting range of the variation\nfinish - ending range of the variation\nstep - step of the variation\n type_coordinates - cartesian, spherical, cylindrical\n type_space - linear, log, step")
+            print("Values are to be given in degrees if it is the case")
+            print("Example: 0, 0, 180, -5, 5, 1, spherical, step")
+            info = input("Provide the following information separated by commas (,)\n")
+            info = info.split(",")
+            info = [x.strip() for x in info]
+            e_field_range = vary_e_field_in_certain_direction(float(info[0]), float(info[1]), float(info[2]), [float(info[3]), float(info[4]), float(info[5])], type_coordinates = info[6], type_space = info[7])
+            for i, field in enumerate(e_field_range):
+                combined_name = "_index_" + str(i) + "_X_" + str(field[0]) + "_Y_" + str(field[1]) + "_Z_" + str(field[2]) + ".inp"
+                create_gaussian_file(File_Info.file_name[:-4] + combined_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx, Field = field)
+        elif type_energy_variation == "3":
+            type_energy = int(input("\nHow do you want your energy to vary? \nPossible choices: \n\n1. Linearly (i.e., a given number of points equally spaced on the given interval), \n2. Step (i.e., an unknown number of points, separated by a specified step on a given interval), \n3. Logarithmicaly. (i.e., A specified number of points, separated logarithmically (base 10), on a given interval)\n\nIntroduce the corresponding integer: "))
+            if type_energy == 1:
+                type_energy = "linear"
+            elif type_energy == 2:
+                type_energy = "step"
+            elif type_energy == 3:
+                type_energy == "log"
+            else: type_energy = "linear"
+            print(separator)
+            ndim = int(input("\nIntroduce number of dimension for the energy calculation. \n\nn = 1 corresponds to only X, Y, and Z. n = 2 corresponds to XX, YY, etc.\n\nIntroduce number of dimension: "))
+            print(separator)
+            dict_direct = ast.literal_eval("{" + input("\nIntroduce the directions for which you would like to perform the calculations.\nFormat for this is:\
+                            \n\n'XX':[start, finish, step/number of points], 'XZ' : [start, finish, number of points], etc\n\nRespecting the format above is crucial. The direction should correspond with number of dimensions. 'X' for dimension 1, 'XX' for dimension 2, etc. \
+                            \n\nIntroduce the points: ") + "}")
+            field_matrix = generate_input_energy_field_calculation(ndim, type_energy, **dict_direct)
+            generate_gaussian_field_calculation(field_matrix, File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx)
+        else: print("There was a mistake while specifying the field. Please try again.")
     else: create_gaussian_file(File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx)
     return File_Info
 #--------------------------------------------------------------------------

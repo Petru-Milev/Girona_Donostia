@@ -1,0 +1,44 @@
+%nproc=2
+%mem=12Gb
+%chk=hf_M062X_Z+0.chk
+#P M062X
+Symmetry=none
+geom=nocrowd density=current IOp(9/75=2)
+GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1)
+SCF(XQC,Conver=11,MaxCycles=300) Integral(Acc2E=14)
+IOp(3/33=5)
+
+Performing M062X calculation to get the energy
+
+0 1
+H     0.000000000000      0.000000000000     -0.458400000000
+F     0.000000000000      0.000000000000      0.458400000000
+
+
+H F 0
+6-31+G(d)
+****
+
+
+%nproc=2
+%mem=12Gb
+%Oldchk=hf_M062X_Z+0.chk
+%chk=hf_M062X_Z-1.chk
+#P M062X
+Symmetry=none
+geom=check density=current ChkBasis guess=(read) IOp(9/75=2)
+GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1)
+SCF(Conver=11,MaxCycles=300) Integral(Acc2E=14)
+IOp(3/14=-6)
+
+Performing M062X calculation and saving the results
+F=Z-1.dF
+dF=0.001au
+
+0 1
+
+
+line_after_1
+line_after_2
+line_after_3
+line_after_4

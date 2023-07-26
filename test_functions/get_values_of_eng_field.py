@@ -119,6 +119,8 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
         return (-1*f[i - step]+1*f[i + step])/(2*1.0*(h*step)**1)
     def five_points(i, step, h):
         return (1*f[i-2*step]-8*f[i-1*step]+0*f[i+0]+8*f[i+1*step]-1*f[i+2*step])/(12*1.0*(h*step)**1)
+    def ten_points():
+        return 10
     i = 0
     map_functions = {"3" : three_points, "5" : five_points}
     f_x = map_functions[str(n_points)]

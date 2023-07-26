@@ -1,0 +1,7 @@
+26th of July
+#------------------------
+Created *read_input_for_electric_field_from_file_and_generate_files* function 
+*add_keywords(path_file, *kw) function was created
+Functions *create_mapping_from_n_dim_to_one_dim* and *map_number_to_direction* added to the pool of all functions
+Function *update_oldchk_for_files_in_a_folder* is created.
+#------------------------

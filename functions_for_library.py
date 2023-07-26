@@ -21,7 +21,7 @@ import os
 
 def create_gaussian_file(file_name, keywords, nproc=False, mem=False, title="Job Name", oldchk=False, oldchk_file=None, chk=False, chk_name=False,
                          charge_multiplicity=(0, 1), geom=False, basis_set=False, wfx=False, Field=False):
-
+    
     file_gaussian = open(file_name, "w")  # Opening the file
 
     if nproc:  # Adding the line of nprocessors if the number of processors is specified
@@ -422,40 +422,215 @@ def start():
     return File_Info
 #--------------------------------------------------------------------------
 
-def update_oldchk_for_files_in_a_folder(folder_path, file_extension, type_of_change, reference = False):
+def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", reference = False):
+    """
+    This function updates the %oldchk= line in the Gaussian input files in a folder.
+    :param folder_path: the path to the folder containing the Gaussian input files
+    :param file_extension: the extension of the Gaussian input files
+    :param reference: the name of the reference file
+    :return: None
 
+    If reference is False, the files are referenced to the file n-1 according to the value of the e field
+    """
 
-    def change_oldchk_file(file_path, new_oldchk_name):
-        old_chk_line = "%oldchk="
-        with open(file_path, "r") as file_gaussian:
+    def change_oldchk_file(file_path, new_oldchk_name):                # This function changes the %oldchk= line in a Gaussian input file
+        old_chk_line = "%oldchk="                                      # The function takes the path to the file and the name of the new chk file
+        with open(file_path, "r") as file_gaussian:                    
             lines = file_gaussian.readlines()
-        
-        found = False
-
         for i, line in enumerate(lines):
-            if old_chk_line in line:
+            if old_chk_line in line.lower():
                 lines[i] = "%oldchk=" + str(new_oldchk_name) + "\n"
                 with open(file_path, "w") as file_1:
                     file_1.writelines(lines)
                 break
 
-    file_list = os.listdir(folder_path)
+    file_list = os.listdir(folder_path)                    # This part of the function sorts the files in the folder by the number in the file name     
     file_list = [file_name for file_name in file_list if file_name.endswith(file_extension)]
-    file_list = sorted(file_list)
-    if type_of_change == "n_minus_one":
-        n_min_one = file_list[0]
-        for i, file_name in enumerate(file_list[1:]):
-            change_oldchk_file(os.path.join(folder_path, file_name), n_min_one)
-            n_min_one = file_list[i]
-    elif type_of_change == "reference":
-        reference_file = [file_name for file_name in file_list if reference in file_name]
-        for file_name in file_list:
-            if file_name == reference_file:
-                continue
-            else: change_oldchk_file(os.path.join(folder_path, file_name), reference_file[0])
+    file_list = [(np.float64(x.split("_")[-1][1:-4]), x) for x in file_list]  # The number is the last part of the file name, after the last underscore and before the file extension
+    file_list = sorted(file_list, key=lambda x: x[0])                   # The files are sorted by the number
+    zero_index = None                                                   # The index of the file with the number 0 is found
+    for i in file_list:
+        if np.round(i[0],0) == 0:
+            zero_index = file_list.index(i)                            # The index of the file with the number 0 is found
+            break
+    file_list = [x[1] for x in file_list]                               # The file names are extracted from the list of tuples
+    if reference is False:                                             # If no reference file is given, all the files are referenced to the file n-1
+        reference = file_list[zero_index]
+        for i in range(zero_index+1, len(file_list)):                   
+            change_oldchk_file(os.path.join(folder_path, file_list[i]), reference[:-4] + ".chk")
+            reference = file_list[i]
+        reference = file_list[zero_index]
+        for i in range(zero_index-1, -1, -1):
+            change_oldchk_file(os.path.join(folder_path, file_list[i]), reference[:-4] + ".chk")
+            reference= file_list[i]
+    return
 
 
 #-------------------------------------------------------------------------------------------------------------------------
+
+def create_mapping_from_n_dim_to_one_dim(matrix_for_mapping):                       
+        """
+        This functions returns a map of the index in the reshaped matrix as a key, and index in the original matrix as its value.
+        Original matrix can be n-dimensional matrix.
+        """
+        mapping = {}                                                                      #Dictionary to save the mapping. 
+
+        it = np.nditer(matrix_for_mapping, flags=["multi_index", "refs_ok"])              #Iteration over all values of matrix. 
+
+        i = 0                                                                             #Index in the reshaped matrix. 
+        while not it.finished:                                                            #Loop to iterate over all the matrix.
+            index = it.multi_index                                                        #Get the index in the original matrix. 
+            mapping[str(i)] = index                                                       #Creating a map of index in reshaped matrix as a key, and index in orginal matrix as its value. 
+            it.iternext()                                                                 #Going to next value in the original matrix. 
+            i += 1                                                                        #Going to next value in reshaped matrix. 
+        return mapping 
+
+
+def map_number_to_direction(j, map_1):
+    letter_mapping = {"0" : "X", "1" : "Y", "2" :"Z"}                                 #Mapping of index into letters
+    j = str(j)
+    new_str = ""
+    character_mapping = map_1                                                         #Having a map between the linear index and indexing in the original matrix. 
+    j = "".join([str(x) for x in character_mapping[j]])                               #Obtaining the index in original matrix as a tuple, and transforming it into a string without spaces.
+    for char in str(j):                                                               #A loop to transform the original indexing into letters.
+        if char in letter_mapping:                                         
+            new_str += letter_mapping[char]                                           #Using the map to get the letter for the char i in the name
+        else: new_str += char                                                         #To avoid errors, if the char is not in the map, to return the character
+    return new_str                                                                    #Returning the string
+
+
+def read_input_for_electric_field_from_file_and_generate_files(path_to_file, extension = ".com"):
+    """
+    Function to generate Gaussian input files for the calculation of the electric field from a template file.
+    Template will be specified in the manual.
+    This funciton can generate files for the case when the electric field is varied in one specific direction or 
+    it can generate a grid over a space. 
+    This function is using the four following function:
+    generate_input_energy_field_calculation(ndim, type_space, all_the_same = False, **kwargs)
+    vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = "cartesian", type_space = "linear")
+    create_mapping_from_n_dim_to_one_dim(matrix)
+    map_number_to_direction(i, map_directions)
+    """                                       
+
+    def change_chk_file(file_path, new_oldchk_name):
+        old_chk_line = "%chk="
+        with open(file_path, "r") as file_gaussian:
+            lines = file_gaussian.readlines()
+        for i, line in enumerate(lines):
+            if old_chk_line in line.lower():
+                lines[i] = "%oldchk=" + str(new_oldchk_name) + "\n"
+                print(lines[i])
+                with open(file_path, "w") as file_1:
+                    file_1.writelines(lines)
+                break
+
+    type_electric_field_calculation = 0
+    input = 0
+    is_recording_file = True                                           #Boolean to indicate if we are recording the file
+    is_recording_e_field = False                                       #Boolean to indicate if we are recording the electric field
+    count = 0                                                          #To get the value where we will be inserting electric field
+    lines = []                                                         #Saved lines of the file
+    with open(path_to_file, "r") as file:                              
+        for line in file:
+            if line.strip() == "***Start_e_field***":                  #Looking for the start of the desired section so that we can get the input data
+                is_recording_e_field = True                            #Boolean to let us read input data
+                is_recording_file = False                              #Stop recording file lines to be in the final file
+                line_to_introduce_e_field = count - 1
+            if is_recording_file:                                      #Recording the lines of the file
+                lines.append(line)
+            if is_recording_e_field:                                   #Recording the input data
+                if "#Corresponding" in line:                           #Read the type of calculation
+                    type_electric_field_calculation = int(line.strip().split(" ")[-1])
+                if "#Input" in line:                                   #Read input data
+                    input = [x for x in line.strip().split(" ")[1:]]
+            if line.strip() == "***Finish_e_field***":                 #Look for the finish of the block of reading the input data.
+                is_recording_e_field = False                           #Stop recording input data
+                is_recording_file = True                               #Continue recording the file
+            count += 1                                                 #Counting the lines of the file
+    print(type_electric_field_calculation)
+    if type_electric_field_calculation == 1:                           #If recording the variation of electric field in one direction
+        map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
+        #Generate the values of the electric field over the specified direction
+        e_fields = vary_e_field_in_certain_direction(float(input[0]), float(input[1]), float(input[2]), var_range = [float(input[3]), float(input[4]), int(input[5])], type_coordinates = input[6], type_space = input[7])
+        for field in e_fields:
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                continue
+            else: directions = [map_directions[str(i)] for i, x in enumerate(field) if x != 0]
+        for field in e_fields:                                         #Looping to creating the files
+            #Creating the name of the file. File name will have the following format:
+            #Input_kw example_test_X-1.41e+00_Y-1.41e+00
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                file_name  = path_to_file[:-4] + "_" + "_".join([str(x) + "+0" for x in directions]) + extension
+            else: file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_directions[str(i)], "+" + "{:.2e}".format(x) if x > 0 else "{:.2e}".format(x))) for i, x, in enumerate(field) if x!= 0]) + extension
+            with open (file_name, "w") as file:                        #Creating the file
+                count = 0                                              #Counting lines of the file
+                for line in lines:                                     #Writting line of the file
+                    file.write(line)
+                    if count == line_to_introduce_e_field:             #Add value of e_field in the specified line
+                        file.write(" ".join([str(x) for x in field]) + "\n")
+                    count += 1
+            change_chk_file(file_name, file_name.split("/")[-1][:-4] + ".chk")
+    elif type_electric_field_calculation == 2:                         #Case of generating a grid over the space of the electric field. But can also be generated grids in n dimensions
+        input[2] = True if input[2].lower() == "y" else False          #Having all the values the same
+        input[3] = ast.literal_eval(input[3])                          #Reading the directions
+        #Generating the matrix of how the electric field will vary. A position in the matrix corresponds to a direction.
+        matrix = generate_input_energy_field_calculation(int(input[0]), input[1], input[2], **input[3])     
+        #Creating a map of directions from n dimensions to one dimension
+        #The resulting dictionary has the form {'0': (0, 0), '1': (0, 1), '2': (0, 2), ...}
+        map_directions = create_mapping_from_n_dim_to_one_dim(matrix)
+        matrix = np.reshape(matrix, -1)
+        for i in range(len(matrix)):    #Make all non_list elements into a list. This is important for the product function.
+            if not isinstance(matrix[i], np.ndarray):
+                matrix[i] = [matrix[i]]
+        for field in product(*matrix):  #Looping over all the possible combinations of the electric field. product function is used to get all the combinations.
+            #File name will be of the following format: 
+            #Input_kw example_test_X+1.41e+00_Y+1.41e+00
+            file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_number_to_direction(i, map_directions), "+" + "{:.2e}".format(x) if x > 0 else "{:.2e}".format(x))) for i, x, in enumerate(field) if x!=0]) + extension
+            with open (file_name, "w") as file:                #Creating the files with the specified name and e field
+                count = 0
+                for line in lines:
+                    file.write(line)                           #Writting the lines of the file
+                    if count == line_to_introduce_e_field:     #Writting the e field in the specified line
+                        file.write(" ".join([str(x) for x in field]) + "\n")
+                    count += 1
+    return type_electric_field_calculation, input
+
+def add_keywords(path_file, *kw):
+    """Add keywords to a Gaussian input file.
+    
+    Parameters
+    ----------
+    path_file : str
+        Path to the Gaussian input file.
+    *kw : str
+        Keywords to be added to the Gaussian input file.
+
+    Function check if the keyword is in the file, if not, it will add it.
+    """
+    kw_found = {word: False for word in kw}                             #Generating a dictionary which will keep info about which kws we need to add
+    check_lines_for_kw = False                                          #Flag to check if we are in the part of the file where we need to check for kws
+    added_kw = []                                                       #List of kws which need to be added (bcz they are not in the file)
+    kw_have_not_been_added = True                                       #Flag to check if we have added the kws only once. It is to allow for multiple use of hashtag
+    with open(path_file, "r") as f:
+        lines = f.readlines()                                           #Read the file and save it as a list of lines
+    with open(path_file, "w") as f:
+        for line in lines:                                              #Loop over the lines of the file
+            if line.startswith("#") and kw_have_not_been_added:         #If the line starts with hashtag, we need to check for kws
+                check_lines_for_kw = True                              
+            if check_lines_for_kw:                                      #If we are in the part of the file where we need to check for kws
+                for word in kw:
+                    if word in line:
+                        kw_found[word] = True                           #If the kw is in the line, we change the value of the kw_found dictionary to True
+            if line.strip() == "" and kw_have_not_been_added:           #If we have reached the end of the kws part of the file, we generate a list of kw that need to be added
+                check_lines_for_kw = False
+                added_kw = [key for key, value in kw_found.items() if not value]
+            if added_kw and kw_have_not_been_added:                     #If we have kws to add, we add them to the file
+                f.write(line.strip())
+                f.write(" ".join(added_kw) + "\n\n")
+                kw_have_not_been_added = False
+            else: 
+                f.write(line)
+    return
 
 def extract_data_from_fchk_file_for_numerical_derivation(file_path):
     """

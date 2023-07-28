@@ -7,3 +7,6 @@ Function *update_oldchk_for_files_in_a_folder* is created.
 27th of July 
 Improved the calculation of derivatives function, and all function related to it
 Test of some function has been done. 
+#-----------------------
+28th of July
+A structure of the template file was done. Work on the reading of input from template file using keywords has been done.

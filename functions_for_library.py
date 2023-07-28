@@ -271,7 +271,14 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         r = i                                             #Length of vector is changed
         x, y, z = convert_spherical_to_cartesian_coordinates(r, theta, phi)        #Obtaining the new cartesian coordinates to be used in the Gaussian input file.
         x, y, z = np.round((x, y, z), 10)                                          #Rounding the values to 10 decimal places
+        if x == 0:
+            x = abs(x)
+        if y == 0:
+            y = abs(y)
+        if z == 0:
+            z = abs(z)
         return_vector.append((x, y, z))                                            #Appending the new values to the list
+
     return return_vector
 
 
@@ -424,7 +431,7 @@ def start():
     return File_Info
 #--------------------------------------------------------------------------
 
-def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", reference = False):
+def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", reference_from_input = False):
     """
     This function updates the %oldchk= line in the Gaussian input files in a folder.
     :param folder_path: the path to the folder containing the Gaussian input files
@@ -452,12 +459,13 @@ def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", re
     file_list = sorted(file_list, key=lambda x: x[0])                   # The files are sorted by the number
     zero_index = None                                                   # The index of the file with the number 0 is found
     for i in file_list:
-        if np.round(i[0],0) == 0:
+        if np.round(i[0],10) == 0:
             zero_index = file_list.index(i)                            # The index of the file with the number 0 is found
             break
     file_list = [x[1] for x in file_list]                               # The file names are extracted from the list of tuples
-    if reference is False:                                             # If no reference file is given, all the files are referenced to the file n-1
+    if reference_from_input is False:                                             # If no reference file is given, all the files are referenced to the file n-1
         reference = file_list[zero_index]
+        print(reference)
         for i in range(zero_index+1, len(file_list)):                   
             change_oldchk_file(os.path.join(folder_path, file_list[i]), reference[:-4] + ".chk")
             reference = file_list[i]
@@ -465,6 +473,11 @@ def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", re
         for i in range(zero_index-1, -1, -1):
             change_oldchk_file(os.path.join(folder_path, file_list[i]), reference[:-4] + ".chk")
             reference= file_list[i]
+    if reference_from_input:
+        for i in file_list:
+            if i == file_list[zero_index]:
+                continue
+            change_oldchk_file(os.path.join(folder_path, i), reference_from_input[:-4] + ".chk")
     return
 
 
@@ -520,8 +533,7 @@ def read_input_for_electric_field_from_file_and_generate_files(path_to_file, ext
             lines = file_gaussian.readlines()
         for i, line in enumerate(lines):
             if old_chk_line in line.lower():
-                lines[i] = "%oldchk=" + str(new_oldchk_name) + "\n"
-                print(lines[i])
+                lines[i] = "%chk=" + str(new_oldchk_name) + "\n"
                 with open(file_path, "w") as file_1:
                     file_1.writelines(lines)
                 break
@@ -549,7 +561,6 @@ def read_input_for_electric_field_from_file_and_generate_files(path_to_file, ext
                 is_recording_e_field = False                           #Stop recording input data
                 is_recording_file = True                               #Continue recording the file
             count += 1                                                 #Counting the lines of the file
-    print(type_electric_field_calculation)
     if type_electric_field_calculation == 1:                           #If recording the variation of electric field in one direction
         map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
         #Generate the values of the electric field over the specified direction
@@ -573,8 +584,8 @@ def read_input_for_electric_field_from_file_and_generate_files(path_to_file, ext
                     count += 1
             change_chk_file(file_name, file_name.split("/")[-1][:-4] + ".chk")
     elif type_electric_field_calculation == 2:                         #Case of generating a grid over the space of the electric field. But can also be generated grids in n dimensions
-        input[2] = True if input[2].lower() == "y" else False          #Having all the values the same
-        input[3] = ast.literal_eval(input[3])                          #Reading the directions
+        input[2] = True if input[2].lower() == "y" else False          #Having all the values the same                       #Reading the directions
+        input[3] = ast.literal_eval(input[3])
         #Generating the matrix of how the electric field will vary. A position in the matrix corresponds to a direction.
         matrix = generate_input_energy_field_calculation(int(input[0]), input[1], input[2], **input[3])     
         #Creating a map of directions from n dimensions to one dimension
@@ -754,8 +765,6 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
         return (-1*f[i - step]+1*f[i + step])/(2*1.0*(h*step)**1)
     def five_points(i, step, h):
         return (1*f[i-2*step]-8*f[i-1*step]+0*f[i+0]+8*f[i+1*step]-1*f[i+2*step])/(12*1.0*(h*step)**1)
-    def ten_points():
-        return 10
     i = 0
     map_functions = {"3" : three_points, "5" : five_points}
     f_x = map_functions[str(n_points)]

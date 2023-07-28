@@ -1,2 +1,2 @@
-
-import numpy as np
+    for line in lines:
+        print(line)

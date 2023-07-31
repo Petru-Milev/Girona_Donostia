@@ -29,7 +29,45 @@ def change_kw(path_to_file, keywords):
     return 
 
 def read_input_file(path_to_file, extension = ".com"):
-    
+
+    def generate_files_e_field_in_one_direction(path_to_file, c1, c2, c3, start, finish, step, type_coordinates, type_space, extension = ".com", lines = "" ,new_kw = False):
+        c1, c2, c3 = np.float128(c1), np.float128(c2), np.float128(c3)
+        start, finish = np.float128(start), np.float128(finish)
+        if type_space == "linear":
+            step = int(step)
+        elif type_space == "log":
+            step = int(step)
+        else: step = np.float128(step)
+        map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
+        #Generate the values of the electric field over the specified direction
+        e_fields = vary_e_field_in_certain_direction(c1, c2, c3, var_range = [start, finish, step], type_coordinates = type_coordinates, type_space = type_space)
+        for field in e_fields:
+            field = list(field)
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                continue
+            else: directions = [map_directions[str(i)] for i, x in enumerate(field) if x != 0]
+        for field in e_fields:                                         #Looping to creating the files
+            #Creating the name of the file. File name will have the following format:
+            #Input_kw example_test_X-1.41e+00_Y-1.41e+00
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                file_name  = path_to_file[:-4] + "_" + "_".join([str(x) + "+0" for x in directions]) + extension
+            else: file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_directions[str(i)], "+" + "{:.2e}".format(x) if x > 0 else "{:.2e}".format(x))) for i, x, in enumerate(field) if x!= 0]) + extension
+            with open (file_name, "w") as file:                        #Creating the file                           
+                for line in lines:                                     #Writting line of the file
+                    file.write(line)
+                if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                    insert_geom(file_name, path_to_geom)
+                    None
+                else: 
+                    file.write("\n\n" + " ".join([str(x) for x in field]) + "\n\n")
+            change_line_in_file(file_name, "%chk", "%chk=" + file_name.split("/")[-1][:-4] + ".chk")
+            if new_kw:
+                if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                    None
+                else: 
+                    change_kw(file_name, new_kw)
+            insert_geom(file_name, path_to_geom)
+        
     def check_double_lines(folder):
         #Check if there are two consecutive lines that are whitespace
         folder_list = os.listdir(folder)
@@ -48,8 +86,37 @@ def read_input_file(path_to_file, extension = ".com"):
                 if previous_line == "":
                     f.write("\n")
                 else: f.write("\n\n")
-                
-            
+    
+    def insert_geom(path_to_file, path_to_geom):
+        if path_to_geom == None:
+            return
+        
+        with open(path_to_file, "r") as file:
+            lines = file.readlines()
+        for line in lines:
+            if "geom=check" in line:
+                path_to_geom = "delete"
+                break
+
+        if path_to_geom == "delete":
+            with open(path_to_file, "r") as file:
+                lines = file.readlines()
+            with open(path_to_file, "w") as file:
+                for line in lines:
+                    if "@" in line.strip():
+                        continue
+                    file.write(line)
+            return
+        with open(path_to_file, "w") as file:
+            for line in lines:
+                if "@" in line.strip():
+                    with open(path_to_geom) as geom_file:
+                        geom = geom_file.readlines()
+                    file.write("".join(geom))
+                    continue
+                file.write(line)
+        return
+
 
 
     def read_block_in_file(path_to_file, kw_start):
@@ -99,6 +166,19 @@ def read_input_file(path_to_file, extension = ".com"):
         input_for_function.append(re.findall(r'\((.*?)\)', i) if re.findall(r'\((.*?)\)', i) else None)
 
     print("list of keywords: ", kw_without_input_for_function)
+
+    if "read_geom" in kw_without_input_for_function:
+        index = kw_without_input_for_function.index("read_geom")
+        inp = input_for_function[index]
+        
+        with open(path_to_file, "r") as file:
+            original_lines = file.readlines()
+            for line in original_lines:
+                if "@" in line.strip():
+                    path_to_geom = line.strip()[1:]
+                    break
+    else: path_to_geom = None
+    print("\n\n", "path to geom: ", path_to_geom)
 
     if "gen_e_field_direction" in kw_without_input_for_function:
         index = kw_without_input_for_function.index("gen_e_field_direction")
@@ -193,12 +273,14 @@ def read_input_file(path_to_file, extension = ".com"):
                     f.write(line)
                 f.write("\n".join(basis_set_name))
                 f.write("\n\n")
+        check_double_lines(path_to_folder)
 
     if "change_kw" in kw_without_input_for_function:
         index = kw_without_input_for_function.index("change_kw")
         inp = input_for_function[index]
         kw_to_change = inp[0].replace(",", " ").split()[0]
         list_of_new_kw = inp[0].replace(",", " ").split()[1:]
+
         for i in keywords:
             if "change_kw" in i:
                 str_to_remove_in_change_kw = i
@@ -220,6 +302,10 @@ def read_input_file(path_to_file, extension = ".com"):
                 for line in original_file_lines:
                     if str_to_remove_in_change_kw in line.strip():
                         line = line.replace(str_to_remove_in_change_kw, "")
+                        print("-----------")
+                        print("changed_line")
+                        print(line)
+                        print("------------")
                     if kw_to_change in line.strip():
                         line = line.replace(kw_to_change, i)
                     file.write(line)
@@ -232,40 +318,7 @@ def read_input_file(path_to_file, extension = ".com"):
 
 
 
-def generate_files_e_field_in_one_direction(path_to_file, c1, c2, c3, start, finish, step, type_coordinates, type_space, extension = ".com", lines = "" ,new_kw = False):
-    c1, c2, c3 = np.float128(c1), np.float128(c2), np.float128(c3)
-    start, finish = np.float128(start), np.float128(finish)
-    if type_space == "linear":
-        step = int(step)
-    elif type_space == "log":
-        step = int(step)
-    else: step = np.float128(step)
-    map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
-    #Generate the values of the electric field over the specified direction
-    e_fields = vary_e_field_in_certain_direction(c1, c2, c3, var_range = [start, finish, step], type_coordinates = type_coordinates, type_space = type_space)
-    for field in e_fields:
-        field = list(field)
-        if field[0] == 0 and field[1] == 0 and field[2] == 0:
-            continue
-        else: directions = [map_directions[str(i)] for i, x in enumerate(field) if x != 0]
-    for field in e_fields:                                         #Looping to creating the files
-        #Creating the name of the file. File name will have the following format:
-        #Input_kw example_test_X-1.41e+00_Y-1.41e+00
-        if field[0] == 0 and field[1] == 0 and field[2] == 0:
-            file_name  = path_to_file[:-4] + "_" + "_".join([str(x) + "+0" for x in directions]) + extension
-        else: file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_directions[str(i)], "+" + "{:.2e}".format(x) if x > 0 else "{:.2e}".format(x))) for i, x, in enumerate(field) if x!= 0]) + extension
-        with open (file_name, "w") as file:                        #Creating the file                           
-            for line in lines:                                     #Writting line of the file
-                file.write(line)
-            if field[0] == 0 and field[1] == 0 and field[2] == 0:
-                None
-            else: 
-                file.write("\n\n" + " ".join([str(x) for x in field]) + "\n\n")
-        change_line_in_file(file_name, "%chk", "%chk=" + file_name.split("/")[-1][:-4] + ".chk")
-        if new_kw:
-            if field[0] == 0 and field[1] == 0 and field[2] == 0:
-                None
-            else: change_kw(file_name, new_kw)
+
 
 
 

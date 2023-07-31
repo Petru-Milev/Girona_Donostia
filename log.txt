@@ -1,0 +1,2922 @@
+
+file name is Example_how_we_want_X-7.07e-05_Y-7.07e-05.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X-7.07e-05_Y-7.07e-05.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X-7.07e-05_Y-7.07e-05.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -7.07107e-05 -7.07107e-05 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -7.07107e-05 -7.07107e-05 0.0
+-----------------
+
+file name is Example_how_we_want_X+7.07e-05_Y+7.07e-05.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X+7.07e-05_Y+7.07e-05.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X+7.07e-05_Y+7.07e-05.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 7.07107e-05 7.07107e-05 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 7.07107e-05 7.07107e-05 0.0
+-----------------
+
+file name is Example_how_we_want_X+3.54e-04_Y+3.54e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X+3.54e-04_Y+3.54e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X+3.54e-04_Y+3.54e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.0003535534 0.0003535534 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0003535534 0.0003535534 0.0
+-----------------
+
+file name is Example_how_we_want_X+2.12e-04_Y+2.12e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X+2.12e-04_Y+2.12e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X+2.12e-04_Y+2.12e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.000212132 0.000212132 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.000212132 0.000212132 0.0
+-----------------
+
+file name is Example_how_we_want_X-2.83e-04_Y-2.83e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X-2.83e-04_Y-2.83e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X-2.83e-04_Y-2.83e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.0002828427 -0.0002828427 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0002828427 -0.0002828427 0.0
+-----------------
+
+file name is Example_how_we_want_X-3.54e-04_Y-3.54e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X-3.54e-04_Y-3.54e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X-3.54e-04_Y-3.54e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.0003535534 -0.0003535534 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0003535534 -0.0003535534 0.0
+-----------------
+
+file name is Example_how_we_want_X-2.12e-04_Y-2.12e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X-2.12e-04_Y-2.12e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X-2.12e-04_Y-2.12e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.000212132 -0.000212132 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.000212132 -0.000212132 0.0
+-----------------
+
+file name is Example_how_we_want_X+2.83e-04_Y+2.83e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X+2.83e-04_Y+2.83e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X+2.83e-04_Y+2.83e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.0002828427 0.0002828427 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0002828427 0.0002828427 0.0
+-----------------
+
+file name is Example_how_we_want_X+0_Y+0.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X+0_Y+0.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #P M062X
+
+previous_line: %chk=Example_how_we_want_X+0_Y+0.chk
+-----------------
+line: Symmetry=none 
+
+previous_line: #P M062X
+-----------------
+line: density=current ChkBasis guess=(read) IOp(9/75=2)
+
+previous_line: Symmetry=none
+-----------------
+line: GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1) cphf(grid=sg1)
+
+previous_line: density=current ChkBasis guess=(read) IOp(9/75=2)
+-----------------
+line: SCF(Conver=11,MaxCycles=300) Integral(grid=sg1,Acc2E=14)
+
+previous_line: GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1) cphf(grid=sg1)
+-----------------
+line: IOp(3/14=-6)
+
+previous_line: SCF(Conver=11,MaxCycles=300) Integral(grid=sg1,Acc2E=14)
+-----------------
+line: IOp(6/7=3) kw_1 kw_2
+
+previous_line: IOp(3/14=-6)
+-----------------
+line: 
+
+previous_line: IOp(6/7=3) kw_1 kw_2
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line:  C                 -0.14000596    0.81536301    0.00880387
+
+previous_line: 0 1
+-----------------
+line:  C                  1.26137761    0.81536740    0.00201588
+
+previous_line: C                 -0.14000596    0.81536301    0.00880387
+-----------------
+line:  C                  1.96205375    2.02881834   -0.00004249
+
+previous_line: C                  1.26137761    0.81536740    0.00201588
+-----------------
+line:  C                  1.26121959    3.24217972   -0.00035002
+
+previous_line: C                  1.96205375    2.02881834   -0.00004249
+-----------------
+line:  C                 -0.14016398    3.24201483    0.00643813
+
+previous_line: C                  1.26121959    3.24217972   -0.00035002
+-----------------
+line:  C                 -0.84152002    2.02865888    0.02365363
+
+previous_line: C                 -0.14016398    3.24201483    0.00643813
+-----------------
+line:  H                 -0.67473845   -0.11142050    0.00301619
+
+previous_line: C                 -0.84152002    2.02865888    0.02365363
+-----------------
+line:  H                  1.79634016   -0.11129286   -0.00196304
+
+previous_line: H                 -0.67473845   -0.11142050    0.00301619
+-----------------
+line:  H                  1.79606145    4.16890012   -0.00613580
+
+previous_line: H                  1.79634016   -0.11129286   -0.00196304
+-----------------
+line:  H                 -0.67501716    4.16871565   -0.00115651
+
+previous_line: H                  1.79606145    4.16890012   -0.00613580
+-----------------
+line:  N                  3.43205109    2.02891133   -0.00284166
+
+previous_line: H                 -0.67501716    4.16871565   -0.00115651
+-----------------
+line:  O                  4.05213158    2.84056982    0.69598910
+
+previous_line: N                  3.43205109    2.02891133   -0.00284166
+-----------------
+line:  O                  4.04956835    1.21733113   -0.70402906
+
+previous_line: O                  4.05213158    2.84056982    0.69598910
+-----------------
+line:  N                 -2.31123562    2.02853498   -0.00526085
+
+previous_line: O                  4.04956835    1.21733113   -0.70402906
+-----------------
+line:  H                 -2.62638353    2.22501743   -0.93374157
+
+previous_line: N                 -2.31123562    2.02853498   -0.00526085
+-----------------
+line:  H                 -2.65015018    1.13168768    0.27899578
+
+previous_line: H                 -2.62638353    2.22501743   -0.93374157
+-----------------
+line: 
+
+previous_line: H                 -2.65015018    1.13168768    0.27899578
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_X+1.41e-04_Y+1.41e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X+1.41e-04_Y+1.41e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X+1.41e-04_Y+1.41e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.0001414214 0.0001414214 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0001414214 0.0001414214 0.0
+-----------------
+
+file name is Example_how_we_want_X-1.41e-04_Y-1.41e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_X-1.41e-04_Y-1.41e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_X-1.41e-04_Y-1.41e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.0001414214 -0.0001414214 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0001414214 -0.0001414214 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-2.12e-04_Y-2.12e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-2.12e-04_Y-2.12e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-2.12e-04_Y-2.12e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: -0.000212132 -0.000212132 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.000212132 -0.000212132 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+2.83e-04_Y+2.83e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+2.83e-04_Y+2.83e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+2.83e-04_Y+2.83e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 0.0002828427 0.0002828427 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0002828427 0.0002828427 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-3.54e-04_Y-3.54e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-3.54e-04_Y-3.54e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-3.54e-04_Y-3.54e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: -0.0003535534 -0.0003535534 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0003535534 -0.0003535534 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+0_Y+0.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #P M062X/gen
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: Symmetry=none 
+
+previous_line: #P M062X/gen
+-----------------
+line: density=current ChkBasis guess=(read) IOp(9/75=2)
+
+previous_line: Symmetry=none
+-----------------
+line: GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1) cphf(grid=sg1)
+
+previous_line: density=current ChkBasis guess=(read) IOp(9/75=2)
+-----------------
+line: SCF(Conver=11,MaxCycles=300) Integral(grid=sg1,Acc2E=14)
+
+previous_line: GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1) cphf(grid=sg1)
+-----------------
+line: IOp(3/14=-6)
+
+previous_line: SCF(Conver=11,MaxCycles=300) Integral(grid=sg1,Acc2E=14)
+-----------------
+line: IOp(6/7=3) kw_1 kw_2
+
+previous_line: IOp(3/14=-6)
+-----------------
+line: 
+
+previous_line: IOp(6/7=3) kw_1 kw_2
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line:  C                 -0.14000596    0.81536301    0.00880387
+
+previous_line: 0 1
+-----------------
+line:  C                  1.26137761    0.81536740    0.00201588
+
+previous_line: C                 -0.14000596    0.81536301    0.00880387
+-----------------
+line:  C                  1.96205375    2.02881834   -0.00004249
+
+previous_line: C                  1.26137761    0.81536740    0.00201588
+-----------------
+line:  C                  1.26121959    3.24217972   -0.00035002
+
+previous_line: C                  1.96205375    2.02881834   -0.00004249
+-----------------
+line:  C                 -0.14016398    3.24201483    0.00643813
+
+previous_line: C                  1.26121959    3.24217972   -0.00035002
+-----------------
+line:  C                 -0.84152002    2.02865888    0.02365363
+
+previous_line: C                 -0.14016398    3.24201483    0.00643813
+-----------------
+line:  H                 -0.67473845   -0.11142050    0.00301619
+
+previous_line: C                 -0.84152002    2.02865888    0.02365363
+-----------------
+line:  H                  1.79634016   -0.11129286   -0.00196304
+
+previous_line: H                 -0.67473845   -0.11142050    0.00301619
+-----------------
+line:  H                  1.79606145    4.16890012   -0.00613580
+
+previous_line: H                  1.79634016   -0.11129286   -0.00196304
+-----------------
+line:  H                 -0.67501716    4.16871565   -0.00115651
+
+previous_line: H                  1.79606145    4.16890012   -0.00613580
+-----------------
+line:  N                  3.43205109    2.02891133   -0.00284166
+
+previous_line: H                 -0.67501716    4.16871565   -0.00115651
+-----------------
+line:  O                  4.05213158    2.84056982    0.69598910
+
+previous_line: N                  3.43205109    2.02891133   -0.00284166
+-----------------
+line:  O                  4.04956835    1.21733113   -0.70402906
+
+previous_line: O                  4.05213158    2.84056982    0.69598910
+-----------------
+line:  N                 -2.31123562    2.02853498   -0.00526085
+
+previous_line: O                  4.04956835    1.21733113   -0.70402906
+-----------------
+line:  H                 -2.62638353    2.22501743   -0.93374157
+
+previous_line: N                 -2.31123562    2.02853498   -0.00526085
+-----------------
+line:  H                 -2.65015018    1.13168768    0.27899578
+
+previous_line: H                 -2.62638353    2.22501743   -0.93374157
+-----------------
+line: 
+
+previous_line: H                 -2.65015018    1.13168768    0.27899578
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: Li C N 0
+
+previous_line: 
+-----------------
+line: STO-3G
+
+previous_line: Li C N 0
+-----------------
+line: ****
+
+previous_line: STO-3G
+-----------------
+line: 
+
+previous_line: ****
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+2.12e-04_Y+2.12e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+2.12e-04_Y+2.12e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+2.12e-04_Y+2.12e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 0.000212132 0.000212132 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.000212132 0.000212132 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-2.83e-04_Y-2.83e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-2.83e-04_Y-2.83e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-2.83e-04_Y-2.83e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: -0.0002828427 -0.0002828427 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0002828427 -0.0002828427 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+3.54e-04_Y+3.54e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+3.54e-04_Y+3.54e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+3.54e-04_Y+3.54e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 0.0003535534 0.0003535534 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0003535534 0.0003535534 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+7.07e-05_Y+7.07e-05.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+7.07e-05_Y+7.07e-05.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+7.07e-05_Y+7.07e-05.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 7.07107e-05 7.07107e-05 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 7.07107e-05 7.07107e-05 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-7.07e-05_Y-7.07e-05.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-7.07e-05_Y-7.07e-05.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-7.07e-05_Y-7.07e-05.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: -7.07107e-05 -7.07107e-05 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -7.07107e-05 -7.07107e-05 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-1.41e-04_Y-1.41e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-1.41e-04_Y-1.41e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-1.41e-04_Y-1.41e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: -0.0001414214 -0.0001414214 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0001414214 -0.0001414214 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+1.41e-04_Y+1.41e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+1.41e-04_Y+1.41e-04.chk
+
+previous_line: %oldchk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+1.41e-04_Y+1.41e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 0.0001414214 0.0001414214 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0001414214 0.0001414214 0.0
+-----------------
+line: 
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-2.12e-04_Y-2.12e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-2.12e-04_Y-2.12e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-2.12e-04_Y-2.12e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.000212132 -0.000212132 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.000212132 -0.000212132 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+2.83e-04_Y+2.83e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+2.83e-04_Y+2.83e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+2.83e-04_Y+2.83e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.0002828427 0.0002828427 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0002828427 0.0002828427 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-3.54e-04_Y-3.54e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-3.54e-04_Y-3.54e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-3.54e-04_Y-3.54e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.0003535534 -0.0003535534 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0003535534 -0.0003535534 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+0_Y+0.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #P M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+0_Y+0.chk
+-----------------
+line: Symmetry=none 
+
+previous_line: #P M062X
+-----------------
+line: density=current ChkBasis guess=(read) IOp(9/75=2)
+
+previous_line: Symmetry=none
+-----------------
+line: GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1) cphf(grid=sg1)
+
+previous_line: density=current ChkBasis guess=(read) IOp(9/75=2)
+-----------------
+line: SCF(Conver=11,MaxCycles=300) Integral(grid=sg1,Acc2E=14)
+
+previous_line: GFINPUT IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1) cphf(grid=sg1)
+-----------------
+line: IOp(3/14=-6)
+
+previous_line: SCF(Conver=11,MaxCycles=300) Integral(grid=sg1,Acc2E=14)
+-----------------
+line: IOp(6/7=3) kw_1 kw_2
+
+previous_line: IOp(3/14=-6)
+-----------------
+line: 
+
+previous_line: IOp(6/7=3) kw_1 kw_2
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line:  C                 -0.14000596    0.81536301    0.00880387
+
+previous_line: 0 1
+-----------------
+line:  C                  1.26137761    0.81536740    0.00201588
+
+previous_line: C                 -0.14000596    0.81536301    0.00880387
+-----------------
+line:  C                  1.96205375    2.02881834   -0.00004249
+
+previous_line: C                  1.26137761    0.81536740    0.00201588
+-----------------
+line:  C                  1.26121959    3.24217972   -0.00035002
+
+previous_line: C                  1.96205375    2.02881834   -0.00004249
+-----------------
+line:  C                 -0.14016398    3.24201483    0.00643813
+
+previous_line: C                  1.26121959    3.24217972   -0.00035002
+-----------------
+line:  C                 -0.84152002    2.02865888    0.02365363
+
+previous_line: C                 -0.14016398    3.24201483    0.00643813
+-----------------
+line:  H                 -0.67473845   -0.11142050    0.00301619
+
+previous_line: C                 -0.84152002    2.02865888    0.02365363
+-----------------
+line:  H                  1.79634016   -0.11129286   -0.00196304
+
+previous_line: H                 -0.67473845   -0.11142050    0.00301619
+-----------------
+line:  H                  1.79606145    4.16890012   -0.00613580
+
+previous_line: H                  1.79634016   -0.11129286   -0.00196304
+-----------------
+line:  H                 -0.67501716    4.16871565   -0.00115651
+
+previous_line: H                  1.79606145    4.16890012   -0.00613580
+-----------------
+line:  N                  3.43205109    2.02891133   -0.00284166
+
+previous_line: H                 -0.67501716    4.16871565   -0.00115651
+-----------------
+line:  O                  4.05213158    2.84056982    0.69598910
+
+previous_line: N                  3.43205109    2.02891133   -0.00284166
+-----------------
+line:  O                  4.04956835    1.21733113   -0.70402906
+
+previous_line: O                  4.05213158    2.84056982    0.69598910
+-----------------
+line:  N                 -2.31123562    2.02853498   -0.00526085
+
+previous_line: O                  4.04956835    1.21733113   -0.70402906
+-----------------
+line:  H                 -2.62638353    2.22501743   -0.93374157
+
+previous_line: N                 -2.31123562    2.02853498   -0.00526085
+-----------------
+line:  H                 -2.65015018    1.13168768    0.27899578
+
+previous_line: H                 -2.62638353    2.22501743   -0.93374157
+-----------------
+line: 
+
+previous_line: H                 -2.65015018    1.13168768    0.27899578
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+2.12e-04_Y+2.12e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+2.12e-04_Y+2.12e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+2.12e-04_Y+2.12e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.000212132 0.000212132 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.000212132 0.000212132 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-2.83e-04_Y-2.83e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-2.83e-04_Y-2.83e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-2.83e-04_Y-2.83e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.0002828427 -0.0002828427 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0002828427 -0.0002828427 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+3.54e-04_Y+3.54e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+3.54e-04_Y+3.54e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+3.54e-04_Y+3.54e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.0003535534 0.0003535534 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0003535534 0.0003535534 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+7.07e-05_Y+7.07e-05.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+7.07e-05_Y+7.07e-05.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+7.07e-05_Y+7.07e-05.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 7.07107e-05 7.07107e-05 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 7.07107e-05 7.07107e-05 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-7.07e-05_Y-7.07e-05.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-7.07e-05_Y-7.07e-05.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-7.07e-05_Y-7.07e-05.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -7.07107e-05 -7.07107e-05 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -7.07107e-05 -7.07107e-05 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X-1.41e-04_Y-1.41e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X-1.41e-04_Y-1.41e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X-1.41e-04_Y-1.41e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: -0.0001414214 -0.0001414214 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: -0.0001414214 -0.0001414214 0.0
+-----------------
+
+file name is Example_how_we_want_kw_changed_delete_X+1.41e-04_Y+1.41e-04.com
+line: %nproc=2
+
+previous_line: 
+-----------------
+line: %mem=12Gb
+
+previous_line: %nproc=2
+-----------------
+line: %Oldchk=hf_M062X_Z+0.chk
+
+previous_line: %mem=12Gb
+-----------------
+line: %chk=Example_how_we_want_kw_changed_delete_X+1.41e-04_Y+1.41e-04.chk
+
+previous_line: %Oldchk=hf_M062X_Z+0.chk
+-----------------
+line: #M062X
+
+previous_line: %chk=Example_how_we_want_kw_changed_delete_X+1.41e-04_Y+1.41e-04.chk
+-----------------
+line: new_kw1
+
+previous_line: #M062X
+-----------------
+line: new_kw2
+
+previous_line: new_kw1
+-----------------
+line: geom=check
+
+previous_line: new_kw2
+-----------------
+line: 
+
+previous_line: geom=check
+-----------------
+line: Performing M062X calculation and saving the results
+
+previous_line: 
+-----------------
+line: F=Z-1.dF
+
+previous_line: Performing M062X calculation and saving the results
+-----------------
+line: dF=0.001au
+
+previous_line: F=Z-1.dF
+-----------------
+line: 
+
+previous_line: dF=0.001au
+-----------------
+line: 0 1
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0 1
+-----------------
+line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: update_old_chk basis_set(origin, specify) change_kw(grid2, *list_of_new_kw) delete() read_geom()
+-----------------
+line: 
+
+previous_line: 
+-----------------
+line: 0.0001414214 0.0001414214 0.0
+
+previous_line: 
+-----------------
+line: 
+
+previous_line: 0.0001414214 0.0001414214 0.0
+-----------------

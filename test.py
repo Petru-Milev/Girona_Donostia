@@ -190,14 +190,14 @@ def read_input_file(path_to_file, extension = ".com"):
         new_kw = False
         if "new_kw" in keywords:
             new_kw = read_block_in_file(path_to_file, "kw_e_field_calc")
-        inp = inp[0].split(" ")
+        inp = inp[0].replace(",", " ").split()
         generate_files_e_field_in_one_direction(path_to_file, *inp, lines = original_file_lines, new_kw=new_kw)
         check_double_lines(path_to_folder)
     
     if "update_old_chk" in kw_without_input_for_function:
         index = kw_without_input_for_function.index("update_old_chk")
         inp = input_for_function[index]
-        if inp == None:
+        if inp[0] == "n-1":
             reference = False
             print("All files will be referencing file n-1")
         else: 
@@ -208,7 +208,8 @@ def read_input_file(path_to_file, extension = ".com"):
                         if ("X+0" in file) or ("Y+0" in file) or ("Z+0" in file):
                             reference = file
             else: reference = inp[0]
-        print("Selected file for reference is: " + reference)
+        if reference:
+            print("Selected file for reference is: " + reference)
 
         update_oldchk_for_files_in_a_folder(path_to_folder, file_extension=".com", reference_from_input=reference)
 

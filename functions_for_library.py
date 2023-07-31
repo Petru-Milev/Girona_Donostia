@@ -465,7 +465,13 @@ def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", re
     file_list = [x[1] for x in file_list]                               # The file names are extracted from the list of tuples
     if reference_from_input is False:                                             # If no reference file is given, all the files are referenced to the file n-1
         reference = file_list[zero_index]
-        print(reference)
+        with open(os.path.join(folder_path, reference), "r") as file:
+            check_lines = file.readlines()
+        with open(os.path.join(folder_path, reference), "w") as file:
+            for line in check_lines:
+                if line.strip().lower().endswith("%oldchk="):
+                    continue
+                else: file.write(line)
         for i in range(zero_index+1, len(file_list)):                   
             change_oldchk_file(os.path.join(folder_path, file_list[i]), reference[:-4] + ".chk")
             reference = file_list[i]

@@ -29,6 +29,40 @@ def change_kw(path_to_file, keywords):
     return 
 
 def read_input_file(path_to_file, extension = ".com"):
+    from itertools import product
+
+    def split_text_for_inp(text):
+        result = ""
+        parens_open = 0
+        for char in text:
+            if char =='(':
+                parens_open += 1
+            elif char == ')':
+                parens_open -= 1
+            if char == ',' and parens_open == 0:
+                char = ""
+            if char == ' ' and parens_open == 0:
+                print(char)
+                char = ";"
+            result += char
+        return result.split(";")
+    def get_inp_text(text):
+        result = ""
+        parens_open = 0
+        to_return = []
+        for char in text:
+            if char == ")":
+                parens_open -= 1
+            if parens_open > 0:
+                result += char
+            if char =='(':
+                parens_open += 1
+            if result != "" and parens_open == 0:
+                to_return.append(result)
+                result = ""
+        if len(to_return) == 0:
+            return None
+        else: return to_return
 
     def generate_files_e_field_in_one_direction(path_to_file, c1, c2, c3, start, finish, step, type_coordinates, type_space, extension = ".com", lines = "" ,new_kw = False):
         c1, c2, c3 = np.float128(c1), np.float128(c2), np.float128(c3)
@@ -66,6 +100,12 @@ def read_input_file(path_to_file, extension = ".com"):
                     None
                 else: 
                     change_kw(file_name, new_kw)
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                None
+            else:
+                if "automatically_update_kw" in kw_without_input_for_function:
+                    add_keywords(file_name, *["IOp(3/14=-6)"])
+
             insert_geom(file_name, path_to_geom)
         
     def check_double_lines(folder):
@@ -135,10 +175,12 @@ def read_input_file(path_to_file, extension = ".com"):
                         break
                     else: lines.append(line.strip())
         return lines
-
-    primary_functions = {"gen_e_field_direction": 1, "update_old_chk":3, "basis_set" : 2, "change_kw": 3, "delete": 4}
+    
     path_to_folder = "/".join(path_to_file.split("/")[:-1])
     original_file_name = path_to_file.split("/")[-1]
+    log_file = path_to_file[:-4] + "_WARNINGS_log.txt"
+    with open(log_file, "w") as file:
+        file.write("All the critical errors will be updated here: " + path_to_file + "\n\n")
     with open(path_to_file, "r") as file:
         kw_lines = []
         for i, line in enumerate(file):
@@ -148,8 +190,10 @@ def read_input_file(path_to_file, extension = ".com"):
             else: kw_lines.append(line.strip())
     keywords = []
     for line in kw_lines:
-        keywords.extend(re.split(r'\s(?![^(]*\))',line.strip()))
+        keywords.extend(split_text_for_inp(line))
+        #keywords.extend(re.split(r'\s(?![^(]*\))',line.strip()))
     keywords = keywords[1:]
+    print(keywords)
     with open(path_to_file, "r") as file:
         original_file_lines = []
         record_file = False
@@ -163,7 +207,7 @@ def read_input_file(path_to_file, extension = ".com"):
     input_for_function = []
     for i in keywords:
         kw_without_input_for_function.append(i.split("(")[0])
-        input_for_function.append(re.findall(r'\((.*?)\)', i) if re.findall(r'\((.*?)\)', i) else None)
+        input_for_function.append(get_inp_text(i))
 
     print("list of keywords: ", kw_without_input_for_function)
 
@@ -241,6 +285,10 @@ def read_input_file(path_to_file, extension = ".com"):
                                         f.write(line)
                                     else: f.write(line.strip() + "/gen\n")
                                     continue
+                                if "ChkBasis" in line.strip():
+                                    with open(log_file, "a") as log:
+                                        log.write("!!!WARNING!!!\n")
+                                        log.write("ChkBasis already in file: " + file + "\n")
                                 f.write(line)
                             f.write("\n".join(basis_set_name))
                             f.write("\n\n")
@@ -258,6 +306,12 @@ def read_input_file(path_to_file, extension = ".com"):
                                     f.write(line)
                                 else: f.write(line.strip() + "/gen\n")
                                 continue
+                            if "ChkBasis" in line.strip():
+                                with open(log_file, "a") as log:
+                                    log.write("!!!WARNING!!!\n")
+                                    log.write("ChkBasis already in file: " + file + "\n")
+                                    log.writable("File_name: " + file + "\n")
+                                    log.write("Basis set was added")
                             f.write(line)
                         f.write("\n".join(basis_set_name))
                         f.write("\n\n")
@@ -303,10 +357,6 @@ def read_input_file(path_to_file, extension = ".com"):
                 for line in original_file_lines:
                     if str_to_remove_in_change_kw in line.strip():
                         line = line.replace(str_to_remove_in_change_kw, "")
-                        print("-----------")
-                        print("changed_line")
-                        print(line)
-                        print("------------")
                     if kw_to_change in line.strip():
                         line = line.replace(kw_to_change, i)
                     file.write(line)
@@ -314,17 +364,99 @@ def read_input_file(path_to_file, extension = ".com"):
             print("Now working in folder: ", os.path.join(path_to_folder_minus_one, new_folder_name))
             read_input_file(new_input_file_name_folder_i)
             print("\n\n")
+    if "zip" in kw_without_input_for_function:
+        index = kw_without_input_for_function.index("zip")
+        inp = input_for_function[index]
+        print('inp')
+        print(inp)
+        if inp == None:
+            print("No input for function zip")
+            print("Please specify the input for the function zip")
+            print("Syntax: zip((kw1, change1, change2, ...), (kw2, change1, change2, ...), ...)")
+        inp = get_inp_text(inp[0])
+        original_kw = [x.replace(",", " ").split()[0] for x in inp]
+        all_kw = [x.replace(",", " ").split() for x in inp]
+        print(all_kw)
+        for i in keywords:
+            if "zip" in i:
+                str_to_remove_in_zip = i
+                print("this will be removed")
+                print(str_to_remove_in_zip)
+        path_to_folder_minus_one = "/".join(path_to_folder.split("/")[:-1])
+        folder_name = path_to_folder.split("/")[-1]
+        print(path_to_folder_minus_one)
+        for i in product(*all_kw):
+            print("all the product")
+            print(i)
+        for new_comb in product(*all_kw):
+            print('---------------')
+            print(new_comb)
+            print("---------------")
+            with open(path_to_file, "r") as file:
+                original_file_lines = file.readlines()
+            new_folder_name = folder_name + "_kw_changed_" + "_".join(new_comb)
+            print(new_folder_name)
+            name = ""
+            not_allowed = "()/"
+            for char in new_folder_name:
+                if char in not_allowed:
+                    continue
+                else: name += char
+            new_folder_name = name
+            print(new_folder_name)
+            try:
+                os.mkdir(os.path.join(path_to_folder_minus_one, new_folder_name))
+                print("here")
+            except: 
+                FileExistsError
+                print("there")
+            name_from_kw = "_".join(new_comb)
+            name_from_kw = "".join([char for char in name_from_kw if char not in "()/"])
+            new_input_file_name_folder_i = os.path.join(path_to_folder_minus_one, new_folder_name, original_file_name[:-4] + "_kw_changed_" + name_from_kw + original_file_name[-4:])
+
+            with open(new_input_file_name_folder_i, "w") as file:
+                for line in original_file_lines:
+                    if str_to_remove_in_zip in line.strip():
+                        ind_str = line.find(str_to_remove_in_zip)
+                        line = line[:ind_str] + line[ind_str + len(str_to_remove_in_zip):]
+                        if line.endswith(" "):
+                            line = line[:-1]
+                        if line.startswith(" "):
+                            line = line[1:]
+                        if line.strip() == "":
+                            continue  
+                    for i, x in enumerate(original_kw):
+                        if x in line.strip():
+                            print(f"i: {i}, x: {x}")
+                            print(new_comb[i])
+                            print(line)
+                            if new_comb[i] == "delete":
+                                print(new_comb[i])
+                                print("Deleting: ", x, "from line: ", line)
+                                if x in line.strip():
+                                    print("X: ", x, "is in line: ", line)
+                                ind_str = line.find(x)
+                                line = line[:ind_str] + line[ind_str + len(x):]
+                                if line.endswith(" "):
+                                    line = line[:-1]
+                                if line.startswith(" "):
+                                    line = line[1:]
+                                if line.strip() == "":
+                                    continue  
+                            else: line = line.replace(x, new_comb[i])
+                    file.write(line)
+            
+            check_double_lines(os.path.join(path_to_folder_minus_one, new_folder_name))
+            print("Now working in folder: ", os.path.join(path_to_folder_minus_one, new_folder_name))
+            read_input_file(new_input_file_name_folder_i)
+            print("\n\n")
+
+
+        
+        
+        return
+
     return
-                        
-
-
-
-
-
-
-
+                    
 path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/Test_Input/Example_how_we_want.txt"
-
-
-
 read_input_file(path)

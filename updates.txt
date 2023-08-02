@@ -10,3 +10,7 @@ Test of some function has been done.
 #-----------------------
 28th of July
 A structure of the template file was done. Work on the reading of input from template file using keywords has been done.
+#-----------------------
+31th of July 
+A different keywords were added update_old_chk, basis_set, change_kw, read_geom 
+Work on the Manual Started. 

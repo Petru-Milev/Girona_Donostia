@@ -1,1 +1,1 @@
-or line in original_file_lines:
+"_X+0." + file_extension

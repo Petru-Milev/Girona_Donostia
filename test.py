@@ -4,11 +4,9 @@ import re
 from functions_for_library import *
 
 def change_kw(path_to_file, keywords):
-
     """
     This function will change the keywords in a given file to the ones specified
     """
-
     with open(path_to_file, "r") as file:
         lines = file.readlines()                            #Reading the lines of the file
     with open(path_to_file, "w") as file:

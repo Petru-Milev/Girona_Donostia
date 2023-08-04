@@ -61,8 +61,14 @@ class Fchk_File():
                 new_list[1].append(self.dipole_moment[map_directions_1[i.lower()]])
                 count += 1
         else: 
+            count = 0
+            position = new_list[0].index("Dipole_Moment")
             del new_list[0][position]
-            print("Dipole_Moment is not present in the file")
+            for i in main_directions:                   #Printing it for all the specified main directions
+                new_list[0].insert(position + count, "Dipole_Moment_" + i.lower())
+                new_list[1].append(np.NaN)
+                count += 1
+            print("Dipole_Moment is not present in the file" + self.name)
 
         if self.polarizability:
             count = 0
@@ -79,8 +85,14 @@ class Fchk_File():
                         new_list[1].append(self.polarizability[map_polarizability[i.lower()]])
                         count += 1
         else: 
+            count = 0
+            position = new_list[0].index("Polarizability")
             del new_list[0][position]
-            print("Polarizability is not present in the file")
+            for i in main_directions:                  #Printing it for all the specified main directions       
+                new_list[0].insert(position + count, "Polarizability_" + 2*i.lower())
+                new_list[1].append(np.NaN)
+                count += 1
+            print("Polarizability is not present in the file" + self.name)
         
         if self.hyperpolarizability:
             count = 0
@@ -98,6 +110,12 @@ class Fchk_File():
                         count += 1
 
         else: 
+            count = 0
+            position = new_list[0].index("Hyperpolarizability")
             del new_list[0][position]
-            print("Hyperpolarizability is not present in the file")
+            for i in main_directions:
+                new_list[0].insert(position + count, "Hyperpolarizability_" + 3*i.lower())
+                new_list[1].append(np.NaN)
+                count += 1
+            print("Hyperpolarizability is not present in the file" + self.name)
         return new_list

@@ -1315,7 +1315,7 @@ def get_list_of_propreties_for_fchk_in_a_folder(folder_path, directions, sort_va
     
     names = list_with_data_from_files[0].list_propreties(directions)[0]                                                                          #Getting names for the atributes of the attribute of the object
     list_with_data_from_files = [obj.list_propreties(directions)[1] for obj in list_with_data_from_files]                                        #Getting the list of propreties 
-    
+    np.savetxt("data_from_fchk_in_folder_" + str(list_with_data_from_files[0][0].split("_")[0]) + ".csv", list_with_data_from_files, fmt="%s", delimiter=",", header=",".join([name for name in names]))
     return [names, list_with_data_from_files]
 
 def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
@@ -1434,4 +1434,3 @@ def change_line_in_file(file_path, pattern, new_line):
                 with open(file_path, "w") as file_1:
                     file_1.writelines(lines)
                 break
-

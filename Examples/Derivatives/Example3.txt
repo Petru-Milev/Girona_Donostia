@@ -1,0 +1,12 @@
+keywords: var(x=(1,16,1)=int, y=(5,10,1)=int)
+extract_from_folder(directions=(Z))
+
+read_data(delimiter=",", header)
+
+
+@/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/m062x_c_ultrafine
+
+Derivative(Order=1,up=5,down=3,points=3,step=x)
+Derivative(Order=1,up=5,down=3,points=5,step=y)
+
+path_to_save=/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/test_variables.csv

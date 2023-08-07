@@ -6,3 +6,8 @@ parallel*
 *.csv
 *.inp
 *.txt
+diff_data/
+jupyter_notebook/
+test_functions/
+!Examples/Derivatives/*.txt
+!Examples/Derivatives/*.csv 

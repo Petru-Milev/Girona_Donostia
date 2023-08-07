@@ -11,45 +11,6 @@ def read_input_file(path_to_file, extension = ".com"):
    
     from itertools import product
 
-    def split_text_for_inp(text):
-        """
-        This function will separate words in the line which has multiple brackets
-        This: 'update_old_chk(n-1) basis_set(origin) read_geom() new_kw'
-        Will be separate into this: ['update_old_chk(n-1)', 'basis_set(origin)', 'read_geom()', 'new_kw']
-        """
-        result = ""
-        parens_open = 0
-        for char in text:
-            if char =='(':
-                parens_open += 1
-            elif char == ')':
-                parens_open -= 1
-            if char == ',' and parens_open == 0:
-                char = ""
-            if char == ' ' and parens_open == 0:
-                print(char)
-                char = ";"
-            result += char
-        return result.split(";")
-    
-    def get_inp_text(text):
-        result = ""
-        parens_open = 0
-        to_return = []
-        for char in text:
-            if char == ")":
-                parens_open -= 1
-            if parens_open > 0:
-                result += char
-            if char =='(':
-                parens_open += 1
-            if result != "" and parens_open == 0:
-                to_return.append(result)
-                result = ""
-        if len(to_return) == 0:
-            return None
-        else: return to_return
-
     def generate_files_e_field_in_one_direction(path_to_file, c1, c2, c3, start, finish, step, type_coordinates, type_space, extension = ".com", lines = "" ,new_kw = False):
         """
         This function will generate files with different electric field all being aligned in one specified direction
@@ -441,6 +402,54 @@ def read_input_file(path_to_file, extension = ".com"):
             read_input_file(new_input_file_name_folder_i)       #Using this function to generate the files in the new folder
             print("\n\n")
 
+    if "automatically_update_kw" in kw_without_input_for_function:
+        for file in os.listdir(path_to_folder):
+            """
+            This small section will add NoXCTest kw for the case where it is needed. 
+            If we don't have the keyword CPHF(grid=)
+            for the cases where the grid is grid=(fine,sg1grid)
+            we have to add the string (NoXCTest)
+
+            So, the keyword
+            Integral(Grid=sg1grid,Acc2E=14)
+            should look like
+            Integral(Grid=sg1grid,NoXCTest,Acc2E=14)
+
+            and the same for grid=fine
+            """
+            if file.endswith(extension):
+                check_lines_for_kw = False        
+                with open(os.path.join(path_to_folder, file), "r") as f:
+                    lines = f.readlines()
+                    introduce_NoXCTest_kw = True                                    #It will be false if we have CPHF keyword
+                    grid_kw_present = False                                         #It will be true if we find grid=fine or grid=sg1grid
+                    for line in lines:                                              #Loop over the lines of the file
+                        if line.startswith("#"):                                    
+                            check_lines_for_kw = True                              
+                        if check_lines_for_kw:                                      #If we are in the part of the file where we need to check for kws                         
+                            if ("grid=fine" in line.strip().lower()) or ("grid=sg1grid" in line.strip().lower()):
+                                grid_kw_present = True
+                            if ("cphf") in line.strip().lower():
+                                introduce_NoXCTest_kw = False
+                        if line.strip() == "":           #If we have reached the end of the kws part of the file, we generate a list of kw that need to be added
+                            check_lines_for_kw = False
+                    check_lines_for_kw = False
+                    if grid_kw_present and introduce_NoXCTest_kw:
+                        """
+                        If the CPHF keyword was missing, and if we have grid=fine or grid=sg1grid in the keywords
+                        In this section we add NoXCTest to the list of keywords
+                        """
+                        with open(os.path.join(path_to_folder, file), "w") as f:
+                            for line in lines:
+                                if "integral" in line.strip().lower():
+                                    words = split_text_for_inp(line.strip())            #Getting list of keywords in this line 
+                                    for i, word in enumerate(words):                    #Looping over the keywords
+                                        if "integral" in word.lower():                  #Finding the keyword Integral
+                                            words[i] = word[:-1] + ",NoXCTest)"         #Adding NoXCTest to the end of options of integral kw
+                                            with open(log_file, "a") as log:            #Adding info to the log file
+                                                log.write("Added NoXCTest kw to file: " + file + "\n")
+                                    line = " ".join(words) + "\n"                       #Making the line from the list of keywords
+                                f.write(line)                                           #Writting the line to the file
     
     if "zip" in kw_without_input_for_function:
         """
@@ -522,7 +531,6 @@ def read_input_file(path_to_file, extension = ".com"):
         
         
         return
-
     return
 
 def change_kw(path_to_file, keywords):
@@ -553,26 +561,66 @@ def change_kw(path_to_file, keywords):
                 file.write(line)
     return
 
+def split_text_for_inp(text):
+    """
+    This function will separate words in the line which has multiple brackets
+    This: 'update_old_chk(n-1) basis_set(origin) read_geom() new_kw'
+    Will be separate into this: ['update_old_chk(n-1)', 'basis_set(origin)', 'read_geom()', 'new_kw']
+    Nested brackets can be used inside the primary brackets 
+    """
+    result = ""
+    parens_open = 0
+    for char in text:
+        if char =='(':
+            parens_open += 1
+        elif char == ')':
+            parens_open -= 1
+        if char == ',' and parens_open == 0:
+            char = ""
+        if char == ' ' and parens_open == 0:
+            char = ";"
+        result += char
+    return result.split(";")
+
+def get_inp_text(text):
+    """
+    This will get text inside the brackets of the line. Only the first brackets are used
+    """
+    result = ""
+    parens_open = 0
+    to_return = []
+    for char in text:
+        if char == ")":
+            parens_open -= 1
+        if parens_open > 0:
+            result += char
+        if char =='(':
+            parens_open += 1
+        if result != "" and parens_open == 0:
+            to_return.append(result)
+            result = ""
+    if len(to_return) == 0:
+        return None
+    else: return to_return
+
 #--------------------------------------------------------------------------------------------------------------------------
-
-# Creating an input file for gaussian calculation
-# nproc - to specify the number of processos to be used in calculation, mem - to specify the memory to be used in calculation
-# file_name = name by which the file will be saved
-# geom - Geometry to be used in calculation
-# keywords - keywords to be specified to gaussian. A string or a list of word is accepted
-# title - title to be used in file
-# oldchk = False, an old checkpoint name needs to be indicated, oldchk_file = Name of the old checkpoint file
-# chk = False, put True if a chk with the same name as filename needs to be saved, chk_name = Name of the checkpoint file to be used instead
-# charge_multiplicity = (0, 1) by default, if specified, another charge and multiplicity will be used
-# basis set = False, if smth else, need to be indicated another basis set in form ["Atom1, Atom2, ...", "Basis Set Used"]. Both values are single strings
-# wfx = False, A wfx file name needs to be specified
-# Field = False, if smth else, the directions of field need to be specified
-#
-
 
 def create_gaussian_file(file_name, keywords, nproc=False, mem=False, title="Job Name", oldchk=False, oldchk_file=None, chk=False, chk_name=False,
                          charge_multiplicity=(0, 1), geom=False, basis_set=False, wfx=False, Field=False):
-    
+    """
+    Creating an input file for gaussian calculation
+    nproc - to specify the number of processos to be used in calculation, mem - to specify the memory to be used in calculation
+    file_name = name by which the file will be saved
+    geom - Geometry to be used in calculation
+    keywords - keywords to be specified to gaussian. A string or a list of word is accepted
+    title - title to be used in file
+    oldchk = False, an old checkpoint name needs to be indicated, oldchk_file = Name of the old checkpoint file
+    chk = False, put True if a chk with the same name as filename needs to be saved, chk_name = Name of the checkpoint file to be used instead
+    charge_multiplicity = (0, 1) by default, if specified, another charge and multiplicity will be used
+    basis set = False, if smth else, need to be indicated another basis set in form ["Atom1, Atom2, ...", "Basis Set Used"]. Both values are single strings
+    wfx = False, A wfx file name needs to be specified
+    Field = False, if smth else, the directions of field need to be specified
+    """
     file_gaussian = open(file_name, "w")  # Opening the file
 
     if nproc:  # Adding the line of nprocessors if the number of processors is specified
@@ -645,15 +693,18 @@ def create_gaussian_file(file_name, keywords, nproc=False, mem=False, title="Job
     file_gaussian.close()  # Closing the file
 #------------------------------------------------------------------------------------------------------
 
-#Creating a matrix with values of how each element in the electric field changes
-#ndim - dimension of matrix 
-#type_space - "linear", "log" or "step". Linear - n values on the range of start to finish 
-#log - logarithmicaly n spaced values on the range start to finish 
-#step - values placed with a specified step from start to finish, finish is not included. 
-#all the same = False, change to a [start, finish, step] for the case when for all the directions the change is the same 
-#**kwargs submit the directions and how the field will be changing in the form of {"Direction" : [start, finish, step], "Direction2": [start, finish, step]}
-
 def generate_input_energy_field_calculation(ndim, type_space, all_the_same = False, **kwargs):
+    
+    """
+    Creating a matrix with values of how each element in the electric field changes
+    ndim - dimension of matrix 
+    type_space - "linear", "log" or "step". Linear - n values on the range of start to finish 
+    log - logarithmicaly n spaced values on the range start to finish 
+    step - values placed with a specified step from start to finish, finish is not included. 
+    all the same = False, change to a [start, finish, step] for the case when for all the directions the change is the same 
+    **kwargs submit the directions and how the field will be changing in the form of {"Direction" : [start, finish, step], "Direction2": [start, finish, step]}
+    """
+    
     ndim_l = [3 for i in range(ndim)]                                                        #Getting the dimensions of the matrix
     matrix = np.zeros(ndim_l, dtype=object)                                                  #Creating a matrix. Having dtype = object is crucial here
     character_mapping = {"X" : "0", "x" : "0", "Y": "1", "y": "1", "Z" : "2", "z": "2"}      #Creating a map of letters into numbers(indexes)
@@ -686,7 +737,6 @@ def generate_input_energy_field_calculation(ndim, type_space, all_the_same = Fal
             new_array = np.arange(value[0], value[1] + 10**(-10), value[2])
         matrix[tuple(new_key)] = new_array                                                   #Assigning the new values 
     return matrix
-
 
 #------------------------------------------------------------------------------
 
@@ -829,7 +879,6 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         return_vector.append((x, y, z))                                            #Appending the new values to the list
 
     return return_vector
-
 
 #-------------------------------------------------------------------------------------------------------------------------
 
@@ -1046,7 +1095,6 @@ def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", re
                 continue
             change_oldchk_file(os.path.join(folder_path, i), reference_from_input[:-4] + ".chk")
     return
-
 
 #-------------------------------------------------------------------------------------------------------------------------
 

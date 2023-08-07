@@ -22,29 +22,43 @@ import matplotlib.ticker as ticker
 
 #path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/fes_fchk_ultrafine"
 #A = get_list_of_propreties_for_fchk_in_a_folder(path, ["Z"])
-#np.savetxt("data_from_folder_ultrafine.csv", A[1], fmt="%s", delimiter=",", header=",".join([name for name in A[0]]))
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/m062x_c_ultrafine_from_dipole_moment.csv"
+with open(path, "r") as file:
+    lines = file.readlines()
+names = lines[0].strip().split(",")
+matrix = np.loadtxt(path, delimiter=",", skiprows=1, dtype = str)
 
-#fig, ax = plt.subplots(figsize=(40, 24))
+fig, axes = plt.subplots(3, 5, figsize=(50, 30))
+
+axes_flattened = axes.flatten()
+
+fig.suptitle("Second Derivative of Dipole M062X_c_ultrafine, 5 points", fontsize = 40)
+
+for i, ax in enumerate(axes_flattened):
+    ax.plot(np.float64(matrix[:,3]), np.float64(matrix[:, 53 + i]),  ".", label = "step = " + str(i+1), markersize = 12)
+    ax.set_title("Step = " + str(i+1), fontsize = 20)
+    ax.set_xlabel("Z", fontsize = 16)
+    ax.set_ylabel("d^2E/dZ^2", fontsize = 16)
+    ax.get_xaxis().get_major_formatter().set_useOffset(False)
+    ax.get_yaxis().get_major_formatter().set_useOffset(False)
+    ax.legend(fontsize = 24)
+    """ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
+    ax.xaxis.set_minor_locator(ticker.MultipleLocator(0.5))
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(0.001))
+    ax.yaxis.set_minor_locator(ticker.MultipleLocator(0.0005))"""
+    ax.tick_params(axis='x', labelsize=16) 
+    ax.tick_params(axis='y', labelsize=16) 
+    x_formatter = ticker.FormatStrFormatter('%.4f')
+    y_formatter = ticker.FormatStrFormatter('%.2f')
+    ax.xaxis.set_major_formatter(x_formatter)
+    ax.yaxis.set_major_formatter(y_formatter)
+    #ax.grid(which="both", axis="both", linestyle="--", linewidth=0.5)
+plt.tight_layout()
+plt.savefig("subplot_second_deriv_dipole_5_points.png")
 
 
-#for i in range(0, 14):
-    #A = print_derivatives(A[0], A[1], 3, 5, order = 2, n_points = 3, step = i+1)
-    #ax.plot(np.float128(np.array((A[1]))[:,3]), np.float128(np.array((A[1]))[:, -1]), "o", label = "step = " + str(i+1), markersize = 15)
-#ax.set_title("sec Derivative of dipole with Respect to Field" + str(i+1))
-#ax.set_xlabel("Z")
-#ax.set_ylabel("d dipole /dZ")
-#ax.get_xaxis().get_major_formatter().set_useOffset(False)
-#ax.get_yaxis().get_major_formatter().set_useOffset(False)
-#ax.legend(fontsize = 24)
-#ax.xaxis.set_major_locator(ticker.MultipleLocator(0.5))
-#ax.xaxis.set_minor_locator(ticker.MultipleLocator(0.1))
-#ax.yaxis.set_major_locator(ticker.MultipleLocator(0.001))
-#ax.yaxis.set_minor_locator(ticker.MultipleLocator(0.0005))
-#ax.grid(which="both", axis="both", linestyle="--", linewidth=0.5)
-#plt.savefig("overlay_deriv_two_dipole.png")
 #np.savetxt("data_from_folder_ultrafine_deriv_two_from_dipole.csv", A[1], fmt="%s", delimiter=",", header=",".join([name for name in A[0]]))
 
 
-path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/test_methods_2_aug/wB97X/wB97X/lib_bnnt-3_wB97X.txt"
-read_input_file(path)
-
+#path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/input_test_2_august/lib_bnnt-3_M062X.txt"
+#read_input_file(path)

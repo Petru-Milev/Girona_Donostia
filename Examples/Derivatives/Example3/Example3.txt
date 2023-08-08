@@ -1,0 +1,11 @@
+keywords: 
+read_data(delimiter=",", skiprows=10, header)
+
+@/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example3/data_skiprows10.csv
+
+Derivative(Order=1,up=5,down=3,points=3,step=1)
+Derivative(Order=1,up=5,down=3,points=5,step=2)
+Derivative(Order=1,up=5,down=3,points=5,step=3)
+Derivative(Order=1,up=5,down=3,points=5,step=4)
+
+path_to_save=/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example3/Example3.csv

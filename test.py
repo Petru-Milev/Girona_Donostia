@@ -59,7 +59,6 @@ def read_calc_deriv_file(path_to_file):
         delimiter = ","
         skiprows = 0 
         if options != None and any("delimiter" in i for i in options):          #Delimiter is the separator between the columns
-            print("here delimiter")
             for i in options:
                 if delimiter in i:
                     delimiter = i.split("=")[1]
@@ -79,12 +78,23 @@ def read_calc_deriv_file(path_to_file):
                         names[i] = "Column_" + str(i)
                     break
         
-        if "skiprows" in options:                                               #Skipping firsnt n rows from the file
+        if any("skiprows" in i for i in options):                                               #Skipping firsnt n rows from the file
             for i in options:
-                if skiprows in i:
+                if "skiprows" in i:
                     print(line)
                     skiprows = int(i.split("=")[1])
                     break
+            with open(path_to_read, "r") as file:
+                for i, line in enumerate(file):
+                    if i+1 <= skiprows:
+                        continue
+                    if any("header" in i for i in options):
+                        names = line.strip().split(delimiter)
+                        break
+                    else: 
+                        names = ["Column_" + str(i) for i in range(len(line.strip().split(delimiter)))]
+                        break
+
         matrix = np.loadtxt(path_to_read, delimiter=delimiter, skiprows=skiprows, dtype=str)
 
     if "extract_from_folder" in keywords:                                       #Extracting data from fchk files in a folder and saving it in a .csv file
@@ -103,7 +113,13 @@ def read_calc_deriv_file(path_to_file):
         matrix = get_list_of_propreties_for_fchk_in_a_folder(path_to_read, directions=directions)
         names = matrix[0]
         matrix = np.array(matrix[1])
-        np.savetxt("data_from_folder.csv", matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
+        current_time = dt.datetime.now()                                        #To be used to save the data if the name to save is not specified
+        for line in file_input:                                                 #Looking for path to save
+            if "path_to_save" in line:
+                name1 = os.path.join(os.path.split(line.strip().split("=")[1])[0], "data_from_folder" + "_" + os.path.split(line.strip().split("=")[1])[1]) 
+                print(name1)
+                np.savetxt(name1, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
+        else: np.savetxt("data_from_folder" + str(current_time.hour) +"h_" + str(current_time.minute) + "'.csv", matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
 
     if "var" in keywords:                                                       #Specifiying a variable to iterate over
         index = keywords.index("var")       
@@ -116,8 +132,7 @@ def read_calc_deriv_file(path_to_file):
             if i.split("=")[2] == "float":
                 list_of_variables[i.split("=")[0]] = [float(x) for x in i.split("=")[1][1:-1].split(",")]
             else: list_of_variables[i.split("=")[0]] = [int(x) for x in i.split("=")[1][1:-1].split(",")]
-    print("List of variables")
-    print(list_of_variables)
+    else: list_of_variables = {}
 
     for i, line in enumerate(file_input):
         data = {"order":1, "up": 5, "down": 4, "points": 3, "step": 1}          #Creating the data dictionary with default values
@@ -150,5 +165,8 @@ def read_calc_deriv_file(path_to_file):
             break
     np.savetxt(path_to_save, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))    #Saving the data
 
-path = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example1.txt"
-read_calc_deriv_file(path)
+path_example1 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example1/Example1.txt"
+path_example2 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example2/Example2.txt"
+path_example3 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example3/Example3.txt"
+path_example4 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example4/Example4.txt"
+read_calc_deriv_file(path_example4)

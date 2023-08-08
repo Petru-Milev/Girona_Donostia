@@ -9,5 +9,5 @@ parallel*
 diff_data/
 jupyter_notebook/
 test_functions/
-!Examples/Derivatives/*.txt
-!Examples/Derivatives/*.csv 
+!Examples/Derivatives/**.txt
+!Examples/Derivatives/**.csv 

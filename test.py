@@ -169,4 +169,7 @@ path_example1 = "/Users/petrumilev/Documents/projects_python/project_girona_dono
 path_example2 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example2/Example2.txt"
 path_example3 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example3/Example3.txt"
 path_example4 = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example4/Example4.txt"
-read_calc_deriv_file(path_example4)
+
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/calc_deriv_wB97X_c_ultrafine.txt"
+
+read_calc_deriv_file(path)

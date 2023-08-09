@@ -22,7 +22,7 @@ import matplotlib.ticker as ticker
 
 #path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/fes_fchk_ultrafine"
 #A = get_list_of_propreties_for_fchk_in_a_folder(path, ["Z"])
-path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/m062x_c_ultrafine_from_dipole_moment.csv"
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/wB97X_c_ultrafine.csv"
 with open(path, "r") as file:
     lines = file.readlines()
 names = lines[0].strip().split(",")
@@ -32,13 +32,21 @@ fig, axes = plt.subplots(3, 5, figsize=(50, 30))
 
 axes_flattened = axes.flatten()
 
-fig.suptitle("Second Derivative of Dipole M062X_c_ultrafine, 5 points", fontsize = 40)
+dr = "Fourth"
+nr_poin = str(5)
+what = "Energy"
+column = 83
+dx = "Z"
+dy = "d^4Energy/dZ^4"
+
+
+fig.suptitle(dr + " Derivative of "+what+" wB97X_c_ultrafine," + nr_poin + " points", fontsize = 40)
 
 for i, ax in enumerate(axes_flattened):
-    ax.plot(np.float64(matrix[:,3]), np.float64(matrix[:, 53 + i]),  ".", label = "step = " + str(i+1), markersize = 12)
+    ax.plot(np.float64(matrix[:,3]), np.float64(matrix[:, column + i]),  ".", label = "step = " + str(i+1), markersize = 12)
     ax.set_title("Step = " + str(i+1), fontsize = 20)
-    ax.set_xlabel("Z", fontsize = 16)
-    ax.set_ylabel("d^2E/dZ^2", fontsize = 16)
+    ax.set_xlabel(dx, fontsize = 16)
+    ax.set_ylabel(dy, fontsize = 16)
     ax.get_xaxis().get_major_formatter().set_useOffset(False)
     ax.get_yaxis().get_major_formatter().set_useOffset(False)
     ax.legend(fontsize = 24)
@@ -54,7 +62,7 @@ for i, ax in enumerate(axes_flattened):
     ax.yaxis.set_major_formatter(y_formatter)
     #ax.grid(which="both", axis="both", linestyle="--", linewidth=0.5)
 plt.tight_layout()
-plt.savefig("subplot_second_deriv_dipole_5_points.png")
+plt.savefig("subplot_" + dr + "_deriv_" + what + "_" + nr_poin +  "_points_wB97X_ultrafine.png")
 
 
 #np.savetxt("data_from_folder_ultrafine_deriv_two_from_dipole.csv", A[1], fmt="%s", delimiter=",", header=",".join([name for name in A[0]]))

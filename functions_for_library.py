@@ -1426,7 +1426,7 @@ def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     !!!If new function is added, it should be checked that no boundary conditions are violated!!!
     """
     def five_points(i, step, h):
-        return (-1*f[i-2]+2*f[i-1]+0*f[i+0]-2*f[i+1]+1*f[i+2])/(2*1.0*(h*step)**3)
+        return (-1*f[i-2*step]+2*f[i-step]+0*f[i+0]-2*f[i+step]+1*f[i+2*step])/(2*1.0*(h*step)**3)
     map_functions = {"5" : five_points}
     f_xxx = map_functions[str(n_points)]
     start = int(step*np.floor(n_points/2))
@@ -1435,6 +1435,29 @@ def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxx(i, step, h))
+    return derivative_vector
+
+def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
+    """
+    This function calculates the fourth derivative of a function f(x)
+    :param vector_x: the vector of x values
+    :param f: the vector of f(x) values
+    :param n_points: the number of points to use for the derivative
+    :param step: the step size
+    :return: the vector of f''''(x) values
+    """
+
+    def five_points(i, step, h):
+        return (1*f[i-2*step]-4*f[i-step]+6*f[i+0]-4*f[i+step]+1*f[i+2*step])/(1*1.0*(h*step)**4)
+    
+    map_functions = {"5" : five_points}
+    f_xxxx = map_functions[str(n_points)]
+    start = int(step*np.floor(n_points/2))
+    finish = int(len(f) - step*np.floor(n_points/2))
+    derivative_vector = []
+    for i in range(start, finish):
+        h = vector_x[i+1] - vector_x[i]
+        derivative_vector.append(f_xxxx(i, step, h))
     return derivative_vector
 
 def print_derivatives(names, list_propreties, derivative_x_vector_index, derivative_y_vector_index, order = 1, n_points = 3, step = 1):
@@ -1451,7 +1474,7 @@ def print_derivatives(names, list_propreties, derivative_x_vector_index, derivat
     :return: the list of names and the list of propreties with the derivatives
     """
     
-    map_derivative = {"1" : calc_first_derivative, "2": calc_second_derivative, "3" : calc_third_derivative}
+    map_derivative = {"1" : calc_first_derivative, "2": calc_second_derivative, "3" : calc_third_derivative, "4" : calc_fourth_derivative}
     derivative = map_derivative[str(order)]
  
     #Printing energy derivatives

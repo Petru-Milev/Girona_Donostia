@@ -143,13 +143,13 @@ def read_input_file(path_to_file, extension = ".com"):
         new_kw - list of new keywords to be added to the file
         more detailed about the function can be found in descripton of the function gen_e_field_direction
         """
-        c1, c2, c3 = np.float128(c1), np.float128(c2), np.float128(c3)
-        start, finish = np.float128(start), np.float128(finish)
+        c1, c2, c3 = np.longdouble(c1), np.longdouble(c2), np.longdouble(c3)
+        start, finish = np.longdouble(start), np.longdouble(finish)
         if type_space == "linear":
             step = int(step)
         elif type_space == "log":
             step = int(step)
-        else: step = np.float128(step)
+        else: step = np.longdouble(step)
         map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
         #Generate the values of the electric field over the specified direction
         e_fields = vary_e_field_in_certain_direction(c1, c2, c3, var_range = [start, finish, step], type_coordinates = type_coordinates, type_space = type_space)
@@ -185,36 +185,37 @@ def read_input_file(path_to_file, extension = ".com"):
             else:
                 if "automatically_update_kw" in kw_without_input_for_function:      #Checking the keyword for the field calculation
                     add_keywords(file_name, *["IOp(3/14=-6)"])
-                index_update_old_chk = kw_without_input_for_function.index("update_old_chk")
-                type_old_chk_kw = input_for_function[index_update_old_chk]          #Getting info about how we update old chk file
-                if (0, 0, 0) in e_fields:                                           #Studying the case when we have 0 field
-                    if ("automatically_update_kw" in kw_without_input_for_function) and (type_old_chk_kw[0] == "zero" or type_old_chk_kw[0] == "n-1"):
-                        add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
-                        with open(log_file, "a") as log:
-                            log.write("Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to " + file_name + "\n")
-                else:                                                               #Studying the case when we do not have 0 field, and we need to choose a file from the boundary
-                    if count == 0:
-                        if ("_X+" in file_name) or ("_Y+" in file_name) or ("_Z+" in file_name):
-                            #Checking that we have only positive values of the electric field
-                            #If this is the cases, for the first iteration we will not add kw to the file
-                            #Because we will make references to the lower boundary files
-                            #!!!Posible bugs!!!
-                            None
-                        else:
-                            #If we have negative values of the electric field, we will add the kw to the first file
+                if "update_old_chk" in kw_without_input_for_function:
+                    index_update_old_chk = kw_without_input_for_function.index("update_old_chk")
+                    type_old_chk_kw = input_for_function[index_update_old_chk]          #Getting info about how we update old chk file
+                    if (0, 0, 0) in e_fields:                                           #Studying the case when we have 0 field
+                        if ("automatically_update_kw" in kw_without_input_for_function) and (type_old_chk_kw[0] == "zero" or type_old_chk_kw[0] == "n-1"):
                             add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
-                            dont_add_chk_last_file = True   #Bcz we did not use first file as a reference, we will use the last one
                             with open(log_file, "a") as log:
                                 log.write("Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to " + file_name + "\n")
+                    else:                                                               #Studying the case when we do not have 0 field, and we need to choose a file from the boundary
+                        if count == 0:
+                            if ("_X+" in file_name) or ("_Y+" in file_name) or ("_Z+" in file_name):
+                                #Checking that we have only positive values of the electric field
+                                #If this is the cases, for the first iteration we will not add kw to the file
+                                #Because we will make references to the lower boundary files
+                                #!!!Posible bugs!!!
+                                None
+                            else:
+                                #If we have negative values of the electric field, we will add the kw to the first file
+                                add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
+                                dont_add_chk_last_file = True   #Bcz we did not use first file as a reference, we will use the last one
+                                with open(log_file, "a") as log:
+                                    log.write("Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to " + file_name + "\n")
 
-                    else: 
-                        if count == (len(e_fields)-1) and dont_add_chk_last_file:
-                            #Checking if we need to add kw to the last file
-                            None
-                        else:
-                            add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
-                            with open(log_file, "a") as log:
-                                log.write("Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to " + file_name + "\n")
+                        else: 
+                            if count == (len(e_fields)-1) and dont_add_chk_last_file:
+                                #Checking if we need to add kw to the last file
+                                None
+                            else:
+                                add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
+                                with open(log_file, "a") as log:
+                                    log.write("Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to " + file_name + "\n")
             insert_geom(file_name, path_to_geom) #Adding geometry to the created file. This function will check if there are kw that dont permit specification of the geometry
         
     def check_double_lines(folder):
@@ -461,7 +462,7 @@ def read_input_file(path_to_file, extension = ".com"):
                                 with open(log_file, "a") as log:
                                     log.write("!!!WARNING!!!\n")
                                     log.write("ChkBasis already in file: " + file + "\n")
-                                    log.writable("File_name: " + file + "\n")
+                                    log.write("File_name: " + file + "\n")
                                     log.write("Basis set was added")
                             f.write(line)
                         f.write("\n".join(basis_set_name))
@@ -1116,7 +1117,7 @@ def extract_data_from_fchk_file_for_numerical_derivation(file_path):
                 if start_line <= current_line <= finish_line:               #Finding starting and finishing line
                     lines_to_save.append(line.strip())                      #Saving the lines with the numerical values
                 current_line += 1 
-        lines_to_save = [np.float128(item) for sublist in lines_to_save for item in sublist.split()]            #Saving the number saved as str into float values with 128 bytes
+        lines_to_save = [np.longdouble(item) for sublist in lines_to_save for item in sublist.split()]            #Saving the number saved as str into float values with 128 bytes
         return lines_to_save
     
     def get_electric_field_values_and_eng_value(input_file):                              #A fundtion to get value of electric field, as the previous function does not allow for this.
@@ -1126,12 +1127,12 @@ def extract_data_from_fchk_file_for_numerical_derivation(file_path):
                 if "External E-field" in line_n_minus1:                     #if in the previous line was the keyword
                     imp_line = (line_number, line.split())                  #than save the line (which is after the keyword and which contains the values for the electric field)
                 elif "Total Energy" in line:
-                    energy = np.float128(line.strip().split()[3])
+                    energy = np.longdouble(line.strip().split()[3])
                 line_n_minus1 = line
     
 
         e_field_1 = imp_line[1][1:4]                                        #Values of the electric field are saved in position 1, 2, 3 of the resulting vector 
-        e_field_1 = [np.float128(x) for x in e_field_1]                     #Converting str to an appropriate numerical value
+        e_field_1 = [np.longdouble(x) for x in e_field_1]                     #Converting str to an appropriate numerical value
         return (e_field_1, energy)                                                    
 
     e_field_and_eng_value = get_electric_field_values_and_eng_value(file_path)
@@ -1303,7 +1304,7 @@ def print_derivatives(names, list_propreties, derivative_x_vector_index, derivat
     if not isinstance(list_propreties, np.ndarray):
         list_propreties = np.array((list_propreties))     
 
-    arr = derivative(np.float128(list_propreties[:, derivative_x_vector_index]), np.float128(list_propreties[:, derivative_y_vector_index]), n_points=n_points, step=step)
+    arr = derivative(np.longdouble(list_propreties[:, derivative_x_vector_index]), np.longdouble(list_propreties[:, derivative_y_vector_index]), n_points=n_points, step=step)
 
     while (len(list_propreties[:,derivative_y_vector_index]) - len(arr)) % 2 == 0 and (len(list_propreties[:,derivative_y_vector_index]) - len(arr)) > 0:
         arr = np.insert(arr, 0, np.NaN)

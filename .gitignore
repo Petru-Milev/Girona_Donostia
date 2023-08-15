@@ -12,3 +12,5 @@ jupyter_notebook/*
 test_functions/
 !Examples/Derivatives/**/*.txt
 !Examples/Derivatives/**/*.csv 
+!Examples/Create_Input_Files/**/*.csv 
+!Examples/Create_Input_Files/**/*.csv 

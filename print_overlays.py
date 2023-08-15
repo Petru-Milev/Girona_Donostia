@@ -8,7 +8,10 @@ import matplotlib.pyplot as plt
 import copy
 import matplotlib.ticker as ticker 
 
-path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/wB97X_c_ultrafine.csv"
+#Path to the file from where we read the data 
+
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/m062x_c_ultrafine.csv"
+
 
 with open(path, "r") as file:
     lines = file.readlines()
@@ -24,9 +27,9 @@ nr_poin = str(5)
 what = "Energy"
 column = 83
 dx = "Z"
-dy = "d^4Energy/dZ^4"
+dy = "d^4 Energy/dZ^4"
 
-fig.suptitle(dr + " Derivative of "+what+" wB97X_c_ultrafine," + nr_poin + " points", fontsize = 40)
+fig.suptitle(dr + " Derivative of "+what+" m062x_c_ultrafine," + nr_poin + " points", fontsize = 40)
 
 for i, ax in enumerate(axes_flattened):
     ax.plot(np.float64(matrix[:,3]), np.float64(matrix[:, column + i]),  ".", label = "step = " + str(i+1), markersize = 12)
@@ -44,4 +47,4 @@ for i, ax in enumerate(axes_flattened):
     ax.yaxis.set_major_formatter(y_formatter)
 
 plt.tight_layout()
-plt.savefig("subplot_" + dr + "_deriv_" + what + "_" + nr_poin +  "_points_wB97X_ultrafine.png")
+plt.savefig("subplot_" + dr + "_deriv_" + what + "_" + nr_poin +  "_points_m062x_ultrafine.png")

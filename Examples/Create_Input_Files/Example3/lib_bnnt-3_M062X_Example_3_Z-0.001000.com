@@ -9,7 +9,7 @@ SCF(Conver=11,MaxCycles=300) Integral(Grid=fine,Acc2E=14,NoXCTest)
 IOp(3/14=-6) polar
 
 Title Example3
-Polar Coordinates  Coordinates. Z direction. Not using fchk  
+Cylindrical Coordinates  Coordinates. Z direction. Not using fchk  
 
 0 2
 

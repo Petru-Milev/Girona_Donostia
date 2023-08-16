@@ -1,0 +1,25 @@
+All the critical errors will be updated here: /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC.txt
+
+Keywords Provided to the input are:
+gen_e_field_direction(0, 0, 1, -0.0025, 0.0025, 0.0005, cartesian, step) update_old_chk(n-1) basis_set(origin) read_geom() new_kw automatically_update_kw
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.002500.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.002000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.001500.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.001000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.000500.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.000500.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.001000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.001500.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.002000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6_kw_changed_density=current_XQC/lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.002500.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.001500.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.001000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.001500.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.001000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.000500.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.002000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.002500.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.000500.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z+0.002000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_6_kw_changed_density=current_XQC_Z-0.002500.com

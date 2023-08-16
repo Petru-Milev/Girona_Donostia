@@ -1,4 +1,4 @@
-keywords: gen_e_field_direction(0, 1, 2, -0.0025, 0.0025, 7, cartesian, linear) update_old_chk(zero) basis_set(all) read_geom() new_kwi
+keywords: gen_e_field_direction(0, 1, 2, -0.0025, 0.0025, 7, cartesian, linear) update_old_chk(zero) basis_set(all) read_geom() new_kw
 automatically_update_kw
 
 ***kw_e_field_calc***

@@ -200,7 +200,9 @@ def read_input_file(path_to_file, extension = ".com"):
                                 #If this is the cases, for the first iteration we will not add kw to the file
                                 #Because we will make references to the lower boundary files
                                 #!!!Posible bugs!!!
+                                insert_geom(file_name, path_to_geom)
                                 None
+                            
                             else:
                                 #If we have negative values of the electric field, we will add the kw to the first file
                                 add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
@@ -211,6 +213,7 @@ def read_input_file(path_to_file, extension = ".com"):
                         else: 
                             if count == (len(e_fields)-1) and dont_add_chk_last_file:
                                 #Checking if we need to add kw to the last file
+                                insert_geom(file_name, path_to_geom)
                                 None
                             else:
                                 add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
@@ -927,9 +930,11 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
     map_function = {"cartesian" : convert_cartesian_to_spherical_coordinates, "spherical" : return_x_y_z, "cylindrical" : convert_cylindrical_to_spherical_coordinates}
     f = map_function[type_coordinates]
     return_vector = []
-    if type_coordinates != "cartesian":
+    if type_coordinates == "spherical":
         c2 = np.radians(c2)                               #Converting from degrees to radians
         c3 = np.radians(c3)
+    elif type_coordinates == "cylindrical":
+        c2 = np.radians(c2)
     r, theta, phi = f(c1, c2, c3)                         #Converting the coordinates to spherical
     for i in space:                                       #Obtaining the new values for electric field
         r = i                                             #Length of vector is changed

@@ -1,0 +1,39 @@
+keywords: gen_e_field_direction(0, 0, 1, -0.0025, 0.0025, 0.0005, cartesian, step) update_old_chk(n-1) basis_set(origin) read_geom() new_kw
+automatically_update_kw
+
+***kw_e_field_calc***
+#P M062X
+Symmetry(PG=C4v,SaveOrientation,axis=z)
+geom=check density=current ChkBasis guess=(read) IOp(9/75=2)
+GFINPUT IOP(6/7=3) IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1)
+SCF(Conver=11,MaxCycles=300) Integral(Grid=fine,Acc2E=14)
+IOp(3/14=-6) polar
+***kw_e_field_calc***
+
+***kw_basis_set***
+B N Li H 0
+6-31+G(d)
+****
+***kw_basis_set***
+
+***start_gaussian_file***
+%nproc=8
+%mem=24Gb
+%oldchk=
+%chk=M062X_101.chk
+#P M062X/gen
+Symmetry(PG=C4v,SaveOrientation,axis=z)
+geom=nocrowd density=current IOp(9/75=2)
+GFINPUT IOP(6/7=3) IOp(6/80=1) IOp(3/59=10) IOp(99/18=-1)
+SCF(QC,Conver=11,MaxCycles=300) Integral(Grid=fine,Acc2E=14)
+IOp(3/33=5) polar
+
+Title Example1 
+Cartesian Coordinates. Z direction. Referencing all chk to n-1 
+
+0 2
+@/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/Example6/geometry.txt
+
+
+
+

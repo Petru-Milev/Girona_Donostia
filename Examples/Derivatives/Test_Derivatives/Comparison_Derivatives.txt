@@ -1,0 +1,15 @@
+keywords: var(x=(1,15,1)=int, y=(3,6,2)=int)
+read_data(header)
+
+@/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/Comparison_Derivatives.csv
+
+Derivative(Order=1,up=1,down=0,points=3,step=1)
+Derivative(Order=1,up=2,down=0,points=3,step=1)
+Derivative(Order=1,up=3,down=0,points=3,step=1)
+Derivative(Order=2,up=1,down=0,points=3,step=1)
+Derivative(Order=2,up=2,down=0,points=3,step=1)
+Derivative(Order=2,up=3,down=0,points=3,step=1)
+Derivative(Order=3,up=1,down=0,points=5,step=1)
+Derivative(Order=3,up=2,down=0,points=5,step=1)
+Derivative(Order=3,up=3,down=0,points=5,step=1)
+

@@ -1,0 +1,2 @@
+All the critical errors will be updated here: /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example6/lib_bnnt-3_M062X_Example_6.txt
+

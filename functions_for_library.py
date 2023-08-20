@@ -54,7 +54,7 @@ def read_input_file(path_to_file, extension = ".com"):
                     None
                 else: 
                     file.write("\n\n" + " ".join(["{:.6f}".format(x) for x in field]) + "\n\n")
-            change_line_in_file(file_name, "%chk", "%chk=" + file_name.split("/")[-1][:-4] + ".chk")    #Adding the checkpoint file name
+            change_line_in_file(file_name, "%chk", "%chk=" + os.path.basename(file_name[:-4]) + ".chk")    #Adding the checkpoint file name
             if new_kw:
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:
                     None                                               #Keywords for 0 field will be from the gaussian input file
@@ -183,8 +183,8 @@ def read_input_file(path_to_file, extension = ".com"):
                     else: lines.append(line.strip())
         return lines
     
-    path_to_folder = "/".join(path_to_file.split("/")[:-1])     #Getting the path to the folder
-    original_file_name = path_to_file.split("/")[-1]            #Getting the name of the file
+    path_to_folder = os.path.dirname(path_to_file)     #Getting the path to the folder
+    original_file_name = os.path.basename(path_to_file)            #Getting the name of the file
     log_file = path_to_file[:-4] + "_WARNINGS_log.txt"          #Creating the log file
 
     with open(log_file, "w") as file:
@@ -382,8 +382,8 @@ def read_input_file(path_to_file, extension = ".com"):
             print("Please specify the input for the function change_kw")
             print("Syntax: change_kw(file_name, new_kw)")
             return
-        path_to_folder_minus_one = "/".join(path_to_folder.split("/")[:-1])   #Folder where we will create new folders
-        folder_name = path_to_folder.split("/")[-1]                           #name of the original folder, so that we can modify it for the new inputs
+        path_to_folder_minus_one = os.path.dirname(path_to_folder)   #Folder where we will create new folders
+        folder_name = os.path.basename(path_to_folder)                           #name of the original folder, so that we can modify it for the new inputs
         with open(path_to_file, "r") as file:
             original_file_lines = file.readlines()                            #Saving the lines of the original file to copy them into a new folder, but we will delete change_kw
         for i in list_of_new_kw:                                              #Looping over the new keywords
@@ -477,8 +477,8 @@ def read_input_file(path_to_file, extension = ".com"):
                 str_to_remove_in_zip = i                   
                 print("This kw will be removed")
                 print(str_to_remove_in_zip)
-        path_to_folder_minus_one = "/".join(path_to_folder.split("/")[:-1]) #Path to the folder where new folders will be created
-        folder_name = path_to_folder.split("/")[-1]                         #Name of the original folder
+        path_to_folder_minus_one = os.path.dirname(path_to_folder) #Path to the folder where new folders will be created
+        folder_name = os.path.basename(path_to_folder)                         #Name of the original folder
         for new_comb in product(*all_kw):                                   #Looping over all possible combinations
             with open(path_to_file, "r") as file:
                 original_file_lines = file.readlines()
@@ -645,7 +645,7 @@ def create_gaussian_file(file_name, keywords, nproc=False, mem=False, title="Job
             file_gaussian.write("%chk=" + chk_name + "\n")
         else:  # Chk point is the same as file name
             file_gaussian.write(
-                "%chk=" + file_name[:-4].split("/")[-1] + ".chk\n")
+                "%chk=" + os.path.basename(file_name[:-4]) + ".chk\n")
 
     # Adding the keywords to the file
 
@@ -860,6 +860,9 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         space = np.arange(var_range[0], var_range[1] + var_range[2], var_range[2])
     elif type_space == "log":
         space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2])
+        space2 = -1 * copy.deepcopy(space)
+        space = np.hstack((space2, [0], space))
+        print(space)
     else: space = np.linspace(var_range[0], var_range[1], var_range[2])
 
     #Mapping the function to the corresponding conversion of coordinates
@@ -1203,7 +1206,7 @@ def read_input_for_electric_field_from_file_and_generate_files(path_to_file, ext
                     if count == line_to_introduce_e_field:             #Add value of e_field in the specified line
                         file.write(" ".join([str(x) for x in field]) + "\n")
                     count += 1
-            change_chk_file(file_name, file_name.split("/")[-1][:-4] + ".chk")
+            change_chk_file(file_name, os.path.basename(file_name[:-4]) + ".chk")
     elif type_electric_field_calculation == 2:                         #Case of generating a grid over the space of the electric field. But can also be generated grids in n dimensions
         input[2] = True if input[2].lower() == "y" else False          #Having all the values the same                       #Reading the directions
         input[3] = ast.literal_eval(input[3])
@@ -1227,7 +1230,7 @@ def read_input_for_electric_field_from_file_and_generate_files(path_to_file, ext
                     if count == line_to_introduce_e_field:     #Writting the e field in the specified line
                         file.write(" ".join([str(x) for x in field]) + "\n")
                     count += 1
-            change_chk_file(file_name, file_name.split("/")[-1][:-4] + ".chk")
+            change_chk_file(file_name, os.path.basename(file_name[:-4]) + ".chk")
     return type_electric_field_calculation, input
 
 def add_keywords(path_file, *kw):
@@ -1275,7 +1278,7 @@ def extract_data_from_fchk_file_for_numerical_derivation(file_path):
     The result is an object of Fchk_File instance, containing all the important values
     Input is the absolute path to the file. 
     """
-    obj = Fchk_File(name = file_path.split("/")[-1])                        #Creating instance of an object
+    obj = Fchk_File(name = os.path.basename(file_path))                        #Creating instance of an object
     def save_lines_after_keyword(input_file, keyword):                      #Getting the numerical values after the specified keywords
         with open(input_file, "r") as file:                                 #Keywords are Dipole Moment, Hyperpolarizability etc
             no_keyword_in_file = True
@@ -1503,8 +1506,8 @@ def read_calc_deriv_file(path_to_file):
     Output is a csv file with the data and all calculated derivatives
     Also, it will save the initial data without calculated derivatives
     """
-    path_to_folder = "/".join(path_to_file.split("/")[:-1])     #Getting the path to the folder
-    original_file_name = path_to_file.split("/")[-1]            #Getting the name of the file
+    path_to_folder = os.path.dirname(path_to_file)     #Getting the path to the folder
+    original_file_name = os.path.basename(path_to_file)            #Getting the name of the file
     log_file = path_to_file[:-4] + "_WARNINGS_log.txt"          #Creating the log file
 
     with open(log_file, "w") as log_file:                       #Creating the log file

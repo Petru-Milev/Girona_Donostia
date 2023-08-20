@@ -1,131 +1,12 @@
 import numpy as np
+from itertools import product
 import ast
+from girona_donostia.objects_for_library import Gaussian_File
 import os
+from girona_donostia.objects_for_library import Fchk_File
 import copy 
 import datetime as dt
-import sys 
-from itertools import product
 
-
-class Gaussian_File:
-    def __init__(self, file_name = "name.inp", keywords = "", nproc=False, mem=False, title="Job Name", oldchk=False, oldchk_file=None, chk=False, chk_name=False,
-                         charge_multiplicity=(0, 1), geom=False, basis_set=False, wfx=False, Field=False):
-        self.file_name = file_name
-        self.keywords = keywords
-        self.nproc = nproc
-        self.mem = mem 
-        self.title = title 
-        self.oldchk = oldchk
-        self.oldchk_file = oldchk_file
-        self.chk = chk
-        self.chk_name = chk_name
-        self.charge_multiplicity = charge_multiplicity
-        self.geom = False 
-        self.basis_set_gaussian = basis_set
-        self.wfx = wfx
-        self.Field = Field
-    
-class Fchk_File():
-    """
-    This class is used to store the data from a fchk file.
-    """
-    def __init__(self, name = False, e_field = False, energy = False, dipole_moment = False, polarizability = False, hyperpolarizability = False, quadrupole_moment = False):
-        self.name = name
-        self.e_field = e_field
-        self.energy = energy
-        self.dipole_moment = dipole_moment
-        self.polarizability = polarizability
-        self.hyperpolarizability = hyperpolarizability
-        self.quadrupole_moment = quadrupole_moment
-    
-    def list_propreties(self, directions):
-        """
-        This function returns a list of propreties of the object if they are present.
-        The input is a list of directions for which to return the propreties.
-        """
-        map_directions_1 = {"x" : 0, "y" : 1, "z" : 2, "xx" : 0, "yy" : 2, "zz" : 5, "xxx" : 0, "yyy" : 3, "zzz" : 9}
-        map_dipole = {"x" : 0, "y" : 1, "z" : 2}
-        map_polarizability = {"xx" : 0, "xy" : 1, "yy" : 2, "xz" : 3, "yz" : 4, "zz" : 5}
-        map_hyperpolarizability = {"xxx" : 0, "xxy" : 1, "xyy" : 2, "yyy" : 3, "xxz" : 4, "xyz" : 5, "yyz" : 6, "xzz" : 7, "yzz" : 8, "zzz" : 9}
-        main_directions = []      #if direction x, y or z is specified, it will be saved here, later to print also the xx, yy, zz, xxx, yyy, zzz
-        secondary_directions = []   #All other directions which will be printed only once
-        for char in directions:     #Separating the directions in the input file
-            if char.lower() in map_dipole:
-                main_directions.append(char)
-            else: secondary_directions.append(char)
-
-        new_list = [["Name", "E_Field_X", "E_Field_Y", "E_Field_Z", "Energy", "Dipole_Moment", "Polarizability", "Hyperpolarizability"]]
-        new_list.append([])         #Creating the list in the form [[*names], [*values]
-        new_list[1].append(self.name)
-        new_list[1].extend(self.e_field)
-        new_list[1].append(self.energy)
-        if self.dipole_moment:          
-            count = 0
-            position = new_list[0].index("Dipole_Moment")
-            del new_list[0][position]
-            for i in main_directions:                   #Printing it for all the specified main directions
-                new_list[0].insert(position + count, "Dipole_Moment_" + i.lower())
-                new_list[1].append(self.dipole_moment[map_directions_1[i.lower()]])
-                count += 1
-        else: 
-            count = 0
-            position = new_list[0].index("Dipole_Moment")
-            del new_list[0][position]
-            for i in main_directions:                   #Printing it for all the specified main directions
-                new_list[0].insert(position + count, "Dipole_Moment_" + i.lower())
-                new_list[1].append(np.NaN)
-                count += 1
-            print("Dipole_Moment is not present in the file" + self.name)
-
-        if self.polarizability:
-            count = 0
-            position = new_list[0].index("Polarizability")
-            del new_list[0][position]
-            for i in main_directions:                  #Printing it for all the specified main directions       
-                new_list[0].insert(position + count, "Polarizability_" + 2*i.lower())
-                new_list[1].append(self.polarizability[map_directions_1[2*i.lower()]])
-                count += 1
-            if secondary_directions:                #Printing it for all the specified secondary directions
-                for i in secondary_directions:
-                    if i.lower() in map_polarizability:
-                        new_list[0].insert(position + count, "Polarizability_" + i.lower())
-                        new_list[1].append(self.polarizability[map_polarizability[i.lower()]])
-                        count += 1
-        else: 
-            count = 0
-            position = new_list[0].index("Polarizability")
-            del new_list[0][position]
-            for i in main_directions:                  #Printing it for all the specified main directions       
-                new_list[0].insert(position + count, "Polarizability_" + 2*i.lower())
-                new_list[1].append(np.NaN)
-                count += 1
-            print("Polarizability is not present in the file" + self.name)
-        
-        if self.hyperpolarizability:
-            count = 0
-            position = new_list[0].index("Hyperpolarizability")
-            del new_list[0][position]
-            for i in main_directions:
-                new_list[0].insert(position + count, "Hyperpolarizability_" + 3*i.lower())
-                new_list[1].append(self.hyperpolarizability[map_directions_1[3*i.lower()]])
-                count += 1
-            if secondary_directions:
-                for i in secondary_directions:
-                    if i.lower() in map_hyperpolarizability:
-                        new_list[0].insert(position + count, "Hyperpolarizability_" + i.lower())
-                        new_list[1].append(self.hyperpolarizability[map_hyperpolarizability[i.lower()]])
-                        count += 1
-
-        else: 
-            count = 0
-            position = new_list[0].index("Hyperpolarizability")
-            del new_list[0][position]
-            for i in main_directions:
-                new_list[0].insert(position + count, "Hyperpolarizability_" + 3*i.lower())
-                new_list[1].append(np.NaN)
-                count += 1
-            print("Hyperpolarizability is not present in the file" + self.name)
-        return new_list
 
 def read_input_file(path_to_file, extension = ".com"):
    
@@ -185,7 +66,9 @@ def read_input_file(path_to_file, extension = ".com"):
             else:
                 if "automatically_update_kw" in kw_without_input_for_function:      #Checking the keyword for the field calculation
                     add_keywords(file_name, *["IOp(3/14=-6)"])
-                if "update_old_chk" in kw_without_input_for_function:
+                if "update_old_chk" not in kw_without_input_for_function:               #Checking the keyword for the field calculation
+                    None
+                else:
                     index_update_old_chk = kw_without_input_for_function.index("update_old_chk")
                     type_old_chk_kw = input_for_function[index_update_old_chk]          #Getting info about how we update old chk file
                     if (0, 0, 0) in e_fields:                                           #Studying the case when we have 0 field
@@ -201,8 +84,6 @@ def read_input_file(path_to_file, extension = ".com"):
                                 #Because we will make references to the lower boundary files
                                 #!!!Posible bugs!!!
                                 insert_geom(file_name, path_to_geom)
-                                None
-                            
                             else:
                                 #If we have negative values of the electric field, we will add the kw to the first file
                                 add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
@@ -214,7 +95,6 @@ def read_input_file(path_to_file, extension = ".com"):
                             if count == (len(e_fields)-1) and dont_add_chk_last_file:
                                 #Checking if we need to add kw to the last file
                                 insert_geom(file_name, path_to_geom)
-                                None
                             else:
                                 add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
                                 with open(log_file, "a") as log:
@@ -864,6 +744,62 @@ def generate_input_energy_field_calculation(ndim, type_space, all_the_same = Fal
 
 #------------------------------------------------------------------------------
 
+def generate_gaussian_field_calculation(matrix, file_name, keywords, nproc=False, mem=False, title="Job Name", oldchk=False, oldchk_file=None, chk=False, chk_name=False,
+                         charge_multiplicity=(0, 1), geom=False, basis_set=False, wfx=False, Field=False):
+    
+
+    #The matrix will be reshaped in a linear matrix.
+    #Therefore, we need a mapping between position in orginal matrix, and reshaped one.
+
+    def create_mapping_from_n_dim_to_one_dim(matrix_for_mapping):                       
+        mapping = {}                #Dictionary to save the mapping. 
+
+        it = np.nditer(matrix_for_mapping, flags=["multi_index", "refs_ok"])              #Iteration over all values of matrix. 
+
+        i = 0                                                                             #Index in the reshaped matrix. 
+        while not it.finished:                                                            #Loop to iterate over all the matrix.
+            index = it.multi_index                                                        #Get the index in the original matrix. 
+            mapping[str(i)] = index                                                       #Creating a map of index in reshaped matrix as a key, and index in orginal matrix as its value. 
+            it.iternext()                                                                 #Going to next value in the original matrix. 
+            i += 1                                                                        #Going to next value in reshaped matrix. 
+        return mapping                                                                    #Returning the reshaped matrix. 
+
+    #Reassigning index of the reshaped matrix, to the specific letter, to be used in nameing of the files. 
+    
+    def map_number_to_direction(j, map_1):
+        letter_mapping = {"0" : "X", "1" : "Y", "2" :"Z"}                                 #Mapping of index into letters
+        j = str(j)
+        new_str = ""
+        character_mapping = map_1                                                         #Having a map between the linear index and indexing in the original matrix. 
+        j = "".join([str(x) for x in character_mapping[j]])                               #Obtaining the index in original matrix as a tuple, and transforming it into a string without spaces.
+        for char in str(j):                                                               #A loop to transform the original indexing into letters.
+            if char in letter_mapping:                                         
+                new_str += letter_mapping[char]                                           #Using the map to get the letter for the char i in the name
+            else: new_str += char                                                         #To avoid errors, if the char is not in the map, to return the character
+        return new_str                                                                    #Returning the string
+
+    map_1 = create_mapping_from_n_dim_to_one_dim(matrix)                                  #Creating the map between original matrix and reshaped matrix.
+    matrix = np.reshape(matrix, -1)                                                       #Reshaping the matrix into a vector. 
+
+    for i in range(len(matrix)):                                                          #Making into a list all values that are not np.ndarray
+        if not isinstance(matrix[i], np.ndarray):                                         #This is important, because otherwise product() function will not work
+            matrix[i] = [matrix[i]]
+
+    for i, Field in enumerate(product(*matrix)):                                          #Iterating over all possible combinations of electric fields.
+        A = []                                                                            #list to save the valus of electric field, to be saved in the name of the file. 
+        for j in range(len(Field)):                                                       #Iterating over elements of an instance of electric field
+            if int(Field[j]) == 0:                                                        #To not include 0 values in the name of the file
+                continue                                                                  #Skipping the cycle 
+            A.append([map_number_to_direction(j, map_1), Field[j]])                       #An element of A constains a list containing non zero values of field in the following format [*direction of field*, *value of field*]
+        add_name_field = ["_".join([str(x1) for x1 in x]) for x in A]                     #joining by "_" all elements in A
+        add_name_field = "_".join(add_name_field) 
+        #Creating the respective Gaussian File
+        create_gaussian_file(file_name = file_name[:-4] + "_" + "index" + "_" + str(i) + "_" + add_name_field + ".inp", keywords = keywords, nproc=nproc, mem=mem, title=title, oldchk=oldchk, oldchk_file=oldchk_file, chk=chk, chk_name=chk_name,
+                         charge_multiplicity=charge_multiplicity, geom=geom, basis_set=basis_set, wfx=wfx, Field=Field)
+    return 
+
+#------------------------------------------------------------------------------
+
 def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = "cartesian", type_space = "linear"):
     """
     Function to vary the electric field in a certain direction.
@@ -924,8 +860,6 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         space = np.arange(var_range[0], var_range[1] + var_range[2], var_range[2])
     elif type_space == "log":
         space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2])
-        space2 = -1 * copy.deepcopy(space)
-        space = np.hstack((space2, [0], space))
     else: space = np.linspace(var_range[0], var_range[1], var_range[2])
 
     #Mapping the function to the corresponding conversion of coordinates
@@ -952,6 +886,153 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
 
     return return_vector
 
+#-------------------------------------------------------------------------------------------------------------------------
+
+def start():
+
+    File_Info = Gaussian_File()      #Creating an object to save the data introduced.
+    separator = "\n-------------------------------------------------------------------"
+    File_Info.file_name = input("\n1. Introduce the name of the file of your calculation. \nIncluding the path. If not, the files will be saved in the directory were this file is.\nExample /Users/User/Documents/Gaussian/Folder/File_name.inp\nIntroduce name of the file here: ")
+    print(separator)
+    #----------------------------------------------------------------------------------------------------------------------------------
+    a = [] 
+    i = 1 
+    while True:
+        #A cycle to introduce as many keywords as is desired. 
+        keyword = input("\n2. Introduce the keywords. Each line is a new line for the keyword.\n\nIntroduce 0 to finish the introduction of keywords.\nIntroduced the desired line here: ")
+        if keyword == "0":
+            break
+        a.append(keyword)
+        print("-----------------")
+        print("Full list of keywords introduced so far is:")
+        print("\n".join(a))
+        print("-----------------")
+        print("Lines introduced", i)
+        print("-----------------")
+        i += 1
+    File_Info.keywords = "\n".join(a)
+    print(separator)
+    #-------------------------------------------------------------------------------------------------------------------------------
+    try:
+        nproc = int(input("\n3. Introduce the number of processors to be used during the calculation.\n\nIntroduce 0 if you do not want to specify the number of processors.\n\nNumber of processors used is: "))
+        if nproc != 0:
+            File_Info.nproc = nproc
+        else: File_Info.nproc = False
+    except ValueError:
+        print("\nInvalid input. Please enter and integer. 0 if you do not wish to specify the number of processors. Introduce False\n")
+    print(separator)
+    mem = input("\n4. Introduce the amount of memory to be used during the calculation. Also indicate the amount. Example: 100MB. \nIf you do not want to specify the memory, leave the space blank. (i.e., press Enter)\n\nThe ammount of memory to be used during the calculation: ")
+    if not bool(mem):
+        mem = False
+    File_Info.mem = mem
+    print(separator)
+    #----------------------------------------------------------------------------------------------------------------------------------
+    a = [] 
+    i = 1 
+    while True:
+        line = input("\n5. Introduce title/comment for the job. Each line is a new line for the title/comment.\n\nIntroduce 0 to finish the introduction.\n\nTitle: ")
+        if line == "0":
+            break
+        a.append(line)
+        print("-----------------")
+        print("Full list of title/comments introduced so far is:")
+        print("\n".join(a))
+        print("-----------------")
+        print("Lines introduced", i)
+        print("-----------------")
+        i += 1
+    File_Info.title = "\n".join(a)
+    print(separator)
+    #-------------------------------------------------------------------------------------------------------------------------------
+
+    oldchk = input("\n6. Do you want to use an old chk file? Y/N\n")
+    if oldchk == "":
+        oldchk = False
+    elif oldchk[0].lower() == "y":
+        oldchk = True
+        File_Info.oldchk = oldchk
+        File_Info.oldchk_file = input("\nIntroduce the name for the old chk file, including the extension.\n\nOldchk file name is: ") 
+    else: oldchk = False
+    
+    print(separator)
+
+    geometry_path = input("\n7. Introduce path for geometry coordinates. \nLeaving this space blank will result in not submiting geometry coordinates to the gaussian input file.\n\nPath for the geometry is: ")
+    if not geometry_path:
+        geometry_path = False
+    else: File_Info.geom = np.loadtxt(geometry_path, dtype = str)
+
+    print(separator)
+    
+    chk = input("\n8. Do you want to save an chk file for this calculation? Yes/No\n")
+    if chk == "":
+        chk = False
+    elif chk[0].lower() == "y":
+        File_Info.chk = True
+        chk_name = input("\nIntroduce the chk file name. \nLeaving it blank will result in using the same name for chk as for the log file\n")
+        if not bool(chk_name):
+            chk_name = False
+        else: File_Info.chk_name = chk_name
+    else: chk = False
+
+    print(separator)
+    
+    File_Info.charge_multiplicity = input("\n9. Intorduce charge and multiplicity of the system. \nTwo integers separated by space are to be introduced. \nExample: 0 1\n\nCharge and multiplicity which will be used in calculation is: ")
+    
+    print(separator)
+
+    basis_set_atoms = input("\n10. Introduce atoms for which basis set is to be specified.\nAtoms are to be separated by spaces. \nExample: Li C N O \n\nLeave blank if you do not want to specify basis set for atoms\n\nAtoms for which basis set is specified are: ")
+    if bool(basis_set_atoms):
+        basis_set_name = input("\nIntroduce the name for the basis set to be used\n\nName of the basis set is: ")
+        File_Info.basis_set_gaussian = [basis_set_atoms, basis_set_name]
+    else: File_Info.basis_set_gaussian = False
+    print(separator)
+    wfx = input("\n11. Do you want to save an wfx file? Indicate the name of the file. Leave blank if you do not wish to print wfx\n\nName of the file: ")
+    if not bool(wfx):
+        wfx = False
+    File_Info.wfx = wfx
+    print(separator)
+    Energy = input("\n12. Do you want/have to specify a electric field for this calculation? Y/N\n")
+    if Energy.lower()[0] == "y":
+        type_energy_variation = input("What type of energy calculation do you want to specify?\n1.Indicate a single value for the field. \n2.Indicate a direction in which you want to vary the field. \n3 Create a grid/mesh of values for the field. \n\nIntroduce the corresponding integer: ")
+        if type_energy_variation == "1":
+            #The case when only one value of electric field is to be used.
+            field = input("\nIntroduce the value of the electric field. \nExample: 0.0001, 0, 0\n\nValue of the electric field is: ")
+            File_Info.Field = field
+            create_gaussian_file(File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx, Field = File_Info.Field)
+        elif type_energy_variation == "2":
+            #The case when the electric field is to be varied in a certain direction.
+            print("Provide the following information separated by commas (,)\n")
+            print("c1, c2, c3, start, finish, step, type_coordinates, type_space")
+            print("c_i are coordinates in the desired type of coordinates.\nx, y, z for cartesian\nr, theta, phi for spherical\nr, phi, h for cylindrical\n start - starting range of the variation\nfinish - ending range of the variation\nstep - step of the variation\n type_coordinates - cartesian, spherical, cylindrical\n type_space - linear, log, step")
+            print("Values are to be given in degrees if it is the case")
+            print("Example: 0, 0, 180, -5, 5, 1, spherical, step")
+            info = input("Provide the following information separated by commas (,)\n")
+            info = info.split(",")
+            info = [x.strip() for x in info]
+            e_field_range = vary_e_field_in_certain_direction(float(info[0]), float(info[1]), float(info[2]), [float(info[3]), float(info[4]), float(info[5])], type_coordinates = info[6], type_space = info[7])
+            for i, field in enumerate(e_field_range):
+                combined_name = "_index_" + str(i) + "_X_" + str(field[0]) + "_Y_" + str(field[1]) + "_Z_" + str(field[2]) + ".inp"
+                create_gaussian_file(File_Info.file_name[:-4] + combined_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx, Field = field)
+        elif type_energy_variation == "3":
+            type_energy = int(input("\nHow do you want your energy to vary? \nPossible choices: \n\n1. Linearly (i.e., a given number of points equally spaced on the given interval), \n2. Step (i.e., an unknown number of points, separated by a specified step on a given interval), \n3. Logarithmicaly. (i.e., A specified number of points, separated logarithmically (base 10), on a given interval)\n\nIntroduce the corresponding integer: "))
+            if type_energy == 1:
+                type_energy = "linear"
+            elif type_energy == 2:
+                type_energy = "step"
+            elif type_energy == 3:
+                type_energy == "log"
+            else: type_energy = "linear"
+            print(separator)
+            ndim = int(input("\nIntroduce number of dimension for the energy calculation. \n\nn = 1 corresponds to only X, Y, and Z. n = 2 corresponds to XX, YY, etc.\n\nIntroduce number of dimension: "))
+            print(separator)
+            dict_direct = ast.literal_eval("{" + input("\nIntroduce the directions for which you would like to perform the calculations.\nFormat for this is:\
+                            \n\n'XX':[start, finish, step/number of points], 'XZ' : [start, finish, number of points], etc\n\nRespecting the format above is crucial. The direction should correspond with number of dimensions. 'X' for dimension 1, 'XX' for dimension 2, etc. \
+                            \n\nIntroduce the points: ") + "}")
+            field_matrix = generate_input_energy_field_calculation(ndim, type_energy, **dict_direct)
+            generate_gaussian_field_calculation(field_matrix, File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx)
+        else: print("There was a mistake while specifying the field. Please try again.")
+    else: create_gaussian_file(File_Info.file_name, File_Info.keywords, nproc = File_Info.nproc, mem = File_Info.mem, title = File_Info.title, oldchk= File_Info.oldchk, oldchk_file=File_Info.oldchk_file, chk = File_Info.chk, chk_name=File_Info.chk_name, charge_multiplicity=File_Info.charge_multiplicity, geom = File_Info.geom, basis_set = File_Info.basis_set_gaussian, wfx = File_Info.wfx)
+    return File_Info
 #--------------------------------------------------------------------------
 
 def update_oldchk_for_files_in_a_folder(folder_path, file_extension = ".com", reference_from_input = False):
@@ -1053,6 +1134,101 @@ def map_number_to_direction(j, map_1):
         else: new_str += char                                                         #To avoid errors, if the char is not in the map, to return the character
     return new_str                                                                    #Returning the string
 
+
+def read_input_for_electric_field_from_file_and_generate_files(path_to_file, extension = ".com"):
+    """
+    Function to generate Gaussian input files for the calculation of the electric field from a template file.
+    Template will be specified in the manual.
+    This funciton can generate files for the case when the electric field is varied in one specific direction or 
+    it can generate a grid over a space. 
+    This function is using the four following function:
+    generate_input_energy_field_calculation(ndim, type_space, all_the_same = False, **kwargs)
+    vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = "cartesian", type_space = "linear")
+    create_mapping_from_n_dim_to_one_dim(matrix)
+    map_number_to_direction(i, map_directions)
+    """                                       
+
+    def change_chk_file(file_path, new_oldchk_name):
+        old_chk_line = "%chk="
+        with open(file_path, "r") as file_gaussian:
+            lines = file_gaussian.readlines()
+        for i, line in enumerate(lines):
+            if old_chk_line in line.lower():
+                lines[i] = "%chk=" + str(new_oldchk_name) + "\n"
+                with open(file_path, "w") as file_1:
+                    file_1.writelines(lines)
+                break
+
+    type_electric_field_calculation = 0
+    input = 0
+    is_recording_file = True                                           #Boolean to indicate if we are recording the file
+    is_recording_e_field = False                                       #Boolean to indicate if we are recording the electric field
+    count = 0                                                          #To get the value where we will be inserting electric field
+    lines = []                                                         #Saved lines of the file
+    with open(path_to_file, "r") as file:                              
+        for line in file:
+            if line.strip() == "***Start_e_field***":                  #Looking for the start of the desired section so that we can get the input data
+                is_recording_e_field = True                            #Boolean to let us read input data
+                is_recording_file = False                              #Stop recording file lines to be in the final file
+                line_to_introduce_e_field = count - 1
+            if is_recording_file:                                      #Recording the lines of the file
+                lines.append(line)
+            if is_recording_e_field:                                   #Recording the input data
+                if "#Corresponding" in line:                           #Read the type of calculation
+                    type_electric_field_calculation = int(line.strip().split(" ")[-1])
+                if "#Input" in line:                                   #Read input data
+                    input = [x for x in line.strip().split(" ")[1:]]
+            if line.strip() == "***Finish_e_field***":                 #Look for the finish of the block of reading the input data.
+                is_recording_e_field = False                           #Stop recording input data
+                is_recording_file = True                               #Continue recording the file
+            count += 1                                                 #Counting the lines of the file
+    if type_electric_field_calculation == 1:                           #If recording the variation of electric field in one direction
+        map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
+        #Generate the values of the electric field over the specified direction
+        e_fields = vary_e_field_in_certain_direction(float(input[0]), float(input[1]), float(input[2]), var_range = [float(input[3]), float(input[4]), int(input[5])], type_coordinates = input[6], type_space = input[7])
+        for field in e_fields:
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                continue
+            else: directions = [map_directions[str(i)] for i, x in enumerate(field) if x != 0]
+        for field in e_fields:                                         #Looping to creating the files
+            #Creating the name of the file. File name will have the following format:
+            #Input_kw example_test_X-1.41e+00_Y-1.41e+00
+            if field[0] == 0 and field[1] == 0 and field[2] == 0:
+                file_name  = path_to_file[:-4] + "_" + "_".join([str(x) + "+0" for x in directions]) + extension
+            else: file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_directions[str(i)], "+" + "{:.2e}".format(x) if x > 0 else "{:.2e}".format(x))) for i, x, in enumerate(field) if x!= 0]) + extension
+            with open (file_name, "w") as file:                        #Creating the file
+                count = 0                                              #Counting lines of the file
+                for line in lines:                                     #Writting line of the file
+                    file.write(line)
+                    if count == line_to_introduce_e_field:             #Add value of e_field in the specified line
+                        file.write(" ".join([str(x) for x in field]) + "\n")
+                    count += 1
+            change_chk_file(file_name, os.path.basename(file_name[:-4]) + ".chk")
+    elif type_electric_field_calculation == 2:                         #Case of generating a grid over the space of the electric field. But can also be generated grids in n dimensions
+        input[2] = True if input[2].lower() == "y" else False          #Having all the values the same                       #Reading the directions
+        input[3] = ast.literal_eval(input[3])
+        #Generating the matrix of how the electric field will vary. A position in the matrix corresponds to a direction.
+        matrix = generate_input_energy_field_calculation(int(input[0]), input[1], input[2], **input[3])     
+        #Creating a map of directions from n dimensions to one dimension
+        #The resulting dictionary has the form {'0': (0, 0), '1': (0, 1), '2': (0, 2), ...}
+        map_directions = create_mapping_from_n_dim_to_one_dim(matrix)
+        matrix = np.reshape(matrix, -1)
+        for i in range(len(matrix)):    #Make all non_list elements into a list. This is important for the product function.
+            if not isinstance(matrix[i], np.ndarray):
+                matrix[i] = [matrix[i]]
+        for field in product(*matrix):  #Looping over all the possible combinations of the electric field. product function is used to get all the combinations.
+            #File name will be of the following format: 
+            #Input_kw example_test_X+1.41e+00_Y+1.41e+00
+            file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_number_to_direction(i, map_directions), "+" + str(x) if x > 0 else str(x))) for i, x, in enumerate(field) if x!=0]) + extension
+            with open (file_name, "w") as file:                #Creating the files with the specified name and e field
+                count = 0
+                for line in lines:
+                    file.write(line)                           #Writting the lines of the file
+                    if count == line_to_introduce_e_field:     #Writting the e field in the specified line
+                        file.write(" ".join([str(x) for x in field]) + "\n")
+                    count += 1
+            change_chk_file(file_name, os.path.basename(file_name[:-4]) + ".chk")
+    return type_electric_field_calculation, input
 
 def add_keywords(path_file, *kw):
     """Add keywords to a Gaussian input file.
@@ -1492,10 +1668,3 @@ def change_line_in_file(file_path, pattern, new_line):
                 with open(file_path, "w") as file_1:
                     file_1.writelines(lines)
                 break
-
-type_of_calculation = sys.argv[1]
-path = sys.argv[2]
-if type_of_calculation.lower() == "create_input":
-    read_input_file(path)
-elif type_of_calculation.lower() == "derivative":
-    read_calc_deriv_file(path)

@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "girona_donostia"
+version = "0.1.3"
+authors = [
+  { name="Petru Milev", email="petia.md36@gmail.com" },
+]
+description = "A small package to work with nonlinear optical propreties"
+readme = "README.md"
+requires-python = ">=3.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Petru-Milev/Girona_Donostia"

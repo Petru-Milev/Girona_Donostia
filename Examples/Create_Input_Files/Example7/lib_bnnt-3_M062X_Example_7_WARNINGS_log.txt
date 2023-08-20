@@ -1,0 +1,21 @@
+All the critical errors will be updated here: /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7.txt
+
+Keywords Provided to the input are:
+gen_e_field_direction(0, 0, 1, 10, 10000, 4, cartesian, log) update_old_chk(n-1) basis_set(origin) read_geom() new_kw automatically_update_kw
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z-10.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z-100.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z-1000.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z-10000.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z+10.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z+100.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z+1000.000000.com
+Checked and added if they were missing the following keywords: ChkBasis, geom=check, guess=(read), GFInput to /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example7/lib_bnnt-3_M062X_Example_7_Z+10000.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z-1000.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z-100.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z+1000.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z-10000.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z+100.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z-10.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z+10000.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z+10.000000.com
+Added NoXCTest kw to file: lib_bnnt-3_M062X_Example_7_Z+0.com

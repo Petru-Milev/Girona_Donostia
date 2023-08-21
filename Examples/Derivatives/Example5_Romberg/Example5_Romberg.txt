@@ -1,0 +1,7 @@
+keywords:
+read_data(delimiter=",")
+
+@/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example5_Romberg/data_for_romberg.csv
+
+Romberg(Order=3,up=1,down=0,a=1.4,min_size_matrix=3)
+

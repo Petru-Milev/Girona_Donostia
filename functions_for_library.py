@@ -2,10 +2,11 @@ import numpy as np
 from itertools import product
 import ast
 from objects_for_library import Gaussian_File
-import os
 from objects_for_library import Fchk_File
+from romberg import romberg_procedure
 import copy 
 import datetime as dt
+import os
 
 
 def read_input_file(path_to_file, extension = ".com"):
@@ -859,10 +860,9 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
     elif type_space == "step":
         space = np.arange(var_range[0], var_range[1] + var_range[2], var_range[2])
     elif type_space == "log":
-        space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2])
+        space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2], base = 2)
         space2 = -1 * copy.deepcopy(space)
         space = np.hstack((space2, [0], space))
-        print(space)
     else: space = np.linspace(var_range[0], var_range[1], var_range[2])
 
     #Mapping the function to the corresponding conversion of coordinates
@@ -1508,9 +1508,9 @@ def read_calc_deriv_file(path_to_file):
     """
     path_to_folder = os.path.dirname(path_to_file)     #Getting the path to the folder
     original_file_name = os.path.basename(path_to_file)            #Getting the name of the file
-    log_file = path_to_file[:-4] + "_WARNINGS_log.txt"          #Creating the log file
+    log_file_path = path_to_file[:-4] + "_log_file.txt"          #Creating the log file
 
-    with open(log_file, "w") as log_file:                       #Creating the log file
+    with open(log_file_path, "w") as log_file:                       #Creating the log file
         log_file.write("Log file for " + original_file_name + "\n")
     
     file_input = None
@@ -1538,7 +1538,7 @@ def read_calc_deriv_file(path_to_file):
     print("-------------------------------------")
     if ("read_data" in keywords) or ("extract_from_folder" in keywords):        #Finding the path from which we will read file or a folder
         for line in file_input:
-            if "@" in line:
+            if "@" in line.lower():
                 path_to_read = line.strip()[1:]
                 break
     
@@ -1623,7 +1623,7 @@ def read_calc_deriv_file(path_to_file):
                 list_of_variables[i.split("=")[0]] = [float(x) for x in i.split("=")[1][1:-1].split(",")]
             else: list_of_variables[i.split("=")[0]] = [int(x) for x in i.split("=")[1][1:-1].split(",")]
     else: list_of_variables = {}
-
+    romberg_line_number = 0
     for i, line in enumerate(file_input):
         data = {"order":1, "up": 5, "down": 4, "points": 3, "step": 1}          #Creating the data dictionary with default values
         if "derivative" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                                #Looking for the derivative line
@@ -1646,7 +1646,41 @@ def read_calc_deriv_file(path_to_file):
                             data_copied[key] = i                                
                             names, matrix = print_derivatives(names, matrix, derivative_x_vector_index= data_copied["down"], derivative_y_vector_index = data_copied["up"], order = data_copied["order"], n_points = data_copied["points"], step = data_copied["step"])
             else: names, matrix = print_derivatives(names, matrix, derivative_x_vector_index= data_copied["down"], derivative_y_vector_index = data_copied["up"], order = data_copied["order"], n_points = data_copied["points"], step = data_copied["step"])
-    
+        if "romberg" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                              #Looking for the derivative line
+            
+            """
+            This part will do Generalized Romberg Evaluation of Derivatives 
+            """
+            
+            romberg_line_number += 1 #For the case when we do evaluation for multiple different data 
+            data_romberg = {"order":1, "up": 5, "down": 4, "a" : 2, "min_size_matrix": 3} #Creating the data dictionary with default values
+            keys = line.strip().split(",")                                      #The line looks like this Romberg(Order=1,up=4,down=3)
+            keys[-1] = keys[-1][:-1]                                            #Removing the ) from the last key
+            keys[0] = keys[0][8:]                                               #Removing the romberg from the first key and the (
+            for key in keys:
+                data_romberg[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower() #Introducing the data in the dictionary
+            for key, value in data_romberg.items():                             #Converting the values to the correct type
+                if key.lower() == "a":
+                    data_romberg[key] = float(value)
+                else: data_romberg[key] = int(value)
+            input_matrix = np.longdouble(copy.deepcopy(matrix))                 #Copying the original matrix data
+            """            
+            Getting the values from the Romberg function
+            Romberg matrix - Matrix istfel
+            min_elem_index - First two indexes are Position of the left corner of the stability region
+            Second two indexes are the size of the stability region, number of rows and columns respectively
+            Resulting matrix - see romberg file. It stores the difference between maximal and minimal values
+            of all posible submatrices of the Romberg Matrix
+            """
+            romberg_matrix, min_element_index, resulting_matrix = romberg_procedure(vector_x=input_matrix[:, data_romberg["down"]], vector_y=input_matrix[:, data_romberg["up"]], order = data_romberg["order"], a = data_romberg["a"], min_size_matrix=data_romberg["min_size_matrix"])
+            with open(log_file_path, "a") as log:
+                log.write("This data is for Romberg line number " + str(romberg_line_number) + "\n")
+                log.write("The Romberg matrix is:\n\n")
+                np.savetxt(log, romberg_matrix, fmt="%s", delimiter=",")
+                log.write("The starting possition of the stability region is: " + ", ".join([str(x) for x in min_element_index[0:2]]) + "\n")
+                log.write("The number of rows in the stability region is: " + str(min_element_index[2]) + "number of columns is" + str(min_element_index[3]) + "\n")
+                log.write("The difference of points in this region is " + str(resulting_matrix[min_element_index[0], min_element_index[1], min_element_index[2], min_element_index[3]]) + "\n")
+                
     current_time = dt.datetime.now()                                            #To be used to save the data if the name to save is not specified
     path_to_save = "data_" + str(current_time.hour) + "h_" + str(current_time.minute) + "min.csv"
     for line in file_input:                                                     #Looking for path to save
@@ -1654,6 +1688,7 @@ def read_calc_deriv_file(path_to_file):
             path_to_save = line.strip().split("=")[1]
             break
     np.savetxt(path_to_save, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))    #Saving the data
+
 
 #-----------------
 def change_line_in_file(file_path, pattern, new_line):

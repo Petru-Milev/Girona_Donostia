@@ -3,6 +3,8 @@ from itertools import product
 import ast
 from objects_for_library import Gaussian_File
 from objects_for_library import Fchk_File
+from linear_fit import func_fit
+from scipy.optimize import curve_fit
 from romberg import romberg_procedure
 import copy 
 import datetime as dt
@@ -1680,7 +1682,25 @@ def read_calc_deriv_file(path_to_file):
                 log.write("The starting possition of the stability region is: " + ", ".join([str(x) for x in min_element_index[0:2]]) + "\n")
                 log.write("The number of rows in the stability region is: " + str(min_element_index[2]) + "number of columns is" + str(min_element_index[3]) + "\n")
                 log.write("The difference of points in this region is " + str(resulting_matrix[min_element_index[0], min_element_index[1], min_element_index[2], min_element_index[3]]) + "\n")
-                
+        curve_fit_line_number = 0
+        if "curve_fit" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                           #Looking for the derivative line         
+            "This part will do curve fitting"
+            curve_fit_line_number += 1 #For the case when we do evaluation for multiple different data
+            data_curve_fit = {"order":1, "up": 5, "down": 4} #Creating the data dictionary with default values
+            keys = line.strip().split(",")                   #The line looks like this Curve_fit(Order=1,up=4,down=3)
+            keys[-1] = keys[-1][:-1]                         #Removing the ) from the last key
+            keys[0] = keys[0][10:]                           #Removing the curve_fit from the first key and the (
+            for key in keys:
+                data_curve_fit[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
+            input_matrix = np.longdouble(copy.deepcopy(matrix))                 #Copying the original matrix data
+            popt, pconv = func_fit(input_matrix[:, data_curve_fit["down"]], input_matrix[:, data_curve_fit["up"]], order = data_curve_fit["order"])
+            with open(log_file_path, "a") as log:
+                log.write("This data is for Curve_fit line number " + str(curve_fit_line_number) + "\n")
+                log.write("The coefficients in ascending order are:\n\n")
+                np.savetxt(log, popt, fmt="%s", delimiter=",")
+                for i in range(len(popt)):
+                    log.write("The coefficients for the first derivative are")
+                    #Writting first derivative and all possible derivatives of the function
     current_time = dt.datetime.now()                                            #To be used to save the data if the name to save is not specified
     path_to_save = "data_" + str(current_time.hour) + "h_" + str(current_time.minute) + "min.csv"
     for line in file_input:                                                     #Looking for path to save

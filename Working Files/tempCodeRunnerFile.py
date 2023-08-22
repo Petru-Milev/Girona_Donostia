@@ -1,1 +1,1 @@
-a**2
+ounds=(right.min(), right.max())

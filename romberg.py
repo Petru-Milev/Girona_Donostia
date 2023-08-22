@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 3):
+def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2):
     """
     Function to Generate the Romberg Matrix
     h - the smallest step size
@@ -116,18 +116,20 @@ def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 3)
                         break
     return [romberg_matrix, min_element_index, resulting_matrix]
 
-v_x = [-0.01619826068, -0.0115701862, -0.00826441871, -0.00590315622, -0.00421654016, -0.0030118144, -0.002151296, -0.00153664, -0.0010976, -0.000784, -0.00056, -0.0004, 0, 0.0004, 0.00056, 0.000784, 0.0010976, 0.00153664, 0.002151296, 0.0030118144, 0.00421654016, 0.00590315622, 0.00826441871, 0.0115701862, 0.01619826068]
+#v_x = [-0.01619826068, -0.0115701862, -0.00826441871, -0.00590315622, -0.00421654016, -0.0030118144, -0.002151296, -0.00153664, -0.0010976, -0.000784, -0.00056, -0.0004, 0, 0.0004, 0.00056, 0.000784, 0.0010976, 0.00153664, 0.002151296, 0.0030118144, 0.00421654016, 0.00590315622, 0.00826441871, 0.0115701862, 0.01619826068]
 #v_x = [-0.0256, -0.0128, -0.0064, -0.0032, -0.0016, -0.0008, -0.0004, 0, 0.0004, 0.0008, 0.0016, 0.0032, 0.0064, 0.0128, 0.0256]
 #print(len(v_x))
-
-v_x = np.longdouble(np.array(v_x))
+v_x = [-0.4096 ,-0.2048, -0.1024, -0.0512, -0.0256, -0.0128, -0.0064, -0.0032, 0, 0.0032, 0.0064, 0.0128, 0.0256, 0.0512, 0.1024, 0.2048, 0.4096]
+v_x = np.float64(np.array(v_x))
 a = 1.0
-a = np.longdouble(a)
-v_y = -a/np.tan(v_x + 0.04)
+a = np.float64(a)
+#v_y = -a/np.tan(v_x + 0.04)
+v_y = np.sin(2*(v_x - 3)) * np.exp(-1/10 * (v_x-3)**2)
+print(v_y)
 #v_x = np.array([-0.08, -0.04, -0.02, -0.01, -0.005, 0, 0.005, 0.01, 0.02, 0.04, 0.08])
 #v_y = np.array([-76.3618181251, -76.3653502973, -76.3663297729, -76.3665877636, -76.3666539614, 0,  -76.3666533658, -76.3665834835, -76.3662964810, -76.3650852057, -76.3596812418])
-A = romberg_procedure(v_x, v_y, order = 3, a = 1.4)
-print(A)
+A = romberg_procedure(v_x, v_y, order = 4, a = 2, min_size_matrix= 2)
+print(A[0])
 A = np.vstack((v_x, v_y)).T
 #print(A)
 np.savetxt("data_for_romberg.csv", A, delimiter = ",", fmt='%s')

@@ -1,0 +1,10 @@
+keywords:
+read_data(delimiter=",", header)
+
+@/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example2/data.csv
+
+Curve_Fit(Order=2,up=4,down=3)
+Curve_Fit(Order=3,up=4,down=3)
+Curve_Fit(Order=4,up=4,down=3)
+Curve_Fit(Order=5,up=4,down=3)
+Curve_Fit(Order=6,up=4,down=3)

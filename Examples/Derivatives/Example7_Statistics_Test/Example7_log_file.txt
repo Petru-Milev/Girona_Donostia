@@ -1,0 +1,9 @@
+Log file for Example7.txt
+-------------------------------------
+This data is for Statistics_Test line number 1
+Name: Name, Column1 is 6, Column2 is 8 
+Filename is Example7.txt
+MAE: 0.00460888947368421
+MAPE: -0.001259966183531255%
+RMSE: 0.015210841170584117
+MAX: 0.08684529999999999%

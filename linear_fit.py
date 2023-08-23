@@ -2,7 +2,16 @@ import numpy as np
 from scipy.optimize import curve_fit
 
 
-def func_fit(x, y, order):
+def func_fit(vect_x, vect_y, order):
+
+    if isinstance(vect_x, np.float64):
+        None
+    else: 
+        vect_x = np.float64(vect_x)
+    if isinstance(vect_y, np.float64):
+        None
+    else:
+        vect_y = np.float64(vect_y)
     def func1(x, a, b):
         return a + b*x
 
@@ -23,34 +32,38 @@ def func_fit(x, y, order):
 
     def test1(x, a, b, c, s1, s2, c1, c2 ):
         return a + b*x + c*x**2 + s1*np.sin(s2*x) + c1*np.cos(c2*x)
-    
+     
     def polynomial_fit(x,y, n):
         result = np.polynomial.polynomial.polyfit(x, y, n)
         return result
     
     order = str(order)
-    if "np" in order.split("_"):
-        order = order.split("_")
-        order = int(order[1])
-        return polynomial_fit(x, y, order)
-    
+    polynomials_that_can_be_fitted = ["1", "2", "3", "4", "5", "6"]
+    test_parameters = False
+    if order in polynomials_that_can_be_fitted:
+        test_parameters = np.polynomial.polynomial.polyfit(vect_x, vect_y, int(order))
+
     map_func = {"1" : func1, "2" : func2, "3" : func3, "4" : func4, "5" : func5, "6" : func6, "test1" : test1}
     func = map_func[order]
-    popt, pconv= curve_fit(func, x, y)
+    if isinstance(test_parameters, np.ndarray):
+        popt, pconv = curve_fit(func, vect_x, vect_y, p0 = test_parameters)
+    else:
+        popt, pconv = curve_fit(func, vect_x, vect_y)
     return popt, pconv
 
 
 
 #path = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example1/data_from_folder_Example1.csv"
-path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/wB97X_c_ultrafine.csv"
+path = "Examples/Derivatives/Example6_Curve_Fit/data.csv"
 matrix = np.loadtxt(path, delimiter=',', skiprows=1, dtype=str)
-print(matrix.shape)
-print(matrix[:,3].shape)
+#print(matrix.shape)
+#print(matrix[:,3].shape)
 
 left = np.float64(matrix[:,3])
 right = np.float64(matrix[:,4])
 
-#A = polynomial_fit(left, right, 2)
+#A = func_fit(left, right, "np_2")
 #print(A)
 
-
+A = func_fit(left, right, 2)
+print(f"popt is {A[0]}")

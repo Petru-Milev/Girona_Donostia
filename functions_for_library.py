@@ -4,6 +4,7 @@ import ast
 from objects_for_library import Gaussian_File
 from objects_for_library import Fchk_File
 from linear_fit import func_fit
+from statistic import mae, mape, rmse, max, maxre
 from scipy.optimize import curve_fit
 from romberg import romberg_procedure
 import copy 
@@ -1626,6 +1627,8 @@ def read_calc_deriv_file(path_to_file):
             else: list_of_variables[i.split("=")[0]] = [int(x) for x in i.split("=")[1][1:-1].split(",")]
     else: list_of_variables = {}
     romberg_line_number = 0
+    curve_fit_line_number = 0
+    statistics_test_line_number = 0
     for i, line in enumerate(file_input):
         data = {"order":1, "up": 5, "down": 4, "points": 3, "step": 1}          #Creating the data dictionary with default values
         if "derivative" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                                #Looking for the derivative line
@@ -1682,25 +1685,87 @@ def read_calc_deriv_file(path_to_file):
                 log.write("The starting possition of the stability region is: " + ", ".join([str(x) for x in min_element_index[0:2]]) + "\n")
                 log.write("The number of rows in the stability region is: " + str(min_element_index[2]) + "number of columns is" + str(min_element_index[3]) + "\n")
                 log.write("The difference of points in this region is " + str(resulting_matrix[min_element_index[0], min_element_index[1], min_element_index[2], min_element_index[3]]) + "\n")
-        curve_fit_line_number = 0
         if "curve_fit" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                           #Looking for the derivative line         
-            "This part will do curve fitting"
+            """
+            This part will do curve fitting
+            """
+
+            map_orders = {"1" : "1st", "2": "2nd", "3" : "3rd", "4" : "4th", "5" : "5th", "6" : "6th", "7" : "7th", "8" : "8th", "9" : "9th", "10" : "10th"}
+            
             curve_fit_line_number += 1 #For the case when we do evaluation for multiple different data
             data_curve_fit = {"order":1, "up": 5, "down": 4} #Creating the data dictionary with default values
             keys = line.strip().split(",")                   #The line looks like this Curve_fit(Order=1,up=4,down=3)
             keys[-1] = keys[-1][:-1]                         #Removing the ) from the last key
             keys[0] = keys[0][10:]                           #Removing the curve_fit from the first key and the (
             for key in keys:
-                data_curve_fit[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
-            input_matrix = np.longdouble(copy.deepcopy(matrix))                 #Copying the original matrix data
-            popt, pconv = func_fit(input_matrix[:, data_curve_fit["down"]], input_matrix[:, data_curve_fit["up"]], order = data_curve_fit["order"])
+                if "np" in key:
+                    data_curve_fit[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower()
+                else:
+                    data_curve_fit[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
+            input_matrix = np.float64(copy.deepcopy(matrix[:, 1:]))                 #Copying the original matrix data
+            popt, pconv = func_fit(input_matrix[:, data_curve_fit["down"] - 1], input_matrix[:, data_curve_fit["up"] - 1], order = data_curve_fit["order"])
             with open(log_file_path, "a") as log:
+                log.write("-------------------------------------\n")
                 log.write("This data is for Curve_fit line number " + str(curve_fit_line_number) + "\n")
-                log.write("The coefficients in ascending order are:\n\n")
-                np.savetxt(log, popt, fmt="%s", delimiter=",")
+                log.write(f"Derivative of column {str(data_curve_fit['up'])} with respect to column {str(data_curve_fit['down'])}\n")
+                derivative_order_string = map_orders[str(data_curve_fit["order"])] if str(data_curve_fit["order"]) in map_orders else str(data_curve_fit["order"])
+                log.write(f"Data was fitted as {derivative_order_string} order polynomial\n\n")
+                log.write("The coefficients in ascending order are:\n")
+                log.write(" ".join([(str(format(elem, ".2f")) + "*x**" + str(index)) for index, elem in enumerate(popt)]) + "\n")
+                log.write(" ".join([str(x) for x in popt]) + "\n")
+                log.write("\n")
+                count = 1
+                coef_to_print = copy.deepcopy(popt)
                 for i in range(len(popt)):
-                    log.write("The coefficients for the first derivative are")
+                    temp_array = copy.deepcopy(coef_to_print[1:])
+                    coef_to_print = []
+                    for index, elem in enumerate(temp_array):
+                        coef_to_print.append(elem * (index + 1))
+                    log.write(f"The coefficients for the {str(count)} derivative are:\n")
+                    log.write(" ".join([str(x) for x in coef_to_print]) + "\n\n")
+                    count += 1
+                    if count == 5:
+                        break
+                    if count == (len(popt) - 1):
+                        break
+                log.write("The covariance matrix is:\n")
+                np.savetxt(log, pconv, fmt="%s", delimiter=",")
                     #Writting first derivative and all possible derivatives of the function
+        if "statistics_test" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                           #Looking for the mae line
+            """
+            This line will calculate Mean Absolute Error 
+            https://en.wikipedia.org/wiki/Mean_absolute_error#:~:text=In%20statistics%2C%20mean%20absolute%20error,an%20alternative%20technique%20of%20measurement.
+            Mean Absolute Percentage Error
+            https://en.wikipedia.org/wiki/Mean_absolute_percentage_error
+            Root-mean-square deviation
+            https://en.wikipedia.org/wiki/Root-mean-square_deviation
+            It will also print the biggest Difference between the two values (MAX, and MAXRE)            
+            """
+            statistics_test_line_number += 1 #For the case when we do evaluation for multiple different data
+            data_statistics_test = {"column1" : 5, "column2" : 4, "name" : "Name"}       #Column1 = down, Column2 = up
+            keys = line.strip().split(",")                                       #The line looks like this statistics_test(up=4,down=3)
+            keys[-1] = keys[-1][:-1]                                             #Removing the ) from the last key
+            keys[0] = keys[0][16:]                                                #Removing the mae from the first key and the (
+            for key in keys:
+                if "name" in key.lower():
+                    data_statistics_test[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower()
+                else:
+                    data_statistics_test[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
+            input_matrix = copy.deepcopy(matrix)              #Copying the original matrix 
+            mae_val = mae(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            mape_val = mape(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            rmse_val = rmse(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            max_val = max(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            maxre_val = maxre(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            with open(log_file_path, "a") as log:
+                log.write("-------------------------------------\n")
+                log.write("This data is for Statistics_Test line number " + str(statistics_test_line_number) + "\n")
+                log.write(f"Name: {data_statistics_test['name']}, Column1 is {data_statistics_test['column1']}, Column2 is {data_statistics_test['column2']} \n")
+                log.write(f"Filename is {original_file_name}\n")
+                log.write(f"MAE: {mae_val}\n")
+                log.write(f"MAPE: {mape_val}%\n")
+                log.write(f"RMSE: {rmse_val}\n")
+                log.write(f"MAX: {max_val}%\n")
     current_time = dt.datetime.now()                                            #To be used to save the data if the name to save is not specified
     path_to_save = "data_" + str(current_time.hour) + "h_" + str(current_time.minute) + "min.csv"
     for line in file_input:                                                     #Looking for path to save

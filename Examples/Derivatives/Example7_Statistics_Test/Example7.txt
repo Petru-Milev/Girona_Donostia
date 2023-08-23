@@ -1,0 +1,8 @@
+keywords:
+read_data(delimiter=",", header)
+
+@/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example7_Statistics_Test/Example7.csv
+
+Statistics_test(column1=6,column2=8)
+
+path_to_save=/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example7_Statistics_Test/Example7.csv

@@ -1,4 +1,4 @@
-keywords: gen_e_field_direction(0, 0, 1, 10, 10000, 4, cartesian, log) update_old_chk(n-1) basis_set(origin) read_geom() new_kw
+keywords: gen_e_field_direction(0, 0, 1, 10, 10000, 4, cartesian, logbi) update_old_chk(n-1) basis_set(origin) read_geom() new_kw
 automatically_update_kw
 
 ***kw_e_field_calc***
@@ -15,7 +15,7 @@ B N Li H 0
 6-31+G(d)
 ****
 ***kw_basis_set***
-
+D
 ***start_gaussian_file***
 %nproc=8
 %mem=24Gb

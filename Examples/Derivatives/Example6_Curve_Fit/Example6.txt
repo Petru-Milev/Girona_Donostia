@@ -8,3 +8,5 @@ Curve_Fit(Order=3,up=4,down=3)
 Curve_Fit(Order=4,up=4,down=3)
 Curve_Fit(Order=5,up=4,down=3)
 Curve_Fit(Order=6,up=4,down=3)
+
+path_to_save=/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example6_Curve_Fit/Example6_Curve_Fit.csv

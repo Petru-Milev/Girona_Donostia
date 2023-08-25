@@ -3,7 +3,7 @@ from itertools import product
 import ast
 from objects_for_library import Gaussian_File
 from objects_for_library import Fchk_File
-from linear_fit import func_fit
+from linear_fit import func_fit, add_data_from_linear_fit
 from statistic import mae, mape, rmse, max, maxre
 from scipy.optimize import curve_fit
 from romberg import romberg_procedure
@@ -1702,8 +1702,7 @@ def read_calc_deriv_file(path_to_file):
                     data_curve_fit[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower()
                 else:
                     data_curve_fit[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
-            input_matrix = np.float64(copy.deepcopy(matrix[:, 1:]))                 #Copying the original matrix data
-            popt, pconv = func_fit(input_matrix[:, data_curve_fit["down"] - 1], input_matrix[:, data_curve_fit["up"] - 1], order = data_curve_fit["order"])
+            popt, pconv = func_fit(np.float64(matrix[:, data_curve_fit["down"]]), np.float64(matrix[:, data_curve_fit["up"]]), order = data_curve_fit["order"])
             with open(log_file_path, "a") as log:
                 log.write("-------------------------------------\n")
                 log.write("This data is for Curve_fit line number " + str(curve_fit_line_number) + "\n")
@@ -1721,6 +1720,9 @@ def read_calc_deriv_file(path_to_file):
                     coef_to_print = []
                     for index, elem in enumerate(temp_array):
                         coef_to_print.append(elem * (index + 1))
+                    matrix = add_data_from_linear_fit(matrix, np.float64(matrix[:, data_curve_fit["down"]]), coef_to_print)             #Adding values to the matrix, from the determined coefficients
+                    names.append(f"(From Linear Fit Derivative Order {str(count)} of Column {str(data_curve_fit['up'])} with respect to Column {str(data_curve_fit['down'])} Polynomial Order {str(data_curve_fit['order'])})")
+                    log.write(f"Data was appended to the column {str(matrix.shape[1] - 1)}")
                     log.write(f"The coefficients for the {str(count)} derivative are:\n")
                     log.write(" ".join([str(x) for x in coef_to_print]) + "\n\n")
                     count += 1
@@ -1765,7 +1767,8 @@ def read_calc_deriv_file(path_to_file):
                 log.write(f"MAE: {mae_val}\n")
                 log.write(f"MAPE: {mape_val}%\n")
                 log.write(f"RMSE: {rmse_val}\n")
-                log.write(f"MAX: {max_val}%\n")
+                log.write(f"MAX: {max_val}\n")
+                log.write(f"MAXRE: {maxre_val}%\n")
     current_time = dt.datetime.now()                                            #To be used to save the data if the name to save is not specified
     path_to_save = "data_" + str(current_time.hour) + "h_" + str(current_time.minute) + "min.csv"
     for line in file_input:                                                     #Looking for path to save

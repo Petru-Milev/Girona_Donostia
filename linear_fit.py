@@ -52,6 +52,29 @@ def func_fit(vect_x, vect_y, order):
     return popt, pconv
 
 
+def add_data_from_linear_fit(matrix, vector_x, coef):
+    if isinstance(vector_x, np.longdouble):
+        None
+    else:
+        vector_x = np.longdouble(vector_x)
+    if isinstance(coef, np.longdouble):
+        None
+    else:
+        coef = np.longdouble(coef)
+
+    """
+    This function will add to matrix, a new column with vector_x multiplied by coef.
+    """
+    def func(x, coef):
+        sum_1 = 0
+        for index, elem in enumerate(coef):
+            sum_1 += elem * (x ** (index))
+        return sum_1
+    #func = np.vectorize(func, excluded = ["coef"])
+    vector_y = func(vector_x, coef)
+    matrix = np.column_stack((matrix, vector_y))
+    return matrix 
+
 
 #path = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example1/data_from_folder_Example1.csv"
 path = "Examples/Derivatives/Example6_Curve_Fit/data.csv"

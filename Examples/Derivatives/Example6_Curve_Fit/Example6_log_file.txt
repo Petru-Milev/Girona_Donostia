@@ -5,12 +5,13 @@ Derivative of column 4 with respect to column 3
 Data was fitted as 2nd order polynomial
 
 The coefficients in ascending order are:
--1286.94x**0 1.63x**1 -183.00x**2
+-1286.94*x**0 1.63*x**1 -183.00*x**2
 -1286.937739449766 1.633757556164112 -183.0017412121268
 
-The coefficients for the 1 derivative are:
+Data was appended to the column 8The coefficients for the 1 derivative are:
 1.633757556164112 -366.0034824242536
 
+The covariance matrix is:
 6.489797550089035e-19,3.1002585789246843e-31,-4.08625633334033e-12
 3.1002585789246835e-31,4.517872270862466e-12,-3.2604560218721403e-24
 -4.08625633334033e-12,-3.2604560218721414e-24,5.6591761093042127e-05
@@ -20,15 +21,16 @@ Derivative of column 4 with respect to column 3
 Data was fitted as 3rd order polynomial
 
 The coefficients in ascending order are:
--1286.94x**0 1.63x**1 -183.00x**2 331.57x**3
+-1286.94*x**0 1.63*x**1 -183.00*x**2 331.57*x**3
 -1286.937739449766 1.6337107717558903 -183.0017413723217 331.5691581997211
 
-The coefficients for the 1 derivative are:
+Data was appended to the column 9The coefficients for the 1 derivative are:
 1.6337107717558903 -366.0034827446434 994.7074745991632
 
-The coefficients for the 2 derivative are:
+Data was appended to the column 10The coefficients for the 2 derivative are:
 -366.0034827446434 1989.4149491983264
 
+The covariance matrix is:
 inf,inf,inf,inf
 inf,inf,inf,inf
 inf,inf,inf,inf
@@ -39,18 +41,19 @@ Derivative of column 4 with respect to column 3
 Data was fitted as 4th order polynomial
 
 The coefficients in ascending order are:
--1286.94x**0 1.63x**1 -182.97x**2 331.57x**3 -165759.55x**4
+-1286.94*x**0 1.63*x**1 -182.97*x**2 331.57*x**3 -165759.55*x**4
 -1286.9377394505518 1.6337107717557948 -182.968329863577 331.5691575658126 -165759.55154083908
 
-The coefficients for the 1 derivative are:
+Data was appended to the column 11The coefficients for the 1 derivative are:
 1.6337107717557948 -365.936659727154 994.7074726974378 -663038.2061633563
 
-The coefficients for the 2 derivative are:
+Data was appended to the column 12The coefficients for the 2 derivative are:
 -365.936659727154 1989.4149453948755 -1989114.618490069
 
-The coefficients for the 3 derivative are:
+Data was appended to the column 13The coefficients for the 3 derivative are:
 1989.4149453948755 -3978229.236980138
 
+The covariance matrix is:
 inf,inf,inf,inf,inf
 inf,inf,inf,inf,inf
 inf,inf,inf,inf,inf
@@ -62,21 +65,22 @@ Derivative of column 4 with respect to column 3
 Data was fitted as 5th order polynomial
 
 The coefficients in ascending order are:
--1286.94x**0 1.63x**1 -182.97x**2 273.13x**3 -165801.42x**4 223749060.04x**5
+-1286.94*x**0 1.63*x**1 -182.97*x**2 273.13*x**3 -165801.42*x**4 223749060.04*x**5
 -1286.9377394505514 1.6337137136869626 -182.9683331840891 273.13163153468594 -165801.4157624097 223749060.04367515
 
-The coefficients for the 1 derivative are:
+Data was appended to the column 14The coefficients for the 1 derivative are:
 1.6337137136869626 -365.9366663681782 819.3948946040578 -663205.6630496389 1118745300.2183757
 
-The coefficients for the 2 derivative are:
+Data was appended to the column 15The coefficients for the 2 derivative are:
 -365.9366663681782 1638.7897892081155 -1989616.9891489167 4474981200.873503
 
-The coefficients for the 3 derivative are:
+Data was appended to the column 16The coefficients for the 3 derivative are:
 1638.7897892081155 -3979233.9782978334 13424943602.620508
 
-The coefficients for the 4 derivative are:
+Data was appended to the column 17The coefficients for the 4 derivative are:
 -3979233.9782978334 26849887205.241016
 
+The covariance matrix is:
 inf,inf,inf,inf,inf,inf
 inf,inf,inf,inf,inf,inf
 inf,inf,inf,inf,inf,inf
@@ -89,21 +93,22 @@ Derivative of column 4 with respect to column 3
 Data was fitted as 6th order polynomial
 
 The coefficients in ascending order are:
--1286.94x**0 1.63x**1 -182.94x**2 273.13x**3 -483576.91x**4 223761486.38x**5 991985391713.57x**6
+-1286.94*x**0 1.63*x**1 -182.94*x**2 273.13*x**3 -483576.91*x**4 223761486.38*x**5 991985391713.57*x**6
 -1286.9377394508303 1.633713714917869 -182.94344508997312 273.1340424178313 -483576.9091894722 223761486.38475242 991985391713.5673
 
-The coefficients for the 1 derivative are:
+Data was appended to the column 18The coefficients for the 1 derivative are:
 1.633713714917869 -365.88689017994625 819.402127253494 -1934307.6367578888 1118807431.923762 5951912350281.403
 
-The coefficients for the 2 derivative are:
+Data was appended to the column 19The coefficients for the 2 derivative are:
 -365.88689017994625 1638.804254506988 -5802922.9102736665 4475229727.695048 29759561751407.016
 
-The coefficients for the 3 derivative are:
+Data was appended to the column 20The coefficients for the 3 derivative are:
 1638.804254506988 -11605845.820547333 13425689183.085144 119038247005628.06
 
-The coefficients for the 4 derivative are:
+Data was appended to the column 21The coefficients for the 4 derivative are:
 -11605845.820547333 26851378366.170288 357114741016884.2
 
+The covariance matrix is:
 inf,inf,inf,inf,inf,inf,inf
 inf,inf,inf,inf,inf,inf,inf
 inf,inf,inf,inf,inf,inf,inf

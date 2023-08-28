@@ -5,6 +5,7 @@ import copy
 import datetime as dt
 import sys 
 from itertools import product
+from scipy.optimize import curve_fit
 
 
 class Gaussian_File:
@@ -147,9 +148,8 @@ def read_input_file(path_to_file, extension = ".com"):
         start, finish = np.longdouble(start), np.longdouble(finish)
         if type_space == "linear":
             step = int(step)
-        elif type_space == "log":
-            step = int(step)
-        else: step = np.longdouble(step)
+        if type_space == "step":
+            step = np.longdouble(step)
         map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
         #Generate the values of the electric field over the specified direction
         e_fields = vary_e_field_in_certain_direction(c1, c2, c3, var_range = [start, finish, step], type_coordinates = type_coordinates, type_space = type_space)
@@ -172,7 +172,7 @@ def read_input_file(path_to_file, extension = ".com"):
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:  #If 0 field, it will not write the field
                     None
                 else: 
-                    file.write("\n\n" + " ".join(["{:.6f}".format(x) for x in field]) + "\n\n")
+                    file.write("\n\n" + " ".join(["{:.4e}".format(x) for x in field]) + "\n\n")
             change_line_in_file(file_name, "%chk", "%chk=" + os.path.basename(file_name[:-4]) + ".chk")    #Adding the checkpoint file name
             if new_kw:
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:
@@ -185,7 +185,9 @@ def read_input_file(path_to_file, extension = ".com"):
             else:
                 if "automatically_update_kw" in kw_without_input_for_function:      #Checking the keyword for the field calculation
                     add_keywords(file_name, *["IOp(3/14=-6)"])
-                if "update_old_chk" in kw_without_input_for_function:
+                if "update_old_chk" not in kw_without_input_for_function:               #Checking the keyword for the field calculation
+                    None
+                else:
                     index_update_old_chk = kw_without_input_for_function.index("update_old_chk")
                     type_old_chk_kw = input_for_function[index_update_old_chk]          #Getting info about how we update old chk file
                     if (0, 0, 0) in e_fields:                                           #Studying the case when we have 0 field
@@ -201,8 +203,6 @@ def read_input_file(path_to_file, extension = ".com"):
                                 #Because we will make references to the lower boundary files
                                 #!!!Posible bugs!!!
                                 insert_geom(file_name, path_to_geom)
-                                None
-                            
                             else:
                                 #If we have negative values of the electric field, we will add the kw to the first file
                                 add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
@@ -214,7 +214,6 @@ def read_input_file(path_to_file, extension = ".com"):
                             if count == (len(e_fields)-1) and dont_add_chk_last_file:
                                 #Checking if we need to add kw to the last file
                                 insert_geom(file_name, path_to_geom)
-                                None
                             else:
                                 add_keywords(file_name, *["ChkBasis", "geom=check", "guess=(read)", "GFInput"])
                                 with open(log_file, "a") as log:
@@ -922,8 +921,14 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         space = np.linspace(var_range[0], var_range[1], var_range[2])
     elif type_space == "step":
         space = np.arange(var_range[0], var_range[1] + var_range[2], var_range[2])
-    elif type_space == "log":
-        space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2])
+    elif "log" in type_space.lower():
+        space = []
+        var_range[1] = int(var_range[1])
+        var_range[0] = np.float64(var_range[0])
+        var_range[2] = np.float64(var_range[2])
+        for i in range(0, var_range[1]+1):
+            space.append(var_range[0]*(var_range[2]**i))
+        space = np.array(space)
         space2 = -1 * copy.deepcopy(space)
         space = np.hstack((space2, [0], space))
     else: space = np.linspace(var_range[0], var_range[1], var_range[2])
@@ -951,6 +956,7 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         return_vector.append((x, y, z))                                            #Appending the new values to the list
 
     return return_vector
+
 
 #--------------------------------------------------------------------------
 
@@ -1052,7 +1058,6 @@ def map_number_to_direction(j, map_1):
             new_str += letter_mapping[char]                                           #Using the map to get the letter for the char i in the name
         else: new_str += char                                                         #To avoid errors, if the char is not in the map, to return the character
     return new_str                                                                    #Returning the string
-
 
 def add_keywords(path_file, *kw):
     """Add keywords to a Gaussian input file.
@@ -1329,9 +1334,9 @@ def read_calc_deriv_file(path_to_file):
     """
     path_to_folder = os.path.dirname(path_to_file)     #Getting the path to the folder
     original_file_name = os.path.basename(path_to_file)            #Getting the name of the file
-    log_file = path_to_file[:-4] + "_WARNINGS_log.txt"          #Creating the log file
+    log_file_path = path_to_file[:-4] + "_log_file.txt"          #Creating the log file
 
-    with open(log_file, "w") as log_file:                       #Creating the log file
+    with open(log_file_path, "w") as log_file:                       #Creating the log file
         log_file.write("Log file for " + original_file_name + "\n")
     
     file_input = None
@@ -1359,7 +1364,7 @@ def read_calc_deriv_file(path_to_file):
     print("-------------------------------------")
     if ("read_data" in keywords) or ("extract_from_folder" in keywords):        #Finding the path from which we will read file or a folder
         for line in file_input:
-            if "@" in line:
+            if "@" in line.lower():
                 path_to_read = line.strip()[1:]
                 break
     
@@ -1444,7 +1449,9 @@ def read_calc_deriv_file(path_to_file):
                 list_of_variables[i.split("=")[0]] = [float(x) for x in i.split("=")[1][1:-1].split(",")]
             else: list_of_variables[i.split("=")[0]] = [int(x) for x in i.split("=")[1][1:-1].split(",")]
     else: list_of_variables = {}
-
+    romberg_line_number = 0
+    curve_fit_line_number = 0
+    statistics_test_line_number = 0
     for i, line in enumerate(file_input):
         data = {"order":1, "up": 5, "down": 4, "points": 3, "step": 1}          #Creating the data dictionary with default values
         if "derivative" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                                #Looking for the derivative line
@@ -1467,7 +1474,124 @@ def read_calc_deriv_file(path_to_file):
                             data_copied[key] = i                                
                             names, matrix = print_derivatives(names, matrix, derivative_x_vector_index= data_copied["down"], derivative_y_vector_index = data_copied["up"], order = data_copied["order"], n_points = data_copied["points"], step = data_copied["step"])
             else: names, matrix = print_derivatives(names, matrix, derivative_x_vector_index= data_copied["down"], derivative_y_vector_index = data_copied["up"], order = data_copied["order"], n_points = data_copied["points"], step = data_copied["step"])
-    
+        if "romberg" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                              #Looking for the derivative line
+            
+            """
+            This part will do Generalized Romberg Evaluation of Derivatives 
+            """
+            
+            romberg_line_number += 1 #For the case when we do evaluation for multiple different data 
+            data_romberg = {"order":1, "up": 5, "down": 4, "a" : 2, "min_size_matrix": 3} #Creating the data dictionary with default values
+            keys = line.strip().split(",")                                      #The line looks like this Romberg(Order=1,up=4,down=3)
+            keys[-1] = keys[-1][:-1]                                            #Removing the ) from the last key
+            keys[0] = keys[0][8:]                                               #Removing the romberg from the first key and the (
+            for key in keys:
+                data_romberg[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower() #Introducing the data in the dictionary
+            for key, value in data_romberg.items():                             #Converting the values to the correct type
+                if key.lower() == "a":
+                    data_romberg[key] = float(value)
+                else: data_romberg[key] = int(value)
+            input_matrix = np.longdouble(copy.deepcopy(matrix))                 #Copying the original matrix data
+            """            
+            Getting the values from the Romberg function
+            Romberg matrix - Matrix istfel
+            min_elem_index - First two indexes are Position of the left corner of the stability region
+            Second two indexes are the size of the stability region, number of rows and columns respectively
+            Resulting matrix - see romberg file. It stores the difference between maximal and minimal values
+            of all posible submatrices of the Romberg Matrix
+            """
+            romberg_matrix, min_element_index, resulting_matrix = romberg_procedure(vector_x=input_matrix[:, data_romberg["down"]], vector_y=input_matrix[:, data_romberg["up"]], order = data_romberg["order"], a = data_romberg["a"], min_size_matrix=data_romberg["min_size_matrix"])
+            with open(log_file_path, "a") as log:
+                log.write("This data is for Romberg line number " + str(romberg_line_number) + "\n")
+                log.write("The Romberg matrix is:\n\n")
+                np.savetxt(log, romberg_matrix, fmt="%s", delimiter=",")
+                log.write("The starting possition of the stability region is: " + ", ".join([str(x) for x in min_element_index[0:2]]) + "\n")
+                log.write("The number of rows in the stability region is: " + str(min_element_index[2]) + "number of columns is" + str(min_element_index[3]) + "\n")
+                log.write("The difference of points in this region is " + str(resulting_matrix[min_element_index[0], min_element_index[1], min_element_index[2], min_element_index[3]]) + "\n")
+        if "curve_fit" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                           #Looking for the derivative line         
+            """
+            This part will do curve fitting
+            """
+
+            map_orders = {"1" : "1st", "2": "2nd", "3" : "3rd", "4" : "4th", "5" : "5th", "6" : "6th", "7" : "7th", "8" : "8th", "9" : "9th", "10" : "10th"}
+            
+            curve_fit_line_number += 1 #For the case when we do evaluation for multiple different data
+            data_curve_fit = {"order":1, "up": 5, "down": 4} #Creating the data dictionary with default values
+            keys = line.strip().split(",")                   #The line looks like this Curve_fit(Order=1,up=4,down=3)
+            keys[-1] = keys[-1][:-1]                         #Removing the ) from the last key
+            keys[0] = keys[0][10:]                           #Removing the curve_fit from the first key and the (
+            for key in keys:
+                if "np" in key:
+                    data_curve_fit[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower()
+                else:
+                    data_curve_fit[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
+            popt, pconv = func_fit(np.float64(matrix[:, data_curve_fit["down"]]), np.float64(matrix[:, data_curve_fit["up"]]), order = data_curve_fit["order"])
+            with open(log_file_path, "a") as log:
+                log.write("-------------------------------------\n")
+                log.write("This data is for Curve_fit line number " + str(curve_fit_line_number) + "\n")
+                log.write(f"Derivative of column {str(data_curve_fit['up'])} with respect to column {str(data_curve_fit['down'])}\n")
+                derivative_order_string = map_orders[str(data_curve_fit["order"])] if str(data_curve_fit["order"]) in map_orders else str(data_curve_fit["order"])
+                log.write(f"Data was fitted as {derivative_order_string} order polynomial\n\n")
+                log.write("The coefficients in ascending order are:\n")
+                log.write(" ".join([(str(format(elem, ".2f")) + "*x**" + str(index)) for index, elem in enumerate(popt)]) + "\n")
+                log.write(" ".join([str(x) for x in popt]) + "\n")
+                log.write("\n")
+                count = 1
+                coef_to_print = copy.deepcopy(popt)
+                for i in range(len(popt)):
+                    temp_array = copy.deepcopy(coef_to_print[1:])
+                    coef_to_print = []
+                    for index, elem in enumerate(temp_array):
+                        coef_to_print.append(elem * (index + 1))
+                    matrix = add_data_from_linear_fit(matrix, np.float64(matrix[:, data_curve_fit["down"]]), coef_to_print)             #Adding values to the matrix, from the determined coefficients
+                    names.append(f"(From Linear Fit Derivative Order {str(count)} of Column {str(data_curve_fit['up'])} with respect to Column {str(data_curve_fit['down'])} Polynomial Order {str(data_curve_fit['order'])})")
+                    log.write(f"Data was appended to the column {str(matrix.shape[1] - 1)}")
+                    log.write(f"The coefficients for the {str(count)} derivative are:\n")
+                    log.write(" ".join([str(x) for x in coef_to_print]) + "\n\n")
+                    count += 1
+                    if count == 5:
+                        break
+                    if count == (len(popt) - 1):
+                        break
+                log.write("The covariance matrix is:\n")
+                np.savetxt(log, pconv, fmt="%s", delimiter=",")
+                    #Writting first derivative and all possible derivatives of the function
+        if "statistics_test" in line.lower().strip() and "@" not in line.strip().lower() and "path_to_save" not in line.strip().lower():                           #Looking for the mae line
+            """
+            This line will calculate Mean Absolute Error 
+            https://en.wikipedia.org/wiki/Mean_absolute_error#:~:text=In%20statistics%2C%20mean%20absolute%20error,an%20alternative%20technique%20of%20measurement.
+            Mean Absolute Percentage Error
+            https://en.wikipedia.org/wiki/Mean_absolute_percentage_error
+            Root-mean-square deviation
+            https://en.wikipedia.org/wiki/Root-mean-square_deviation
+            It will also print the biggest Difference between the two values (MAX, and MAXRE)            
+            """
+            statistics_test_line_number += 1 #For the case when we do evaluation for multiple different data
+            data_statistics_test = {"column1" : 5, "column2" : 4, "name" : "Name"}       #Column1 = down, Column2 = up
+            keys = line.strip().split(",")                                       #The line looks like this statistics_test(up=4,down=3)
+            keys[-1] = keys[-1][:-1]                                             #Removing the ) from the last key
+            keys[0] = keys[0][16:]                                                #Removing the mae from the first key and the (
+            for key in keys:
+                if "name" in key.lower():
+                    data_statistics_test[key.split("=")[0].strip().lower()] = key.split("=")[1].strip().lower()
+                else:
+                    data_statistics_test[key.split("=")[0].strip().lower()] = int(key.split("=")[1].strip().lower())
+            input_matrix = copy.deepcopy(matrix)              #Copying the original matrix 
+            mae_val = mae(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            mape_val = mape(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            rmse_val = rmse(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            max_val = max(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            maxre_val = maxre(np.longdouble(input_matrix[:, data_statistics_test["column1"]]), np.longdouble(input_matrix[:, data_statistics_test["column2"]]))
+            with open(log_file_path, "a") as log:
+                log.write("-------------------------------------\n")
+                log.write("This data is for Statistics_Test line number " + str(statistics_test_line_number) + "\n")
+                log.write(f"Name: {data_statistics_test['name']}, Column1 is {data_statistics_test['column1']}, Column2 is {data_statistics_test['column2']} \n")
+                log.write(f"Filename is {original_file_name}\n")
+                log.write(f"MAE: {mae_val}\n")
+                log.write(f"MAPE: {mape_val}%\n")
+                log.write(f"RMSE: {rmse_val}\n")
+                log.write(f"MAX: {max_val}\n")
+                log.write(f"MAXRE: {maxre_val}%\n")
     current_time = dt.datetime.now()                                            #To be used to save the data if the name to save is not specified
     path_to_save = "data_" + str(current_time.hour) + "h_" + str(current_time.minute) + "min.csv"
     for line in file_input:                                                     #Looking for path to save
@@ -1475,6 +1599,7 @@ def read_calc_deriv_file(path_to_file):
             path_to_save = line.strip().split("=")[1]
             break
     np.savetxt(path_to_save, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))    #Saving the data
+
 
 #-----------------
 def change_line_in_file(file_path, pattern, new_line):
@@ -1492,6 +1617,215 @@ def change_line_in_file(file_path, pattern, new_line):
                 with open(file_path, "w") as file_1:
                     file_1.writelines(lines)
                 break
+
+def func_fit(vect_x, vect_y, order):
+
+    if isinstance(vect_x, np.float64):
+        None
+    else: 
+        vect_x = np.float64(vect_x)
+    if isinstance(vect_y, np.float64):
+        None
+    else:
+        vect_y = np.float64(vect_y)
+    def func1(x, a, b):
+        return a + b*x
+
+    def func2(x, a, b, c):
+        return a + b*x + c*x**2
+
+    def func3(x, a, b, c, d):
+        return a + b*x + c*x**2 + d*x**3
+
+    def func4(x, a, b, c, d, e):
+        return a + b*x + c*x**2 + d*x**3 + e*x**4
+
+    def func5(x, a, b, c, d, e, f):
+        return a + b*x + c*x**2 + d*x**3 + e*x**4 + f*x**5
+
+    def func6(x, a, b, c, d, e, f, g):
+        return a + b*x + c*x**2 + d*x**3 + e*x**4 + f*x**5 + g*x**6
+
+    def test1(x, a, b, c, s1, s2, c1, c2 ):
+        return a + b*x + c*x**2 + s1*np.sin(s2*x) + c1*np.cos(c2*x)
+     
+    def polynomial_fit(x,y, n):
+        result = np.polynomial.polynomial.polyfit(x, y, n)
+        return result
+    
+    order = str(order)
+    polynomials_that_can_be_fitted = ["1", "2", "3", "4", "5", "6"]
+    test_parameters = False
+    if order in polynomials_that_can_be_fitted:
+        test_parameters = np.polynomial.polynomial.polyfit(vect_x, vect_y, int(order))
+
+    map_func = {"1" : func1, "2" : func2, "3" : func3, "4" : func4, "5" : func5, "6" : func6, "test1" : test1}
+    func = map_func[order]
+    if isinstance(test_parameters, np.ndarray):
+        popt, pconv = curve_fit(func, vect_x, vect_y, p0 = test_parameters)
+    else:
+        popt, pconv = curve_fit(func, vect_x, vect_y)
+    return popt, pconv
+
+
+def add_data_from_linear_fit(matrix, vector_x, coef):
+    if isinstance(vector_x, np.longdouble):
+        None
+    else:
+        vector_x = np.longdouble(vector_x)
+    if isinstance(coef, np.longdouble):
+        None
+    else:
+        coef = np.longdouble(coef)
+
+    """
+    This function will add to matrix, a new column with vector_x multiplied by coef.
+    """
+    def func(x, coef):
+        sum_1 = 0
+        for index, elem in enumerate(coef):
+            sum_1 += elem * (x ** (index))
+        return sum_1
+    vector_y = func(vector_x, coef)
+    matrix = np.column_stack((matrix, vector_y))
+    return matrix 
+
+def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2):
+    """
+    Function to Generate the Romberg Matrix
+    h - the smallest step size
+    a - coefficient for the Generalized Romberg Procedure
+    k - is related to the distance from of the initial points from x = 0
+    min_size_matrix - the minimum size of the matrix for looking for stability region in the Resulting Romberg Matrix
+    RR1, RR2, RR3, RR4 - are the relations for the first, second, third and fourth derivatives for Romberg procedure
+    PP1, PP2, PP3, PP4 - iterative formulas to improve the generalized romberg procedure
+    Data submitted to this function is in the form of vectors, which start from the most negative value, go to zero, and then
+    go to the most positive value. The vectors are of the same size.
+    This function also returns the stability region for the Romber Matrix. 
+    It stores in four dimensional tensors all maximum and minimum values of all the possible submatrices of the Romberg Matrix.
+    For example, Min[row, column, sub_row, sub_column] - row and column are the starting possition of the submatrix
+    The sub_row and sub_column are the length and width of the submatrix. Min stores the minimal values, max stores the max values in this submatrix. 
+    Then we do the difference of Max and Min matrix, and we look for the smallest element of it. 
+    The indexes of the smallest element will tell us the position of the stability region.  
+    """
+    def RR1(fp1, fm1, h, a, k):
+        return (fp1 - fm1)/(2*(a**k) *h)
+    def RR2(f0, fp1, fm1, h, a, k): 
+        return (fm1 + fp1 - 2 * f0)/(((a**k)*h)**2)
+    def RR3(fp1, fm1, fp2, fm2, h, a, k):
+        return 3*(-fm2 + a*fm1 - a*fp1 + fp2)/(a*(a**2 -1)*((a**k)*h)**3)
+    def RR4(f0, fp1, fm1, fp2, fm2, h, a, k):
+        first_term = 12*(fm2 - (a**2)*fm1 + 2*(a**2-1)*f0)/((a**2)*(a**2 - 1)*((a**k) * h)**4)
+        second_term = 12*(-(a**2)*fp1 + fp2)/((a**2) * (a**2 - 1) * ((a**k) * h)**4)
+        return first_term + second_term
+    order = str(order)
+    
+    zero_index = int((len(vector_x) - 1)/2)  #Vector_x or vector_y will always has an odd number of elements
+    h = abs(vector_x[zero_index] - vector_x[zero_index + 1]) 
+    if order == "1" or order == "2":
+        p_max = int((len(vector_x)-1)/2) - 1
+    if order == "3" or order == "4":
+        p_max = int((len(vector_x)-1)/2) - 2
+
+    romberg_matrix = np.full((p_max+1, p_max+1), np.NaN, dtype=np.longdouble) #Creating an empry matrix with NaN values
+    def P1(p, k):
+        if p == 0:
+            romberg_matrix[k, p] = RR1(vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], h, a, k)
+            return RR1(vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], h, a, k)
+        else:
+            romberg_matrix[k, p] = (a**(2*p) * P1(p-1, k) - P1(p-1, k+1))/(a**(2*p) -1) 
+            return (a**(2*p) * P1(p-1, k) - P1(p-1, k+1))/(a**(2*p) -1)
+    def P2(p, k):
+        if p == 0:
+            romberg_matrix[k, p] = RR2(vector_y[zero_index], vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], h, a, k)
+            return RR2(vector_y[zero_index], vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], h, a, k)
+        else:
+            romberg_matrix[k, p] = (a**(2*p) * P2(p-1, k) - P2(p-1, k+1))/(a**(2*p) -1) 
+            return (a**(2*p) * P2(p-1, k) - P2(p-1, k+1))/(a**(2*p) -1)
+    def P3(p, k):
+        if p == 0:
+            romberg_matrix[k, p] = RR3(vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], vector_y[zero_index + k + 2], vector_y[zero_index - k - 2], h, a, k)
+            return RR3(vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], vector_y[zero_index + k + 2], vector_y[zero_index - k - 2], h, a, k)
+        else:
+            romberg_matrix[k, p] = (a**(2*p) * P3(p-1, k) - P3(p-1, k+1))/(a**(2*p) -1) 
+            return (a**(2*p) * P3(p-1, k) - P3(p-1, k+1))/(a**(2*p) -1)
+    def P4(p, k):
+        if p == 0:
+            romberg_matrix[k, p] = RR4(vector_y[zero_index], vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], vector_y[zero_index + k + 2], vector_y[zero_index - k - 2], h, a, k)
+            return RR4(vector_y[zero_index], vector_y[zero_index + k + 1], vector_y[zero_index - k - 1], vector_y[zero_index + k + 2], vector_y[zero_index - k - 2], h, a, k)
+        else:
+            romberg_matrix[k, p] = (a**(2*p) * P4(p-1, k) - P4(p-1, k+1))/(a**(2*p) -1) 
+            return (a**(2*p) * P4(p-1, k) - P4(p-1, k+1))/(a**(2*p) -1)
+    
+    map_P = {"1": P1, "2": P2, "3": P3, "4": P4}
+    map_P[order](p_max, 0)                  #Getting Romberg Matrix
+    np.savetxt("romberg_matrix.csv", romberg_matrix, delimiter = ",")
+    """
+    Evaluating Romberg Triangle
+    """
+
+    rows, columns, sub_rows, sub_columns = romberg_matrix.shape[0], romberg_matrix.shape[1], romberg_matrix.shape[0], romberg_matrix.shape[1] 
+
+    matrix_min = np.full((rows, columns, sub_rows, sub_columns), np.NaN, dtype=np.longdouble)
+    matrix_max = np.full((rows, columns, sub_rows, sub_columns), np.NaN, dtype=np.longdouble)
+    
+    for row in range(rows):
+        for column in range(columns):
+            sub_rows = rows - (row + 1)
+            sub_columns = columns - (column + 1)
+            for sub_row in range(min_size_matrix, sub_rows):
+                for sub_column in range(min_size_matrix, sub_columns):
+                    matrix = romberg_matrix[row:row+sub_row, column:column+sub_column]
+                    nan_mask = np.isnan(matrix)
+                    contains_nan = np.any(nan_mask)
+                    if contains_nan:
+                        continue
+                    else:
+                        #print(f"row: {row}, column: {column}, sub_row: {sub_row}, sub_column: {sub_column}")
+                        #print(romberg_matrix[row:row+sub_row + 2, column:column+sub_column + 2])
+                        matrix_min[row, column, sub_row, sub_column] = np.nanmin(romberg_matrix[row:row+sub_row, column:column+sub_column])
+                        matrix_max[row, column, sub_row, sub_column] = np.nanmax(romberg_matrix[row:row+sub_row, column:column+sub_column])
+    resulting_matrix = np.longdouble(matrix_max) - np.longdouble(matrix_min)
+    min_value = np.nanmin(resulting_matrix) 
+    for i1 in range(resulting_matrix.shape[0]):
+        for i2 in range(resulting_matrix.shape[1]):
+            for i3 in range(resulting_matrix.shape[2]):
+                for i4 in range(resulting_matrix.shape[3]):
+                    if resulting_matrix[i1, i2, i3, i4] == min_value:
+                        min_element_index = (i1, i2, i3, i4)
+                        print(f"Minimum element is row: {i1}, column: {i2}, sub_row: {i3}, sub_column: {i4}")
+                        print(f"Maximum element is {matrix_max[i1, i2, i3, i4]}")
+                        print(f"Minimum element is {matrix_min[i1, i2, i3, i4]}")
+                        print(f"Difference of elements of element is {resulting_matrix[i1, i2, i3, i4]}")
+                        print(romberg_matrix[i1:i1+i3, i2:i2+i4])
+                        break
+    return [romberg_matrix, min_element_index, resulting_matrix]
+
+def mae(actatual_vector, forecast_vector):
+    result_vector = np.abs(actatual_vector - forecast_vector)
+    result = np.nanmean(result_vector)
+    return result
+def mape(actual_vector, forecast_vector):
+    result_vector = np.abs((actual_vector - forecast_vector))/actual_vector
+    result = np.nanmean(result_vector) * 100
+    return result
+
+def rmse(actual_vector, forecast_vector):
+    result_vector = (actual_vector - forecast_vector)**2
+    result = np.sqrt(np.nanmean(result_vector))
+    return result
+
+def max(actual_vector, forecast_vector):
+    result_vector = np.abs(actual_vector - forecast_vector)
+    result = np.nanmax(result_vector)
+    return result
+
+def maxre(actual_vector, forecast_vector):
+    result_vector = np.abs(actual_vector - forecast_vector)/actual_vector
+    result = np.nanmax(result_vector) * 100
+    return result
+
+
 
 type_of_calculation = sys.argv[1]
 path = sys.argv[2]

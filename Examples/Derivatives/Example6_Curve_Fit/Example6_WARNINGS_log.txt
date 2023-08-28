@@ -1,0 +1,4 @@
+All the critical errors will be updated here: /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example6_Curve_Fit/Example6.txt
+
+Keywords Provided to the input are:
+read_data(delimiter=",", header)

@@ -25,5 +25,9 @@ import matplotlib.ticker as ticker
 #read_calc_deriv_file(path_m062x)
 #read_calc_deriv_file(path_lc_blyp)
 
-path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/meetings/25th_August/CD_Derivatives/stats_m062x.txt"
-read_calc_deriv_file(path)
+#path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/meetings/25th_August/CD_Derivatives/stats_m062x.txt"
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/Romberg_25th_Aug/lc_blyp_ultrafine/lib_bnnt-3_LC-BLYP.txt"
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/Romberg_25th_Aug/lc_blyp_ultrafine/lib_bnnt-3_LC-BLYP.txt"
+read_input_file(path)
+
+print("hello world")

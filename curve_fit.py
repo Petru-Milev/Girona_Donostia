@@ -75,18 +75,18 @@ def add_data_from_linear_fit(matrix, vector_x, coef):
     matrix = np.column_stack((matrix, vector_y))
     return matrix 
 
+if __name__ == "__main__":
+    #path = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example1/data_from_folder_Example1.csv"
+    path = "Examples/Derivatives/Example6_Curve_Fit/data.csv"
+    matrix = np.loadtxt(path, delimiter=',', skiprows=1, dtype=str)
+    #print(matrix.shape)
+    #print(matrix[:,3].shape)
 
-#path = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Derivatives/Example1/data_from_folder_Example1.csv"
-path = "Examples/Derivatives/Example6_Curve_Fit/data.csv"
-matrix = np.loadtxt(path, delimiter=',', skiprows=1, dtype=str)
-#print(matrix.shape)
-#print(matrix[:,3].shape)
+    left = np.float64(matrix[:,3])
+    right = np.float64(matrix[:,4])
 
-left = np.float64(matrix[:,3])
-right = np.float64(matrix[:,4])
+    #A = func_fit(left, right, "np_2")
+    #print(A)
 
-#A = func_fit(left, right, "np_2")
-#print(A)
-
-A = func_fit(left, right, 2)
-print(f"popt is {A[0]}")
+    A = func_fit(left, right, 2)
+    print(f"popt is {A[0]}")

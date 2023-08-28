@@ -3,7 +3,7 @@ from itertools import product
 import ast
 from objects_for_library import Gaussian_File
 from objects_for_library import Fchk_File
-from linear_fit import func_fit, add_data_from_linear_fit
+from curve_fit import func_fit, add_data_from_linear_fit
 from statistic import mae, mape, rmse, max, maxre
 from scipy.optimize import curve_fit
 from romberg import romberg_procedure
@@ -32,9 +32,8 @@ def read_input_file(path_to_file, extension = ".com"):
         start, finish = np.longdouble(start), np.longdouble(finish)
         if type_space == "linear":
             step = int(step)
-        elif type_space == "log":
-            step = int(step)
-        else: step = np.longdouble(step)
+        if type_space == "step":
+            step = np.longdouble(step)
         map_directions = {"0" : "X", "1" : "Y", "2" :"Z"}              #Dictionary to map the index of the direction into the letter
         #Generate the values of the electric field over the specified direction
         e_fields = vary_e_field_in_certain_direction(c1, c2, c3, var_range = [start, finish, step], type_coordinates = type_coordinates, type_space = type_space)
@@ -57,7 +56,7 @@ def read_input_file(path_to_file, extension = ".com"):
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:  #If 0 field, it will not write the field
                     None
                 else: 
-                    file.write("\n\n" + " ".join(["{:.6f}".format(x) for x in field]) + "\n\n")
+                    file.write("\n\n" + " ".join(["{:.4e}".format(x) for x in field]) + "\n\n")
             change_line_in_file(file_name, "%chk", "%chk=" + os.path.basename(file_name[:-4]) + ".chk")    #Adding the checkpoint file name
             if new_kw:
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:
@@ -862,8 +861,14 @@ def vary_e_field_in_certain_direction(c1, c2, c3, var_range, type_coordinates = 
         space = np.linspace(var_range[0], var_range[1], var_range[2])
     elif type_space == "step":
         space = np.arange(var_range[0], var_range[1] + var_range[2], var_range[2])
-    elif type_space == "log":
-        space = np.logspace(np.log10(var_range[0]), np.log10(var_range[1]), var_range[2], base = 2)
+    elif "log" in type_space.lower():
+        space = []
+        var_range[1] = int(var_range[1])
+        var_range[0] = np.float64(var_range[0])
+        var_range[2] = np.float64(var_range[2])
+        for i in range(0, var_range[1]+1):
+            space.append(var_range[0]*(var_range[2]**i))
+        space = np.array(space)
         space2 = -1 * copy.deepcopy(space)
         space = np.hstack((space2, [0], space))
     else: space = np.linspace(var_range[0], var_range[1], var_range[2])

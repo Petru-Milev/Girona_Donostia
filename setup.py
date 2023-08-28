@@ -2,15 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='girona_donostia',
-    version='0.1.3',    
+    version='0.1.8',    
     description='A package to help facilitate studying of Nonlinear optical propreties',
     url='https://github.com/Petru-Milev/Girona_Donostia',
     author='Petru Milev',
     author_email='petia.md36@gmail.com',
-    license='-',
+    license='MIT',
     packages = find_packages(include=['girona_donostia', 'girona_donostia.*']),
-    install_requires=['numpy',                     
-                      ],
 
     classifiers=[
         'Development Status :: 1 - Planning',

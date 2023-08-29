@@ -1,0 +1,4 @@
+All the critical errors will be updated here: /Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Create_Input_Files/Example8/lib_bnnt-3_LC-BLYP.txt
+
+Keywords Provided to the input are:
+gen_e_field_direction(0, 0, 1, 0.0001, 10, 2, cartesian, log) read_geom() automatically_update_kw

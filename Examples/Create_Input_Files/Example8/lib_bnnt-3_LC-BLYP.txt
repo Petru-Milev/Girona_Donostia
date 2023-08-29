@@ -2,8 +2,7 @@ keywords: gen_e_field_direction(0, 0, 1, 0.0001, 10, 2, cartesian, log) read_geo
 automatically_update_kw
 
 ***start_gaussian_file***
-%nproc=8
-%mem=24Gb
+	
 %chk=lib_bnnt-3_LC-BLYP.chk
 #P cam-b3lyp/6-31g(d')
 nosymm gfinput pop=full polar=(dcshg,cubic) cphf=sg1grid

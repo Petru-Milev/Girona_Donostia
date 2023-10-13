@@ -6,9 +6,9 @@ import matplotlib.ticker as ticker
 #Path to the file from where we read the data 
 #Modify this to change your file 
 
-path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/m062x_c_ultrafine.csv"
+path = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/wb97x/2e_15_scf_13/data_2e_15_scf_13_5k_points.csv"
 
-
+#path_conver11 = "/Users/petrumilev/Documents/projects_python/File_for_proj_girona_donostia/derivatives/data_5k_points/wb97x/numerical_derivatives_nb_wb97x.csv"
 with open(path, "r") as file:
     lines = file.readlines()
 names = lines[0].strip().split(",")
@@ -28,20 +28,23 @@ column - column of the data
 dx - x axis name
 dy - y axis name
 """
-dr = "Fourth"
+dr = "Third"
 nr_poin = str(5)
 what = "Energy"
-column = 83
+column = 28
 dx = "Z"
-dy = "d^4 Energy/dZ^4"
+dy = "d^3E/dz^3"
+a = 120
 
 ###!!! Change here for the title of the plots
-fig.suptitle(dr + " Derivative of "+what+" m062x_c_ultrafine," + nr_poin + " points", fontsize = 40)
+fig.suptitle(dr + " Derivative of "+what+" wb97x_2e_15_scf_13_, " + nr_poin + " derivative_points", fontsize = 40)
 
-for i, ax in enumerate(axes_flattened):
+for i, ax in enumerate(axes_flattened): 
     #!!! Change here for column of the data. np.float64(matrix[:,3]) is by default. Change the 3 to the desired column to use it as x axis
-    ax.plot(np.float64(matrix[:,3]), np.float64(matrix[:, column + i]),  ".", label = "step = " + str(i+1), markersize = 12)
-    ax.set_title("Step = " + str(i+1), fontsize = 20)
+    ax.plot(np.float64(matrix[:,3]), np.float64(matrix[:, 7]),marker ="o", label = "analytical")
+    ax.plot(np.float64(matrix[:,3]), -1*np.float64(matrix[:, column + i]),  ".", label = "h = " + str("{:.2e}".format(abs(np.float64(matrix[(i+a)*1+1,3]) - np.float64(matrix[0,3])))), markersize = 12)
+
+    ax.set_title("Step = " + str((i+a)*1+1), fontsize = 20)
     ax.set_xlabel(dx, fontsize = 16)
     ax.set_ylabel(dy, fontsize = 16)
     ax.get_xaxis().get_major_formatter().set_useOffset(False)
@@ -49,6 +52,7 @@ for i, ax in enumerate(axes_flattened):
     ax.legend(fontsize = 24)
     ax.tick_params(axis='x', labelsize=16) 
     ax.tick_params(axis='y', labelsize=16) 
+    ax.set_ylim(700, 2500)
     x_formatter = ticker.FormatStrFormatter('%.4f')
     y_formatter = ticker.FormatStrFormatter('%.2f')
     ax.xaxis.set_major_formatter(x_formatter)
@@ -56,4 +60,5 @@ for i, ax in enumerate(axes_flattened):
 
 plt.tight_layout()
 #!!! Change here for the name of the file
-plt.savefig("subplot_" + dr + "_deriv_" + what + "_" + nr_poin +  "_points_m062x_ultrafine.png")
+#plt.savefig(f"Overlay_subplot_{dr}_deriv_{what}_{nr_poin}_points_m062x_ultrafine_5k_big_steps_25.png")
+plt.savefig("wb97x_2e_15_scf_15.png")

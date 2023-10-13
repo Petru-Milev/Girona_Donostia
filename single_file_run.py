@@ -164,7 +164,7 @@ def read_input_file(path_to_file, extension = ".com"):
             #Input_kw M062X_101_Z+0.001900.com
             if field[0] == 0 and field[1] == 0 and field[2] == 0:
                 file_name  = path_to_file[:-4] + "_" + "_".join([str(x) + "+0" for x in directions]) + extension 
-            else: file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_directions[str(i)], "+" + "{:.6f}".format(x) if x > 0 else "{:.6f}".format(x))) for i, x, in enumerate(field) if x!= 0]) + extension
+            else: file_name = path_to_file[:-4] + "_" + "_".join(["".join((map_directions[str(i)], "+" + "{:.8f}".format(x) if x > 0 else "{:.8f}".format(x))) for i, x, in enumerate(field) if x!= 0]) + extension
             
             with open (file_name, "w") as file:                        #Creating the file                           
                 for line in lines:                                     #Writting line of the file
@@ -172,7 +172,7 @@ def read_input_file(path_to_file, extension = ".com"):
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:  #If 0 field, it will not write the field
                     None
                 else: 
-                    file.write("\n\n" + " ".join(["{:.4e}".format(x) for x in field]) + "\n\n")
+                    file.write("\n\n" + " ".join(["{:.8e}".format(x) for x in field]) + "\n\n")
             change_line_in_file(file_name, "%chk", "%chk=" + os.path.basename(file_name[:-4]) + ".chk")    #Adding the checkpoint file name
             if new_kw:
                 if field[0] == 0 and field[1] == 0 and field[2] == 0:
@@ -1435,7 +1435,7 @@ def read_calc_deriv_file(path_to_file):
                 name1 = os.path.join(os.path.split(line.strip().split("=")[1])[0], "data_from_folder" + "_" + os.path.split(line.strip().split("=")[1])[1]) 
                 print(name1)
                 np.savetxt(name1, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
-        else: np.savetxt("data_from_folder" + str(current_time.hour) +"h_" + str(current_time.minute) + "'.csv", matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
+        else: np.savetxt("data_from_folder" + str(current_time.hour) +"h_" + str(current_time.minute) + "min.csv", matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
 
     if "var" in keywords:                                                       #Specifiying a variable to iterate over
         index = keywords.index("var")       

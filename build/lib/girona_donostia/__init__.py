@@ -14,7 +14,8 @@ from girona_donostia.romberg import *
 from girona_donostia.statistic import * 
 from girona_donostia.curve_fit import *
 
-print(f"Link to Wiki Page is: {'https://github.com/Petru-Milev/Girona_Donostia/wiki'}")
-
-__version__ = "0.1.8"
+__version__ = "0.1.10"
 __author__ = "Petru Milev"
+
+print(f"Link to Wiki Page is: {'https://github.com/Petru-Milev/Girona_Donostia/wiki'}")
+print(f"Version of the package is: {__version__}")

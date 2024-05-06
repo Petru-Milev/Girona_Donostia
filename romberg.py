@@ -1,5 +1,4 @@
 import numpy as np 
-import matplotlib.pyplot as plt
 
 
 def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2, return_only_value = True):

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "girona_donostia"
-version = "0.1.8"
+version = "0.1.12"
 license ={file = "LICENSE"}
 authors = [
   { name="Petru Milev", email="petia.md36@gmail.com" },

@@ -1,6 +1,7 @@
 import numpy as np 
 
-def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2):
+
+def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2, return_only_value = True):
     """
     Function to Generate the Romberg Matrix
     h - the smallest step size
@@ -70,6 +71,9 @@ def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2)
     map_P = {"1": P1, "2": P2, "3": P3, "4": P4}
     map_P[order](p_max, 0)                  #Getting Romberg Matrix
     np.savetxt("romberg_matrix.csv", romberg_matrix, delimiter = ",")
+    #plt.imshow(romberg_matrix, cmap='hot', interpolation='nearest')
+    #plt.colorbar()
+    #plt.savefig("romberg_matrix_heatmap.png")
     """
     Evaluating Romberg Triangle
     """
@@ -103,10 +107,36 @@ def romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 2)
                 for i4 in range(resulting_matrix.shape[3]):
                     if resulting_matrix[i1, i2, i3, i4] == min_value:
                         min_element_index = (i1, i2, i3, i4)
-                        print(f"Minimum element is row: {i1}, column: {i2}, sub_row: {i3}, sub_column: {i4}")
-                        print(f"Maximum element is {matrix_max[i1, i2, i3, i4]}")
-                        print(f"Minimum element is {matrix_min[i1, i2, i3, i4]}")
-                        print(f"Difference of elements of element is {resulting_matrix[i1, i2, i3, i4]}")
-                        print(romberg_matrix[i1:i1+i3, i2:i2+i4])
+                        #print(f"Minimum element is row: {i1}, column: {i2}, sub_row: {i3}, sub_column: {i4}")
+                        #print(f"Maximum element is {matrix_max[i1, i2, i3, i4]}")
+                        #print(f"Minimum element is {matrix_min[i1, i2, i3, i4]}")
+                        #print(f"Difference of elements of element is {resulting_matrix[i1, i2, i3, i4]}")
+                        #print(romberg_matrix[i1:i1+i3, i2:i2+i4])
+                        value_to_return = np.average(romberg_matrix[i1:i1+i3, i2:i2+i4])
                         break
-    return [romberg_matrix, min_element_index, resulting_matrix]
+    #value_to_return = 0 
+    if return_only_value:
+        return value_to_return
+    else:
+        return [romberg_matrix, min_element_index, resulting_matrix]
+
+if __name__ == "__main__":
+    #v_x = [-0.01619826068, -0.0115701862, -0.00826441871, -0.00590315622, -0.00421654016, -0.0030118144, -0.002151296, -0.00153664, -0.0010976, -0.000784, -0.00056, -0.0004, 0, 0.0004, 0.00056, 0.000784, 0.0010976, 0.00153664, 0.002151296, 0.0030118144, 0.00421654016, 0.00590315622, 0.00826441871, 0.0115701862, 0.01619826068]
+    v_x = [-0.0256, -0.0128, -0.0064, -0.0032, -0.0016, -0.0008, -0.0004, 0, 0.0004, 0.0008, 0.0016, 0.0032, 0.0064, 0.0128, 0.0256]
+    #print(len(v_x))
+    #v_x = [-0.4096 ,-0.2048, -0.1024, -0.0512, -0.0256, -0.0128, -0.0064, -0.0032, 0, 0.0032, 0.0064, 0.0128, 0.0256, 0.0512, 0.1024, 0.2048, 0.4096]
+    v_x = np.float64(np.array(v_x))
+    a = 2.0
+    a = np.float64(a)
+    #v_y = -a/np.tan(v_x + 0.04)
+    #v_y = np.sin(2*(v_x - 3)) * np.exp(-1/10 * (v_x-3)**2)
+    #print(v_y)
+    #v_x = np.array([-0.08, -0.04, -0.02, -0.01, -0.005, 0, 0.005, 0.01, 0.02, 0.04, 0.08])
+    #v_y = np.array([-76.3618181251, -76.3653502973, -76.3663297729, -76.3665877636, -76.3666539614, 0,  -76.3666533658, -76.3665834835, -76.3662964810, -76.3650852057, -76.3596812418])
+    v_x = np.array([-16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16]) + 10
+    v_y = v_x**2 + 10 
+    A = romberg_procedure(v_x, v_y, order = 1, a = 2, min_size_matrix= 2, return_only_value = False)
+    print(A[0])
+    A = np.vstack((v_x, v_y)).T
+    #print(A)
+    np.savetxt("data_for_romberg.csv", A, delimiter = ",", fmt='%s')

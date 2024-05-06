@@ -1654,7 +1654,7 @@ def read_calc_deriv_file(path_to_file):
                 name1 = os.path.join(os.path.split(line.strip().split("=")[1])[0], "data_from_folder" + "_" + os.path.split(line.strip().split("=")[1])[1]) 
                 print(name1)
                 np.savetxt(name1, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
-        else: np.savetxt("data_from_folder" + str(current_time.hour) +"h_" + str(current_time.minute) + "'.csv", matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
+        #else: np.savetxt("data_from_folder" + str(current_time.hour) +"h_" + str(current_time.minute) + "'.csv", matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))
 
     if "var" in keywords:                                                       #Specifiying a variable to iterate over
         index = keywords.index("var")       
@@ -1824,6 +1824,8 @@ def make_profiles_romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_si
     This function will use the Romberg procedure to calculate the derivatives
     Returns a list with x, y values
     """
+    vector_x = np.array(vector_x)
+    vector_y = np.array(vector_y)
     if spacing_of_space == "linear":
         range_romberg = np.array([2**x for x in range(1, nr_elements+1)])
         range_romberg = np.concatenate((-range_romberg[::-1], [0], range_romberg))

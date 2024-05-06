@@ -37,9 +37,9 @@ path_to_folder=$(dirname $path_to_file)
 input=$(basename $path_to_file)
 cd $path_to_folder
 
-cat << eof > single_file.job
+cat << eof > single_file_${input}.job
 #!/bin/bash
-#SBATCH --partition=${partition}
+#SBATCH --qos=${partition}
 #SBATCH --job-name=${name}
 #SBATCH --cpus-per-task=${cpu}
 #SBATCH --mem=${memory}gb
@@ -68,4 +68,4 @@ g16 < $input > "\$(basename $input .com)".log
 
 eof
 
-sbatch single_file.job
+sbatch single_file_${input}.job

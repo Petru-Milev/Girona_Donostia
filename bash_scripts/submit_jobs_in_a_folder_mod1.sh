@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#Difference between this and default file, is 
+#that here we also have formchk included
+
 name="name"
 memory=10
 cpu=5
@@ -82,6 +85,11 @@ for file in \$(ls -1v *.com | grep -v '+0.com'); do
 g16 < \$file > "\$(basename \$file .com)".log
 echo "File \$file submitted"
 done
+
+for file in \$(ls *.chk); do
+name=\$(basename \$file .chk)
+formchk \$file \${name}.fchk
+done 
 
 eof
 

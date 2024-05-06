@@ -78,9 +78,18 @@ else
     fi
 fi
 
+to_save="empty_file.chk"
+to_delete="empty_file.chk"
 for file in \$(ls -1v *.com | grep -v '+0.com'); do
 g16 < \$file > "\$(basename \$file .com)".log
 echo "File \$file submitted"
+formchk \$(basename \$file .com).chk \$(basename \$file .com).fchk
+echo "created \$(basename \$file .com).fchk"
+to_delete=\${to_save}
+rm \${to_delete}
+echo "removed \${to_delete}"
+to_save=\$(basename \$file .com).chk
+
 done
 
 eof

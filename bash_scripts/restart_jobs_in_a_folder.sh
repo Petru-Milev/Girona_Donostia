@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#This file is restarting jobs which have chk files 
+#For very big jobs were chk are transformed into fchk check 
+#restart_very_long_jobs..
+
 name="name"
 memory=10
 cpu=5
@@ -36,7 +40,7 @@ echo "partition: ${partition}"
 cd $path_to_folder
 echo "Moving to $(pwd)"
 
-cat << eof > jobfile.job
+cat << eof > restart.job
 #!/bin/bash
 #SBATCH --qos=${partition}
 #SBATCH --job-name=${name}
@@ -73,16 +77,30 @@ then
 else
     if [ -e \$origin_file ]
     then
-        g16 < \$origin_file > "\$(basename \$origin_file .com)".log 
-        echo "File \$origin_file submitted"
+    	for i in \$(grep "%chk=" \$origin_file | cut -d '=' -f 2); do
+	if [ -f \$i ]
+	then 
+		echo "Found chk file for \$origin_file , not computing it"
+	else
+        	g16 < \$origin_file > "\$(basename \$origin_file .com)".log 
+        	echo "File \$origin_file submitted"
+	fi
+	done
     fi
 fi
 
 for file in \$(ls -1v *.com | grep -v '+0.com'); do
+for i in \$(grep "%chk=" \$file | cut -d '=' -f 2); do
+if  [ -f \$i ]
+then
+echo "Found chk file \$i for \$file . Not computing it."
+else
 g16 < \$file > "\$(basename \$file .com)".log
 echo "File \$file submitted"
+fi
+done
 done
 
 eof
 
-sbatch jobfile.job
+sbatch restart.job

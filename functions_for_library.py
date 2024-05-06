@@ -1343,6 +1343,43 @@ def extract_data_from_fchk_file_for_numerical_derivation(file_path):
     obj.quadrupole_moment = resulting_dict["Quadrupole Moment"]
     return obj                                                              #Returning the object
 
+def read_field_and_energy_from_orca_file(file_path):
+    """
+    This function reads the orca file and returns the values of the electric field and the energy
+    return 
+    (external_field, energy)
+    three components of external field and the energy
+    """
+    with open(file_path, "r") as file:
+        external_field = []
+        lines = file.readlines()
+        kw = "an electric field will be added"
+        for line in lines:
+            if kw in line.lower():
+                line = line.split()
+                external_field = [float(line[6]), float(line[7]), float(line[8])]
+                break
+        kw = "FINAL SINGLE POINT ENERGY"
+        kw = kw.lower()
+        for line in reversed(lines):
+            if kw in line.lower():
+                energy = line.split()[-1]
+                break
+    return external_field, np.longdouble(energy)
+
+def read_folder_with_orca_files(folder_path, file_extension = ".out"):
+    """
+    This will extract field and energies from a folder with orca files 
+    Files will be sorted based on the value of the Z field
+    """
+    to_return = []
+    for file in os.listdir(folder_path):
+        if file.endswith(file_extension):
+            to_return.append(read_field_and_energy_from_orca_file(os.path.join(folder_path, file)))
+    to_return = sorted(to_return, key = lambda x: x[0][2])
+    return to_return
+        
+
 def get_list_of_propreties_for_fchk_in_a_folder(folder_path, directions, sort_values_direction = False, return_list_of_objects = False):
     """
     This function returns a list of propreties of the object if they are present.
@@ -1781,6 +1818,26 @@ def read_calc_deriv_file(path_to_file):
             path_to_save = line.strip().split("=")[1]
             break
     np.savetxt(path_to_save, matrix, fmt="%s", delimiter=",", header=",".join([name for name in names]))    #Saving the data
+
+def make_profiles_romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_size_matrix = 3, nr_elements = 6, spacing = 1, spacing_of_space = "linear"):
+    """
+    This function will use the Romberg procedure to calculate the derivatives
+    Returns a list with x, y values
+    """
+    if spacing_of_space == "linear":
+        range_romberg = np.array([2**x for x in range(1, nr_elements+1)])
+        range_romberg = np.concatenate((-range_romberg[::-1], [0], range_romberg))
+        range_romberg = range_romberg + 2**nr_elements
+        range_romberg = range_romberg * spacing
+        to_return = []
+        for i in range(len(vector_x) - 2* spacing * 2**nr_elements):
+            vect_x_to_sub = vector_x[range_romberg + i]
+            #print(vect_x_to_sub)
+            vect_y_to_sub = vector_y[range_romberg + i]
+            value_energy = romberg_procedure(vect_x_to_sub, vect_y_to_sub, order = order, a = a, min_size_matrix = min_size_matrix)
+            to_return.append([vector_x[range_romberg[nr_elements]+i], value_energy])
+    return to_return
+
 
 
 #-----------------

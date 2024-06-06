@@ -1420,7 +1420,7 @@ def get_list_of_propreties_for_fchk_in_a_folder(folder_path, directions, sort_va
     np.savetxt("data_from_fchk_in_folder_" + str(list_with_data_from_files[0][0].split("_")[0]) + ".csv", list_with_data_from_files, fmt="%s", delimiter=",", header=",".join([name for name in names]))
     return [names, list_with_data_from_files]
 
-def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
+def romberg_procedure(vector_x, f, n_points = 3, step = 1):
     """
     This function calculates the first derivative of a function f(x)
     :param vector_x: the vector of x values
@@ -1443,7 +1443,7 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_x(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     """
@@ -1467,7 +1467,7 @@ def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     """
@@ -1489,7 +1489,7 @@ def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
     """
@@ -1512,7 +1512,7 @@ def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxxx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def print_derivatives(names, list_propreties, derivative_x_vector_index, derivative_y_vector_index, order = 1, n_points = 3, step = 1):
     
@@ -1528,7 +1528,7 @@ def print_derivatives(names, list_propreties, derivative_x_vector_index, derivat
     :return: the list of names and the list of propreties with the derivatives
     """
     
-    map_derivative = {"1" : calc_first_derivative, "2": calc_second_derivative, "3" : calc_third_derivative, "4" : calc_fourth_derivative}
+    map_derivative = {"1" : romberg_procedure, "2": calc_second_derivative, "3" : calc_third_derivative, "4" : calc_fourth_derivative}
     derivative = map_derivative[str(order)]
  
     #Printing energy derivatives

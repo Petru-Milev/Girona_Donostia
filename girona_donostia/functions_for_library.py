@@ -1443,7 +1443,7 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_x(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     """
@@ -1467,7 +1467,7 @@ def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     """
@@ -1489,7 +1489,7 @@ def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
     """
@@ -1512,7 +1512,7 @@ def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxxx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def print_derivatives(names, list_propreties, derivative_x_vector_index, derivative_y_vector_index, order = 1, n_points = 3, step = 1):
     

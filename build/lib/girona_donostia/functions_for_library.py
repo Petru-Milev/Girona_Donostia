@@ -1,12 +1,12 @@
 import numpy as np
 from itertools import product
 import ast
-from objects_for_library import Gaussian_File
-from objects_for_library import Fchk_File
-from curve_fit import func_fit, add_data_from_linear_fit
-from statistic import mae, mape, rmse, max, maxre
+from girona_donostia.objects_for_library import Gaussian_File
+from girona_donostia.objects_for_library import Fchk_File
+from girona_donostia.curve_fit import func_fit, add_data_from_linear_fit
+from girona_donostia.statistic import mae, mape, rmse, max, maxre
 from scipy.optimize import curve_fit
-from romberg import romberg_procedure
+from girona_donostia.romberg import romberg_procedure
 import copy 
 import datetime as dt
 import os
@@ -1434,8 +1434,17 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
         return (-1*f[i - step]+1*f[i + step])/(2*1.0*(h*step)**1)
     def five_points(i, step, h):
         return (1*f[i-2*step]-8*f[i-1*step]+0*f[i+0]+8*f[i+1*step]-1*f[i+2*step])/(12*1.0*(h*step)**1)
+    def seven_points(i, step, h):
+        #Not tested TODO
+        return (-1*f[i-3]+9*f[i-2]-45*f[i-1]+0*f[i+0]+45*f[i+1]-9*f[i+2]+1*f[i+3])/(60*1.0*h**1)
+    def nine_points(i, step, h):
+        #Not tested TODO 
+        return (3*f[i-4]-32*f[i-3]+168*f[i-2]-672*f[i-1]+0*f[i+0]+672*f[i+1]-168*f[i+2]+32*f[i+3]-3*f[i+4])/(840*1.0*h**1)
+    def eleven_points(i, step, h):
+        #Not tested TODO
+        return (-2*f[i-5]+25*f[i-4]-150*f[i-3]+600*f[i-2]-2100*f[i-1]+0*f[i+0]+2100*f[i+1]-600*f[i+2]+150*f[i+3]-25*f[i+4]+2*f[i+5])/(2520*1.0*h**1)
     i = 0
-    map_functions = {"3" : three_points, "5" : five_points}
+    map_functions = {"3" : three_points, "5" : five_points, "7" : seven_points, "9" : nine_points, "11" : eleven_points}  
     f_x = map_functions[str(n_points)]
     start = int(step*np.floor(n_points/2))
     finish = int(len(f) - step*np.floor(n_points/2))
@@ -1443,7 +1452,7 @@ def calc_first_derivative(vector_x, f, n_points = 3, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_x(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     """
@@ -1467,7 +1476,7 @@ def calc_second_derivative(vector_x, f, n_points = 3, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     """
@@ -1489,7 +1498,7 @@ def calc_third_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
     """
@@ -1512,7 +1521,7 @@ def calc_fourth_derivative(vector_x, f, n_points = 5, step = 1):
     for i in range(start, finish):
         h = vector_x[i+1] - vector_x[i]
         derivative_vector.append(f_xxxx(i, step, h))
-    return derivative_vector
+    return np.array(derivative_vector)
 
 def print_derivatives(names, list_propreties, derivative_x_vector_index, derivative_y_vector_index, order = 1, n_points = 3, step = 1):
     
@@ -1824,6 +1833,8 @@ def make_profiles_romberg_procedure(vector_x, vector_y, order = 1, a = 2, min_si
     This function will use the Romberg procedure to calculate the derivatives
     Returns a list with x, y values
     """
+    vector_x = np.array(vector_x)
+    vector_y = np.array(vector_y)
     if spacing_of_space == "linear":
         range_romberg = np.array([2**x for x in range(1, nr_elements+1)])
         range_romberg = np.concatenate((-range_romberg[::-1], [0], range_romberg))

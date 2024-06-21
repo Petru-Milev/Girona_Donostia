@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='girona_donostia',
-    version='0.1.14',    
+    version='0.1.13',    
     description='A package to help facilitate studying of Nonlinear optical propreties',
     url='https://github.com/Petru-Milev/Girona_Donostia',
     author='Petru Milev',

@@ -1,7 +1,7 @@
 import numpy as np 
 import os
-from girona_donostia import romberg_procedure
-from girona_donostia import calc_first_derivative
+from girona_donostia.romberg import romberg_procedure
+from girona_donostia.functions_for_library import calc_first_derivative
 #from romberg import romberg_procedure
 #from romberg import romberg_procedure
 
@@ -198,7 +198,6 @@ def calc_beta_from_alpha(data, derivative_type='romberg'):
     elif (derivative_type.lower() == 'central_diff') or (derivative_type.lower() == 'central_difference') or (derivative_type.lower() == 'central differences') or (derivative_type.lower() == 'central dif'):
         n_points = data_x.shape[0]
         list_points_for_first_derivative = [3, 5, 7, 9, 11]
-        print(f"n_points is {n_points}")
         if n_points not in list_points_for_first_derivative:
             raise ValueError('Number of points for first derivative must be 3, 5, 7, 9, 11')
         beta_xxx = calc_first_derivative(data_x[:, 0], data_x[:, 3], n_points = n_points, step = 1)
@@ -433,36 +432,4 @@ def get_beta_quantities_from_beta_gaussian(path_to_file, path_to_save, derivativ
 
 
 if __name__ == '__main__':
-    #path = "/Users/petrumilev/Library/CloudStorage/GoogleDrive-petia.md36@gmail.com/Other computers/Do_not_delete_from_here/a.me/Master CNE/Study Materials/Master_Thesis/Ruben_Derivatives/Geom1_LiH.inp"
-    #folder_output = "/Users/petrumilev/Desktop/orca_outputs"
-    #path_output = "/Users/petrumilev/Library/CloudStorage/GoogleDrive-petia.md36@gmail.com/Other computers/Do_not_delete_from_here/a.me/Master CNE/Study Materials/Master_Thesis/Ruben_Derivatives/E_Y/a1_Y_-0.0004.out"
-    #folder_output = "/Users/petrumilev/Desktop/LiH_wb97xd"
-    #create_inputs(path, derivative_type='romberg', romberg_points = 6)
-    #alpha_tensor, diagonalized_tensor, P = extract_polarizability_tensor(path_output)
-    #A = extract_data_from_folder(folder_output)
-    #beta = calc_beta_from_alpha(A)
-    #print('x,y,z,xxx,xyy,xzz,yxx,yyy,yzz,zxx,zyy,zzz,xyz')
-    #print(beta)
-    #print('--------------')
-    #lst =get_beta_quantities(beta)
-    #file_gaussian = "/Users/petrumilev/Library/CloudStorage/GoogleDrive-petia.md36@gmail.com/Other computers/Do_not_delete_from_here/a.me/Master CNE/Study Materials/Master_Thesis/Ruben_Derivatives/bmimcl.log"
-    path = "/Users/petrumilev/Desktop/phenol_out_central_diff"
-    beta = extract_data_from_folder(path)
-    beta = calc_beta_from_alpha(beta, derivative_type='central_diff')
-    lst = get_beta_quantities_from_beta_vector(beta)
-    A = "[var_avg_beta_zzz_sqr, var_avg_beta_zxx_sqr, var_DR, var_beta_hrs, var_beta_j_one, var_beta_j_three, var_anisotropy_parameter]"
-    A = A.replace("[", "")
-    A = A.replace("]", "")
-    A = A.split(", ")
-    for i, item in enumerate(A):
-        print(f"{item}: {lst[i]}")
-    path_folder = "/Users/petrumilev/Desktop/phenol_out_central_diff"
-    path_to_save = "/Users/petrumilev/Desktop/beta_quantities.txt"
-    get_beta_quantities_from_alpha_orca(path_folder, path_to_save, derivative_type='central_diff')
-    path_gaussian = "/Users/petrumilev/Desktop/phenol.log"
-    path_save = "/Users/petrumilev/Desktop/beta_quantities_gaussian.txt"
-    get_beta_quantities_from_beta_gaussian(path_gaussian, path_save)
-    #path_input = "/Users/petrumilev/Desktop/phenol/phenol.inp"
-    #path_output = "/Users/petrumilev/Desktop/phenol/"
-    #create_inputs(path_input, path_output, derivative_type='central_diff', points = 5)
-    
+    print("Hola mundo!")

@@ -230,7 +230,7 @@ def extract_beta_from_gaussian_output(path_file):
     
 
     for i, line in enumerate(lines):
-        if ('Beta(0;0,0)' in line) and ('(dipole orientation)' in lines[i-4]):
+        if ('Beta(0;0,0)' in line) and ('(input orientation)' in lines[i-4]):
             lines = lines[i+8:i+18]
             break
     else:
@@ -446,22 +446,16 @@ if __name__ == '__main__':
     #print('--------------')
     #lst =get_beta_quantities(beta)
     #file_gaussian = "/Users/petrumilev/Library/CloudStorage/GoogleDrive-petia.md36@gmail.com/Other computers/Do_not_delete_from_here/a.me/Master CNE/Study Materials/Master_Thesis/Ruben_Derivatives/bmimcl.log"
-    path = "/Users/petrumilev/Desktop/phenol_out_central_diff"
-    beta = extract_data_from_folder(path)
-    beta = calc_beta_from_alpha(beta, derivative_type='central_diff')
-    lst = get_beta_quantities_from_beta_vector(beta)
-    A = "[var_avg_beta_zzz_sqr, var_avg_beta_zxx_sqr, var_DR, var_beta_hrs, var_beta_j_one, var_beta_j_three, var_anisotropy_parameter]"
-    A = A.replace("[", "")
-    A = A.replace("]", "")
-    A = A.split(", ")
-    for i, item in enumerate(A):
-        print(f"{item}: {lst[i]}")
-    path_folder = "/Users/petrumilev/Desktop/phenol_out_central_diff"
-    path_to_save = "/Users/petrumilev/Desktop/beta_quantities.txt"
-    get_beta_quantities_from_alpha_orca(path_folder, path_to_save, derivative_type='central_diff')
-    path_gaussian = "/Users/petrumilev/Desktop/phenol.log"
-    path_save = "/Users/petrumilev/Desktop/beta_quantities_gaussian.txt"
-    get_beta_quantities_from_beta_gaussian(path_gaussian, path_save)
+    #path = "/Users/petrumilev/Desktop/phenol_out_central_diff"
+    #beta = extract_data_from_folder(path)
+    #beta = calc_beta_from_alpha(beta, derivative_type='central_diff')
+    ##lst = get_beta_quantities_from_beta_vector(beta)
+    #path_folder = "/Users/petrumilev/Desktop/phenol_out_central_diff"
+    #path_to_save = "/Users/petrumilev/Desktop/beta_quantities.txt"
+    #get_beta_quantities_from_alpha_orca(path_folder, path_to_save, derivative_type='central_diff')
+    path_orca  = "/Users/petrumilev/Documents/projects_python/project_girona_donostia/Examples/Numerical_Hyperpolarizabilities/HCl/hcl_out_romberg"
+    path_save = "/Users/petrumilev/Desktop/beta_quantities_orca_hcl_romberg.txt"
+    get_beta_quantities_from_alpha_orca(path_orca, path_save, derivative_type='romberg')
     #path_input = "/Users/petrumilev/Desktop/phenol/phenol.inp"
     #path_output = "/Users/petrumilev/Desktop/phenol/"
     #create_inputs(path_input, path_output, derivative_type='central_diff', points = 5)

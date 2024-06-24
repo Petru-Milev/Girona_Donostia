@@ -227,7 +227,7 @@ def extract_beta_from_gaussian_output(path_file):
     
 
     for i, line in enumerate(lines):
-        if ('Beta(0;0,0)' in line) and ('(dipole orientation)' in lines[i-4]):
+        if ('Beta(0;0,0)' in line) and ('(input orientation)' in lines[i-4]):
             lines = lines[i+8:i+18]
             break
     else:
